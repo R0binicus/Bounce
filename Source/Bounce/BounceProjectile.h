@@ -22,6 +22,16 @@ class ABounceProjectile : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
 
+protected:
+
+	// Maximum number of boucnes before the projectile is destroyed
+	UPROPERTY(EditDefaultsOnly, Category = "Bounces")
+	int MaxBounces;
+
+	// Current bounce value, when it gets to zero, it gets destroyed
+	UPROPERTY()
+	int CurrentBounce;
+
 public:
 	ABounceProjectile();
 

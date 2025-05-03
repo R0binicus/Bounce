@@ -29,6 +29,10 @@ ABounceProjectile::ABounceProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	//Initialize the player's Health
+	MaxBounces = 5;
+	CurrentBounce = MaxBounces;
 }
 
 void ABounceProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -37,7 +41,12 @@ void ABounceProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+	}
 
+	CurrentBounce--;
+	UE_LOG(LogClass, Log, TEXT("My Int Value: %d"), CurrentBounce);
+	if (CurrentBounce <= 0)
+	{
 		Destroy();
 	}
 }
