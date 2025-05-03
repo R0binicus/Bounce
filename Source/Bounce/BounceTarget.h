@@ -6,21 +6,19 @@
 #include "GameFramework/Actor.h"
 #include "BounceTarget.generated.h"
 
-class USphereComponent;
+class UBoxComponent;
 
 UCLASS()
 class BOUNCE_API ABounceTarget : public AActor
 {
 	GENERATED_BODY()
 
-	/** Sphere collision component */
+	/** Box collision component */
 	UPROPERTY(VisibleDefaultsOnly, Category = Target)
-	USphereComponent* MyCollisionSphere;
+	UBoxComponent* MyCollisionBox;
 
-	UPROPERTY(VisibleAnywhere, Category = Target)
+	//UPROPERTY(VisibleAnywhere, Category = Target)
 	//UStaticMeshComponent* MyMesh;
-
-	float SphereRadius;
 
 	UFUNCTION()
 	void OnComponentBeginOverlap(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

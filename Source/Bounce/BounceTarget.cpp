@@ -3,7 +3,7 @@
 
 #include "BounceTarget.h"
 #include "DrawDebugHelpers.h"
-#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 ABounceTarget::ABounceTarget()
@@ -11,18 +11,15 @@ ABounceTarget::ABounceTarget()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SphereRadius = 100.0f;
+	MyCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComp"));
+	MyCollisionBox->SetCollisionProfileName("Target");
 
-	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	MyCollisionSphere->InitSphereRadius(SphereRadius);
-	MyCollisionSphere->SetCollisionProfileName("Trigger");
-
-	RootComponent = MyCollisionSphere;
+	RootComponent = MyCollisionBox;
 
 	//MyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MY MESH"));
 	//MyMesh->SetupAttachment(RootComponent);
 
-	MyCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &ABounceTarget::OnComponentBeginOverlap);
+	MyCollisionBox->OnComponentBeginOverlap.AddDynamic(this, &ABounceTarget::OnComponentBeginOverlap);
 }
 
 // Called when the game starts or when spawned
