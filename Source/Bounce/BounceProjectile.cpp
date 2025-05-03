@@ -27,10 +27,10 @@ ABounceProjectile::ABounceProjectile()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 
-	// Die after 3 seconds by default
-	InitialLifeSpan = 3.0f;
+	// Die after 10 seconds by default
+	InitialLifeSpan = 10.0f;
 
-	//Initialize the player's Health
+	//Initialize the projectile's max bounces
 	MaxBounces = 5;
 	CurrentBounce = MaxBounces;
 }
@@ -38,10 +38,10 @@ ABounceProjectile::ABounceProjectile()
 void ABounceProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
+	/*if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-	}
+	}*/
 
 	CurrentBounce--;
 	if (CurrentBounce <= 0)
