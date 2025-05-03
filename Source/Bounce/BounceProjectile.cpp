@@ -44,7 +44,6 @@ void ABounceProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	}
 
 	CurrentBounce--;
-	UE_LOG(LogClass, Log, TEXT("My Int Value: %d"), CurrentBounce);
 	if (CurrentBounce <= 0)
 	{
 		Destroy();
