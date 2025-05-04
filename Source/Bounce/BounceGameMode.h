@@ -13,7 +13,13 @@ class ABounceGameMode : public AGameModeBase
 
 public:
 	ABounceGameMode();
+
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	TSubclassOf<class ABounceTarget> TargetBlueprint;
+
+	float TargetTimer;
+
+	virtual void Tick(float DeltaTime) override;
+
+	virtual void BeginPlay() override;
 };
-
-
-
