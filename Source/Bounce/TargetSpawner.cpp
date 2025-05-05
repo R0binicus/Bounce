@@ -1,0 +1,52 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "TargetSpawner.h"
+#include "Kismet/GameplayStatics.h"
+#include "BounceTarget.h"
+#include "BounceCharacter.h"
+
+// Sets default values
+ATargetSpawner::ATargetSpawner()
+{
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+}
+
+// Called when the game starts or when spawned
+void ATargetSpawner::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+// Called every frame
+void ATargetSpawner::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	TargetTimer -= DeltaTime;
+
+	if (TargetTimer < 0.0f)
+	{
+		TargetTimer = 0.5f;
+
+		UWorld* world = GetWorld();
+
+		if (world)
+		{
+			int playerIndex = 0;
+
+			//FVector spawnerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), playerIndex)->GetActorLocation();
+			//FVector spawnerLocation = GetActorLocation();
+
+			FVector targetLocation = GetActorLocation();
+
+			targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
+			targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
+
+			ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprint, targetLocation, FRotator::ZeroRotator);
+		}
+	}
+}
+
