@@ -37,6 +37,17 @@ ABounceCharacter::ABounceCharacter()
 
 }
 
+// Called when the game starts or when spawned
+void ABounceCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//Initialize the player's Health
+	CurrentHealth = MaxHealth;
+
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ABounceCharacter::OnHit);
+}
+
 //////////////////////////////////////////////////////////////////////////// Input
 
 void ABounceCharacter::NotifyControllerChanged()
@@ -98,5 +109,40 @@ void ABounceCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void ABounceCharacter::OnHealthUpdate()
+{
+	FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, healthMessage);
+
+	if (CurrentHealth <= 0)
+	{
+		FString deathMessage = FString::Printf(TEXT("You have been killed."));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, deathMessage);
+	}
+}
+
+void ABounceCharacter::SetCurrentHealth(float healthValue)
+{
+	CurrentHealth = FMath::Clamp(healthValue, 0.f, MaxHealth);
+	UE_LOG(LogClass, Log, TEXT("Current Health: %f"), CurrentHealth);
+	OnHealthUpdate();
+}
+
+float ABounceCharacter::TakeDamage(float DamageTaken, AActor* DamageCauser)
+{
+	float damageApplied = CurrentHealth - DamageTaken;
+	SetCurrentHealth(damageApplied);
+	return damageApplied;
+}
+
+void ABounceCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+	{
+		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
+		TakeDamage(10, OtherActor);
 	}
 }
