@@ -49,3 +49,8 @@ void ABounceProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		Destroy();
 	}
 }
+
+float ABounceProjectile::GetProjectileDamage()
+{
+	return ProjectileDamage;
+}

@@ -32,6 +32,9 @@ protected:
 	UPROPERTY()
 	int CurrentBounce;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	float ProjectileDamage = 10.0f;
+
 public:
 	ABounceProjectile();
 
@@ -43,5 +46,8 @@ public:
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
+
+	UFUNCTION(BlueprintCallable, Category = "Projectile")
+	float GetProjectileDamage();
 };
 

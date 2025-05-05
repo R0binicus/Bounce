@@ -97,5 +97,4 @@ public:
 	/** Event for taking damage. Overridden from APawn.*/
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float TakeDamage(float DamageTaken, AActor* DamageCauser);
-
 };

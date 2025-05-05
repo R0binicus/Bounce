@@ -34,7 +34,6 @@ ABounceCharacter::ABounceCharacter()
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-
 }
 
 // Called when the game starts or when spawned
@@ -143,6 +142,9 @@ void ABounceCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
-		TakeDamage(10, OtherActor);
+		if (ABounceProjectile* projectile = Cast<ABounceProjectile>(OtherActor))
+		{
+			TakeDamage(projectile->GetProjectileDamage(), OtherActor);
+		}
 	}
 }
