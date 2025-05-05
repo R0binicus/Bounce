@@ -4,6 +4,7 @@
 #include "DrawDebugHelpers.h"
 #include "Components/BoxComponent.h"
 #include "EventDispatcher.h"
+#include "BounceProjectile.h"
 
 // Sets default values
 ABounceTarget::ABounceTarget()
@@ -15,12 +16,26 @@ ABounceTarget::ABounceTarget()
 	RootComponent = CollisionComp;
 }
 
+// Called when the game starts or when spawned
+void ABounceTarget::BeginPlay()
+{
+	Super::BeginPlay();
+
+	//Initialize the target's Health
+	CurrentHealth = MaxHealth;
+}
+
 void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
 		UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
-		Destroy();
+		if (ABounceProjectile* projectile = Cast<ABounceProjectile>(OtherActor))
+		{
+			CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
+			if (CurrentHealth > 0) return;
+			Destroy();
+		}
 	}
 }

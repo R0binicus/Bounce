@@ -23,4 +23,12 @@ public:
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+protected:
+	virtual void BeginPlay() override;
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float MaxHealth;
+
+	UPROPERTY()
+	float CurrentHealth;
 };
