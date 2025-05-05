@@ -44,7 +44,7 @@ void UBounceWeaponComponent::Fire()
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	
 			// Spawn the projectile at the muzzle
-			World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-10, 10), ActorSpawnParams);
+			World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-4, 4), ActorSpawnParams);
 		}
 	}
 	
