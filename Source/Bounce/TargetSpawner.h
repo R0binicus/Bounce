@@ -20,6 +20,9 @@ protected:
 	virtual void BeginPlay() override;
 	float TargetTimer;
 
+	UFUNCTION()
+	void TargetKillHandler();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

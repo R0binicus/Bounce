@@ -3,6 +3,7 @@
 #include "BounceTarget.h"
 #include "DrawDebugHelpers.h"
 #include "Components/BoxComponent.h"
+#include "EventDispatcher.h"
 
 // Sets default values
 ABounceTarget::ABounceTarget()
@@ -19,6 +20,7 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
+		UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
 		Destroy();
 	}
 }
