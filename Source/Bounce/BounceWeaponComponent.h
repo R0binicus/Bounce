@@ -57,4 +57,6 @@ protected:
 private:
 	/** The Character holding this weapon*/
 	ABounceCharacter* Character;
+
+	FRotator RandDouble(float max, float min);
 };

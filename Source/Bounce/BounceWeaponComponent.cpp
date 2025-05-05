@@ -44,7 +44,7 @@ void UBounceWeaponComponent::Fire()
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	
 			// Spawn the projectile at the muzzle
-			World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-10, 10), ActorSpawnParams);
 		}
 	}
 	
@@ -116,4 +116,13 @@ void UBounceWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 	// maintain the EndPlay call chain
 	Super::EndPlay(EndPlayReason);
+}
+
+FRotator UBounceWeaponComponent::RandDouble(float max, float min)
+{
+	double pitch = static_cast<double>(FMath::FRandRange(min, max));
+	double yaw = static_cast<double>(FMath::FRandRange(min, max));
+	double roll = static_cast<double>(FMath::FRandRange(min, max));
+
+	return FRotator(pitch, yaw, roll);
 }
