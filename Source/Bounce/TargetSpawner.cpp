@@ -68,10 +68,10 @@ void ATargetSpawner::SpawnTargetHandler()
 		targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
 		targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
 
-		int randomIndex = GetRandomIndexFromArray(TargetBlueprints);
+		int randomIndex = GetRandomIndexFromArray(WaveSpawnWeights);
 
-		if (randomIndex == -1 || TargetBlueprints[randomIndex] == nullptr) return;
-		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprints[randomIndex], targetLocation, FRotator::ZeroRotator);
+		if (randomIndex == -1 || WaveSpawnWeights[randomIndex] == nullptr) return;
+		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, FRotator::ZeroRotator);
 	}
 }
 
@@ -107,4 +107,5 @@ void ATargetSpawner::NewSpawnWeights(int target1, int target2)
 			WaveSpawnWeights.Add(TargetBlueprints[1]);
 		}
 	}
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("New weights")));
 }
