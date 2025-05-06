@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "TargetSpawner.h"
 #include "TargetManager.generated.h"
 
 UCLASS()
@@ -21,10 +22,27 @@ protected:
 
 	float GameTimer;
 
+	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
+
+	UFUNCTION()
+	void TargetKillHandler();
+
+	UPROPERTY(EditAnywhere, Category = "Spawners")
+	int Wave2Amnt = 10;
+
+	UPROPERTY(EditAnywhere, Category = "Spawners")
+	int MaxTargets = 10;
+
+	int CurrentTargets;
+
+	int KilledTargets;
+
+	int CurrentWave;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
-	TArray<TSubclassOf<class ATargetSpawner>> TargetBlueprints;
+	TArray<ATargetSpawner*> TargetSpawners;
 };

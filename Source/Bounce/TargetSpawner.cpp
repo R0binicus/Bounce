@@ -19,7 +19,7 @@ void ATargetSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.AddUniqueDynamic(this, &ATargetSpawner::TargetKillHandler);
+	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.AddUniqueDynamic(this, &ATargetSpawner::SpawnTargetHandler);
 	UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.AddUniqueDynamic(this, &ATargetSpawner::NewSpawnWeights);
 
 	NewSpawnWeights(1, 0);
@@ -30,7 +30,7 @@ void ATargetSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	TargetTimer -= DeltaTime;
+	/*TargetTimer -= DeltaTime;
 
 	if (TargetTimer < 0.0f)
 	{
@@ -52,16 +52,16 @@ void ATargetSpawner::Tick(float DeltaTime)
 			if (randomIndex == -1 || WaveSpanWeights[randomIndex] == nullptr) return;
 			ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(WaveSpanWeights[randomIndex], targetLocation, FRotator::ZeroRotator);
 		}
-	}
+	}*/
 }
 
-void ATargetSpawner::TargetKillHandler()
+void ATargetSpawner::SpawnTargetHandler()
 {
 	UWorld* world = GetWorld();
 
 	if (world)
 	{
-		/*int playerIndex = 0;
+		int playerIndex = 0;
 
 		FVector targetLocation = GetActorLocation();
 
@@ -71,7 +71,7 @@ void ATargetSpawner::TargetKillHandler()
 		int randomIndex = GetRandomIndexFromArray(TargetBlueprints);
 
 		if (randomIndex == -1 || TargetBlueprints[randomIndex] == nullptr) return;
-		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprints[randomIndex], targetLocation, FRotator::ZeroRotator);*/
+		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprints[randomIndex], targetLocation, FRotator::ZeroRotator);
 	}
 }
 
@@ -88,14 +88,14 @@ int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABoun
 
 void ATargetSpawner::NewSpawnWeights(int target1, int target2)
 {
-	WaveSpanWeights.SetNum(0);
+	WaveSpawnWeights.SetNum(0);
 
 	if (TargetBlueprints.IsValidIndex(0) && TargetBlueprints[0] != nullptr)
 	{
 		uint8 Len = target1;
 		for (uint8 i = 0; i < Len; ++i)
 		{
-			WaveSpanWeights.Add(TargetBlueprints[0]);
+			WaveSpawnWeights.Add(TargetBlueprints[0]);
 		}
 	}
 
@@ -104,7 +104,7 @@ void ATargetSpawner::NewSpawnWeights(int target1, int target2)
 		uint8 Len = target2;
 		for (uint8 i = 0; i < Len; ++i)
 		{
-			WaveSpanWeights.Add(TargetBlueprints[1]);
+			WaveSpawnWeights.Add(TargetBlueprints[1]);
 		}
 	}
 }

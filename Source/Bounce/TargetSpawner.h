@@ -20,13 +20,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void TargetKillHandler();
+	void SpawnTargetHandler();
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	int MaxTargets;
-
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	TArray<TSubclassOf<class ABounceTarget>> WaveSpanWeights;
+	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;
 
 	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
 
