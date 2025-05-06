@@ -45,8 +45,8 @@ void ATargetSpawner::Tick(float DeltaTime)
 
 			FVector targetLocation = GetActorLocation();
 
-			targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
-			targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
+			targetLocation.X += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
+			targetLocation.Y += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
 
 			int randomIndex = GetRandomIndexFromArray(WaveSpanWeights);
 
@@ -66,8 +66,8 @@ void ATargetSpawner::SpawnTargetHandler(ATargetSpawner* Spawner)
 
 	// Set random location variation
 	FVector targetLocation = GetActorLocation();
-	targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
-	targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
+	targetLocation.X += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
+	targetLocation.Y += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
 
 	// Get random target type from weights, then spawn target
 	int randomIndex = GetRandomIndexFromArray(WaveSpawnWeights);
