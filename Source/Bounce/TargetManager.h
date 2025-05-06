@@ -27,6 +27,9 @@ protected:
 	UFUNCTION()
 	void TargetKillHandler();
 
+	UFUNCTION()
+	void SpawnTarget();
+
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int InitialSpawnAmnt = 10;
 

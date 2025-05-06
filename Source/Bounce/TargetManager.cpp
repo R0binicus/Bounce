@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "TargetManager.h"
 #include "EventDispatcher.h"
 #include "TargetSpawner.h"
@@ -10,7 +9,6 @@ ATargetManager::ATargetManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -23,7 +21,6 @@ void ATargetManager::BeginPlay()
 	CurrentTargets = 0;
 	KilledTargets = 0;
 	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.AddUniqueDynamic(this, &ATargetManager::TargetKillHandler);
-	
 }
 
 // Called every frame
@@ -39,7 +36,7 @@ void ATargetManager::Tick(float DeltaTime)
 
 		for (int i = 0; i < InitialSpawnAmnt; ++i)
 		{
-			TargetKillHandler();
+			SpawnTarget();
 		}
 	}
 }
@@ -48,7 +45,7 @@ int ATargetManager::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array
 {
 	if (Array.IsEmpty())
 	{
-		return -1; // Return -1 or handle empty array case as needed
+		return -1; // Return -1 if invalid
 	}
 
 	int RandomIndex = FMath::RandRange(0, Array.Num() - 1);
@@ -58,12 +55,21 @@ int ATargetManager::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array
 void ATargetManager::TargetKillHandler()
 {
 	KilledTargets++;
+	// If 1st wave and amount of targets killed has hit the 
+	// threshhold, advance to wave 2
 	if (CurrentWave == 0 && KilledTargets >= Wave2Amnt)
 	{
 		CurrentWave = 1;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1);
 	}
 
+	SpawnTarget();
+}
+
+void ATargetManager::SpawnTarget()
+{
+	// Get random spawner, then broadcast spawn target event with that
+	// spawner pointer as a param
 	int randomIndex = GetRandomIndexFromArray(TargetSpawners);
 
 	if (randomIndex == -1 || TargetSpawners[randomIndex] == nullptr) return;

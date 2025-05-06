@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "TargetSpawner.h"
 #include "Kismet/GameplayStatics.h"
 #include "BounceTarget.h"
@@ -19,9 +18,11 @@ void ATargetSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Bind events
 	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.AddUniqueDynamic(this, &ATargetSpawner::SpawnTargetHandler);
 	UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.AddUniqueDynamic(this, &ATargetSpawner::NewSpawnWeights);
 
+	// Base spawn weights (100% the 1 hit target)
 	NewSpawnWeights(1, 0);
 }
 
@@ -61,33 +62,33 @@ void ATargetSpawner::SpawnTargetHandler(ATargetSpawner* Spawner)
 
 	UWorld* world = GetWorld();
 
-	if (world)
-	{
-		int playerIndex = 0;
+	if (!world) return;
 
-		FVector targetLocation = GetActorLocation();
+	// Set random location variation
+	FVector targetLocation = GetActorLocation();
+	targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
+	targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
 
-		targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
-		targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
+	// Get random target type from weights, then spawn target
+	int randomIndex = GetRandomIndexFromArray(WaveSpawnWeights);
 
-		int randomIndex = GetRandomIndexFromArray(WaveSpawnWeights);
-
-		if (randomIndex == -1 || WaveSpawnWeights[randomIndex] == nullptr) return;
-		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, FRotator::ZeroRotator);
-	}
+	if (randomIndex == -1 || WaveSpawnWeights[randomIndex] == nullptr) return;
+	world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, FRotator::ZeroRotator);
 }
 
 int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array)
 {
 	if (Array.IsEmpty())
 	{
-		return -1; // Return -1 or handle empty array case as needed
+		return -1; // Return -1 if invalid
 	}
 
 	int RandomIndex = FMath::RandRange(0, Array.Num() - 1);
 	return RandomIndex;
 }
 
+// Set WaveSpawnWeights to be empty, then add the target types
+// back into the array based on the input weights
 void ATargetSpawner::NewSpawnWeights(int target1, int target2)
 {
 	WaveSpawnWeights.SetNum(0);
@@ -109,5 +110,4 @@ void ATargetSpawner::NewSpawnWeights(int target1, int target2)
 			WaveSpawnWeights.Add(TargetBlueprints[1]);
 		}
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("New weights")));
 }
