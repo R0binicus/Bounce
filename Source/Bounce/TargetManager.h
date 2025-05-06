@@ -20,12 +20,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	float GameTimer;
+	float InitialSpawnDelay;
 
 	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
 
 	UFUNCTION()
 	void TargetKillHandler();
+
+	UPROPERTY(EditAnywhere, Category = "Spawners")
+	int InitialSpawnAmnt = 10;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int Wave2Amnt = 10;
