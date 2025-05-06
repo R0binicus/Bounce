@@ -55,8 +55,10 @@ void ATargetSpawner::Tick(float DeltaTime)
 	}*/
 }
 
-void ATargetSpawner::SpawnTargetHandler()
+void ATargetSpawner::SpawnTargetHandler(ATargetSpawner* Spawner)
 {
+	if (Spawner != this) return;
+
 	UWorld* world = GetWorld();
 
 	if (world)

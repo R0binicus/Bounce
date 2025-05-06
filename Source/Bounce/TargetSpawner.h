@@ -20,7 +20,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void SpawnTargetHandler();
+	void SpawnTargetHandler(ATargetSpawner* Spawner);
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;

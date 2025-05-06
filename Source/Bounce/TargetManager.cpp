@@ -34,16 +34,16 @@ void ATargetManager::Tick(float DeltaTime)
 	if (GameTimer >= 1.0f)
 	{
 		GameTimer = 0.0f;
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
-		UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
+		TargetKillHandler();
+		TargetKillHandler();
+		TargetKillHandler();
+		TargetKillHandler();
+		TargetKillHandler();
+		TargetKillHandler();
+		TargetKillHandler();
+		TargetKillHandler();
+		TargetKillHandler();
+		TargetKillHandler();
 	}
 }
 
@@ -70,5 +70,5 @@ void ATargetManager::TargetKillHandler()
 	int randomIndex = GetRandomIndexFromArray(TargetSpawners);
 
 	if (randomIndex == -1 || TargetSpawners[randomIndex] == nullptr) return;
-	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast();
+	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast(TargetSpawners[randomIndex]);
 }

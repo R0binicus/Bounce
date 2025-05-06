@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Delegates/DelegateCombinations.h"
+#include "TargetSpawner.h"
 #include "EventDispatcher.generated.h"
 
 // Delegates that can bind to multiple UFUNCTIONs simultaniously
@@ -13,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_ExampleOneParams, bool, MyBoo
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_ExampleTwoParams, bool, MyBool, float, MyFloat);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_TargetKill);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_WaveWeights, int, Targets1, int, Targets2);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_SpawnTarget);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_SpawnTarget, ATargetSpawner*, Spawner);
 
 UCLASS()
 class BOUNCE_API UEventDispatcher : public UBlueprintFunctionLibrary
