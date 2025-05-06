@@ -30,12 +30,12 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
-		UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
 		if (ABounceProjectile* projectile = Cast<ABounceProjectile>(OtherActor))
 		{
 			CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
 			if (CurrentHealth > 0) return;
 			Destroy();
+			UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
 		}
 	}
 }

@@ -65,7 +65,21 @@ void ATargetSpawner::TargetKillHandler()
 		targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
 		targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
 
-		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprint, targetLocation, FRotator::ZeroRotator);
+		int randomIndex = GetRandomIndexFromArray(TargetBlueprints);
+
+		if (randomIndex == -1 || TargetBlueprints[randomIndex] == nullptr) return;
+		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprints[randomIndex], targetLocation, FRotator::ZeroRotator);
 	}
+}
+
+int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array)
+{
+	if (Array.IsEmpty())
+	{
+		return -1; // Return -1 or handle empty array case as needed
+	}
+
+	int RandomIndex = FMath::RandRange(0, Array.Num() - 1);
+	return RandomIndex;
 }
 

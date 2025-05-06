@@ -23,10 +23,12 @@ protected:
 	UFUNCTION()
 	void TargetKillHandler();
 
+	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	TSubclassOf<class ABounceTarget> TargetBlueprint;
+	TArray<TSubclassOf<class ABounceTarget>> TargetBlueprints;
 };
