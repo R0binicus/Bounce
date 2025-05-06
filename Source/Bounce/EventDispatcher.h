@@ -12,6 +12,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_ExampleNoParams);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_ExampleOneParams, bool, MyBool);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_ExampleTwoParams, bool, MyBool, float, MyFloat);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_TargetKill);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_WaveWeights, int, Targets1, int, Targets2);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_Wave);
+
+
 
 UCLASS()
 class BOUNCE_API UEventDispatcher : public UBlueprintFunctionLibrary
@@ -41,6 +45,12 @@ public: // These are the event multi dispatchers
 
 	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
 	FEvent_TargetKill Event_TargetKill;
+
+	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	FEvent_WaveWeights Event_WaveWeights;
+
+	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	FEvent_Wave Event_Wave;
 
 public:
 	UFUNCTION(BlueprintPure, Category = "Create Event Dispatcher")

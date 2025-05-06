@@ -20,6 +20,9 @@ void ATargetSpawner::BeginPlay()
 	Super::BeginPlay();
 
 	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.AddUniqueDynamic(this, &ATargetSpawner::TargetKillHandler);
+	UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.AddUniqueDynamic(this, &ATargetSpawner::NewSpawnWeights);
+
+	NewSpawnWeights(1, 0);
 }
 
 // Called every frame
@@ -27,29 +30,29 @@ void ATargetSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//TargetTimer -= DeltaTime;
+	TargetTimer -= DeltaTime;
 
-	//if (TargetTimer < 0.0f)
-	//{
-	//	TargetTimer = 0.5f;
+	if (TargetTimer < 0.0f)
+	{
+		TargetTimer = 0.5f;
 
-	//	UWorld* world = GetWorld();
+		UWorld* world = GetWorld();
 
-	//	if (world)
-	//	{
-	//		int playerIndex = 0;
+		if (world)
+		{
+			int playerIndex = 0;
 
-	//		//FVector spawnerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), playerIndex)->GetActorLocation();
-	//		//FVector spawnerLocation = GetActorLocation();
+			FVector targetLocation = GetActorLocation();
 
-	//		FVector targetLocation = GetActorLocation();
+			targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
+			targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
 
-	//		targetLocation.X += FMath::RandRange(-1000.0f, 1000.0f);
-	//		targetLocation.Y += FMath::RandRange(-1000.0f, 1000.0f);
+			int randomIndex = GetRandomIndexFromArray(WaveSpanWeights);
 
-	//		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprint, targetLocation, FRotator::ZeroRotator);
-	//	}
-	//}
+			if (randomIndex == -1 || WaveSpanWeights[randomIndex] == nullptr) return;
+			ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(WaveSpanWeights[randomIndex], targetLocation, FRotator::ZeroRotator);
+		}
+	}
 }
 
 void ATargetSpawner::TargetKillHandler()
@@ -58,7 +61,7 @@ void ATargetSpawner::TargetKillHandler()
 
 	if (world)
 	{
-		int playerIndex = 0;
+		/*int playerIndex = 0;
 
 		FVector targetLocation = GetActorLocation();
 
@@ -68,7 +71,7 @@ void ATargetSpawner::TargetKillHandler()
 		int randomIndex = GetRandomIndexFromArray(TargetBlueprints);
 
 		if (randomIndex == -1 || TargetBlueprints[randomIndex] == nullptr) return;
-		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprints[randomIndex], targetLocation, FRotator::ZeroRotator);
+		ABounceTarget* enemy = world->SpawnActor<ABounceTarget>(TargetBlueprints[randomIndex], targetLocation, FRotator::ZeroRotator);*/
 	}
 }
 
@@ -83,3 +86,25 @@ int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABoun
 	return RandomIndex;
 }
 
+void ATargetSpawner::NewSpawnWeights(int target1, int target2)
+{
+	WaveSpanWeights.SetNum(0);
+
+	if (TargetBlueprints.IsValidIndex(0) && TargetBlueprints[0] != nullptr)
+	{
+		uint8 Len = target1;
+		for (uint8 i = 0; i < Len; ++i)
+		{
+			WaveSpanWeights.Add(TargetBlueprints[0]);
+		}
+	}
+
+	if (TargetBlueprints.IsValidIndex(1) && TargetBlueprints[1] != nullptr)
+	{
+		uint8 Len = target2;
+		for (uint8 i = 0; i < Len; ++i)
+		{
+			WaveSpanWeights.Add(TargetBlueprints[1]);
+		}
+	}
+}

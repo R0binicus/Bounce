@@ -18,16 +18,29 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	float TargetTimer;
 
 	UFUNCTION()
 	void TargetKillHandler();
 
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	int MaxTargets;
+
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	TArray<TSubclassOf<class ABounceTarget>> WaveSpanWeights;
+
 	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
+
+	UFUNCTION()
+	void NewSpawnWeights(int target1, int target2);
+
+	float TargetTimer;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	float SpawnRate;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<TSubclassOf<class ABounceTarget>> TargetBlueprints;

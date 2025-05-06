@@ -2,6 +2,7 @@
 
 
 #include "TargetManager.h"
+#include "EventDispatcher.h"
 
 // Sets default values
 ATargetManager::ATargetManager()
@@ -15,7 +16,7 @@ ATargetManager::ATargetManager()
 void ATargetManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GameTimer = 1.0f;
 }
 
 // Called every frame
@@ -23,5 +24,16 @@ void ATargetManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	GameTimer += DeltaTime;
+
+	if (GameTimer >= 10.0f)
+	{
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1);
+		GameTimer = 0.0f;
+	}
+	else
+	{
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("GameTimer: %f"), GameTimer));
+	}
 }
 
