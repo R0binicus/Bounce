@@ -68,12 +68,14 @@ void ATargetSpawner::SpawnTargetHandler(ATargetSpawner* Spawner)
 	FVector targetLocation = GetActorLocation();
 	targetLocation.X += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
 	targetLocation.Y += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
+	FRotator targetRotation = FRotator(0.0f, FMath::RandRange(0.0f, 360.0f), 0.0f);
+
 
 	// Get random target type from weights, then spawn target
 	int randomIndex = GetRandomIndexFromArray(WaveSpawnWeights);
 
 	if (randomIndex == -1 || WaveSpawnWeights[randomIndex] == nullptr) return;
-	world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, FRotator::ZeroRotator);
+	world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, targetRotation);
 }
 
 int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array)
