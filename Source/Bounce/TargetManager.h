@@ -20,10 +20,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	float InitialSpawnDelay;
-
-	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
-
 	UFUNCTION()
 	void TargetKillHandler();
 
@@ -37,13 +33,24 @@ protected:
 	int Wave2Amnt = 10;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
-	int MaxTargets = 10;
+	int MaxTargets = 20;
 
-	int CurrentTargets;
+	int CurrentTargets = 0;
 
-	int KilledTargets;
+	int KilledTargets = 0;
 
-	int CurrentWave;
+	int CurrentWave = 0;
+
+	UPROPERTY(EditAnywhere, Category = "Spawners")
+	float InitialSpawnDelay = 1.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Spawners")
+	float SpawnRate = 1.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Spawners")
+	float SpawnTimer = InitialSpawnDelay;
+
+	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
 
 public:	
 	// Called every frame

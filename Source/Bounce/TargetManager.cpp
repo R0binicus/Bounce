@@ -15,11 +15,7 @@ ATargetManager::ATargetManager()
 void ATargetManager::BeginPlay()
 {
 	Super::BeginPlay();
-	InitialSpawnDelay = 1.0f;
 
-	CurrentWave = 0;
-	CurrentTargets = 0;
-	KilledTargets = 0;
 	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.AddUniqueDynamic(this, &ATargetManager::TargetKillHandler);
 }
 
@@ -30,7 +26,7 @@ void ATargetManager::Tick(float DeltaTime)
 
 	// 1 Second after game starts, spawn InitialSpawnAmnt amount of targets
 	// delay used, because event can't be triggered in BeginPlay, as that is when the events are bound
-	if (InitialSpawnDelay >= 1.0f)
+	/*if (InitialSpawnDelay >= 1.0f)
 	{
 		InitialSpawnDelay = 0.0f;
 
@@ -38,6 +34,14 @@ void ATargetManager::Tick(float DeltaTime)
 		{
 			SpawnTarget();
 		}
+	}*/
+
+	SpawnTimer -= DeltaTime;
+
+	if (CurrentTargets < MaxTargets && SpawnTimer < 0.0f)
+	{
+		SpawnTarget();
+		SpawnTimer = SpawnRate;
 	}
 }
 
@@ -54,6 +58,8 @@ int ATargetManager::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array
 
 void ATargetManager::TargetKillHandler()
 {
+	SpawnTarget();
+
 	KilledTargets++;
 	// If 1st wave and amount of targets killed has hit the 
 	// threshhold, advance to wave 2
@@ -62,8 +68,6 @@ void ATargetManager::TargetKillHandler()
 		CurrentWave = 1;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1);
 	}
-
-	SpawnTarget();
 }
 
 void ATargetManager::SpawnTarget()
@@ -74,4 +78,5 @@ void ATargetManager::SpawnTarget()
 
 	if (randomIndex == -1 || TargetSpawners[randomIndex] == nullptr) return;
 	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.Broadcast(TargetSpawners[randomIndex]);
+	CurrentTargets++;
 }
