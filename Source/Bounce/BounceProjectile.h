@@ -49,5 +49,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	float GetProjectileDamage();
-};
 
+	UFUNCTION(BlueprintCallable, Category = "Projectile")
+	void SetProjectileValues(int projBounces, float projSpeed, float projDamage, float bounciness, float gravAmount, float lifeTime);
+};

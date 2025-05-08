@@ -60,7 +60,8 @@ void UBounceWeaponComponent::Fire()
 			for (uint8 i = 0; i < ProjectileAmount; ++i)
 			{
 				// Spawn the projectile at the muzzle
-				World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation + RandDouble(-ShotInnacuracy, ShotInnacuracy), ActorSpawnParams);
+				ABounceProjectile* tempProjectile = World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation + RandDouble(-ShotInnacuracy, ShotInnacuracy), ActorSpawnParams);
+				tempProjectile->SetProjectileValues(MaxBounces, Speed, Damage, Bounciness, GravAmount, LifeTime);
 			}
 			CanShoot = false;
 			FireTimer = FireRate;

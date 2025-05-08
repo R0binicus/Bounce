@@ -50,3 +50,15 @@ float ABounceProjectile::GetProjectileDamage()
 {
 	return ProjectileDamage;
 }
+
+void ABounceProjectile::SetProjectileValues(int projBounces, float projSpeed, float projDamage, float bounciness, float gravAmount, float lifeTime)
+{
+	MaxBounces = projBounces;
+	CurrentBounce = projBounces;
+	ProjectileMovement->InitialSpeed = projSpeed;
+	ProjectileMovement->MaxSpeed = projSpeed;
+	ProjectileDamage = projDamage;
+	ProjectileMovement->Bounciness = bounciness;
+	ProjectileMovement->ProjectileGravityScale = gravAmount;
+	SetLifeSpan(lifeTime);
+}
