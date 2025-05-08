@@ -14,6 +14,7 @@ class BOUNCE_API UBounceWeaponComponent : public USkeletalMeshComponent
 	GENERATED_BODY()
 
 public:
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	TSubclassOf<class ABounceProjectile> ProjectileClass;
@@ -53,6 +54,48 @@ protected:
 	/** Ends gameplay for this component. */
 	UFUNCTION()
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void RandomiseValues();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float ShotInnacuracy = 4.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	int ProjectileAmount = 2;
+
+	UPROPERTY()
+	bool CanShoot = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float FireRate = 0.5f;
+
+	UPROPERTY()
+	float FireTimer;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float RecoilAmount = 0.5f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	int MaxBounces = 5;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	float Speed = 3000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	float Damage = 10.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	float Bounciness = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	bool GravEnabled = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	float GravAmount = 0.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	float LifeTime = 10.0f;
 
 private:
 	/** The Character holding this weapon*/

@@ -25,12 +25,12 @@ class ABounceProjectile : public AActor
 protected:
 
 	// Maximum number of boucnes before the projectile is destroyed
-	UPROPERTY(EditDefaultsOnly, Category = "Bounces")
-	int MaxBounces;
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	int MaxBounces = 5;
 
 	// Current bounce value, when it gets to zero, it gets destroyed
 	UPROPERTY()
-	int CurrentBounce;
+	int CurrentBounce = MaxBounces;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	float ProjectileDamage = 10.0f;
@@ -49,5 +49,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	float GetProjectileDamage();
-};
 
+	UFUNCTION(BlueprintCallable, Category = "Projectile")
+	void SetProjectileValues(int projBounces, float projSpeed, float projDamage, float bounciness, float gravAmount, float lifeTime);
+};
