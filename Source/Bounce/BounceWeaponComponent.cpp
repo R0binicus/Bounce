@@ -42,9 +42,14 @@ void UBounceWeaponComponent::Fire()
 			//Set Spawn Collision Handling Override
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-	
-			// Spawn the projectile at the muzzle
-			World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-ShotInnacuracy, ShotInnacuracy), ActorSpawnParams);
+
+			// Spawn projectile for each amount in ProjectileAmount
+			for (uint8 i = 0; i < ProjectileAmount; ++i)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ProjectileAmount: %i"), ProjectileAmount));
+				// Spawn the projectile at the muzzle
+				World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation + RandDouble(-ShotInnacuracy, ShotInnacuracy), ActorSpawnParams);
+			}
 		}
 	}
 	

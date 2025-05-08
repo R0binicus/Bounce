@@ -55,7 +55,10 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float ShotInnacuracy = 4;
+	float ShotInnacuracy = 4.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	int ProjectileAmount = 2;
 
 private:
 	/** The Character holding this weapon*/
