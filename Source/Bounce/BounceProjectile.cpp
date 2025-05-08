@@ -29,10 +29,6 @@ ABounceProjectile::ABounceProjectile()
 
 	// Die after 10 seconds by default
 	InitialLifeSpan = 10.0f;
-
-	//Initialize the projectile's max bounces
-	MaxBounces = 5;
-	CurrentBounce = MaxBounces;
 }
 
 void ABounceProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
