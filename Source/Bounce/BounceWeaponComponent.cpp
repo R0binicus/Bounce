@@ -64,6 +64,8 @@ void UBounceWeaponComponent::Fire()
 			}
 			CanShoot = false;
 			FireTimer = FireRate;
+
+			PlayerController->AddPitchInput(-RecoilAmount);
 		}
 	}
 	

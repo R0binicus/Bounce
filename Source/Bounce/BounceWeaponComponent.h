@@ -61,7 +61,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	int ProjectileAmount = 2;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY()
 	bool CanShoot = false;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
@@ -69,6 +69,9 @@ protected:
 
 	UPROPERTY()
 	float FireTimer;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float RecoilAmount = 0.5f;
 
 private:
 	/** The Character holding this weapon*/
