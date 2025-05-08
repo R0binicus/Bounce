@@ -14,6 +14,7 @@ class BOUNCE_API UBounceWeaponComponent : public USkeletalMeshComponent
 	GENERATED_BODY()
 
 public:
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
 	TSubclassOf<class ABounceProjectile> ProjectileClass;
@@ -59,6 +60,15 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	int ProjectileAmount = 2;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	bool CanShoot = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float FireRate = 0.5f;
+
+	UPROPERTY()
+	float FireTimer;
 
 private:
 	/** The Character holding this weapon*/

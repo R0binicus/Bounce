@@ -18,11 +18,24 @@ UBounceWeaponComponent::UBounceWeaponComponent()
 {
 	// Default offset from the character location for projectiles to spawn
 	MuzzleOffset = FVector(100.0f, 0.0f, 10.0f);
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
+void UBounceWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	FireTimer -= DeltaTime;
+
+	if (!CanShoot && FireTimer < 0.0f)
+	{
+		CanShoot = true;
+	}
+}
 
 void UBounceWeaponComponent::Fire()
 {
+	if (!CanShoot) return;
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
 		return;
@@ -46,10 +59,11 @@ void UBounceWeaponComponent::Fire()
 			// Spawn projectile for each amount in ProjectileAmount
 			for (uint8 i = 0; i < ProjectileAmount; ++i)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ProjectileAmount: %i"), ProjectileAmount));
 				// Spawn the projectile at the muzzle
 				World->SpawnActor<ABounceProjectile>(ProjectileClass, SpawnLocation, SpawnRotation + RandDouble(-ShotInnacuracy, ShotInnacuracy), ActorSpawnParams);
 			}
+			CanShoot = false;
+			FireTimer = FireRate;
 		}
 	}
 	
@@ -131,3 +145,4 @@ FRotator UBounceWeaponComponent::RandDouble(float max, float min)
 
 	return FRotator(pitch, yaw, roll);
 }
+
