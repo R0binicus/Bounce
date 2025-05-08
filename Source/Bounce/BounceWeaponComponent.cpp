@@ -67,6 +67,7 @@ void UBounceWeaponComponent::Fire()
 			FireTimer = FireRate;
 
 			PlayerController->AddPitchInput(-RecoilAmount);
+			RandomiseValues();
 		}
 	}
 	
@@ -147,5 +148,27 @@ FRotator UBounceWeaponComponent::RandDouble(float max, float min)
 	double roll = static_cast<double>(FMath::FRandRange(min, max));
 
 	return FRotator(pitch, yaw, roll);
+}
+
+void UBounceWeaponComponent::RandomiseValues()
+{
+	ShotInnacuracy = FMath::FRandRange(0.0f, 10.0f);
+	ProjectileAmount = (int)FMath::RandRange(1, 10);
+	FireRate = FMath::FRandRange(0.0f, 3.0f);
+	RecoilAmount = FMath::FRandRange(0.0f, 7.0f);
+	MaxBounces = (int)FMath::RandRange(1, 10);
+	Speed = FMath::FRandRange(100.0f, 10000.0f);
+	Damage = FMath::FRandRange(1.0f, 50.0f);
+	Bounciness = FMath::FRandRange(0.1f, 3.0f);
+	GravEnabled = FMath::RandBool();
+	if (GravEnabled)
+	{
+		GravAmount = FMath::FRandRange(0.0f, 5.0f);
+	}
+	else
+	{
+		GravAmount = 0;
+	}
+	LifeTime = FMath::FRandRange(0.5f, 25.0f);
 }
 

@@ -55,6 +55,9 @@ protected:
 	UFUNCTION()
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void RandomiseValues();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float ShotInnacuracy = 4.0f;
 
