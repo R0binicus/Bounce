@@ -23,12 +23,12 @@ protected:
 	void SpawnTargetHandler(ATargetSpawner* Spawner);
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;
+	TArray<TSubclassOf<class ATarget>> WaveSpawnWeights;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	float SpawningAreaWidth = 1000.0f;
 
-	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
+	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ATarget>>& Array);
 
 	UFUNCTION()
 	void NewSpawnWeights(int target1, int target2);
@@ -40,5 +40,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	TArray<TSubclassOf<class ABounceTarget>> TargetBlueprints;
+	TArray<TSubclassOf<class ATarget>> TargetBlueprints;
 };

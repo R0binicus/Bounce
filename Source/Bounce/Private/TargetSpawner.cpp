@@ -2,8 +2,8 @@
 
 #include "TargetSpawner.h"
 #include "Kismet/GameplayStatics.h"
-#include "BounceTarget.h"
-#include "BounceCharacter.h"
+#include "Target.h"
+#include "PlayerCharacter.h"
 #include "EventDispatcher.h"
 
 // Sets default values
@@ -58,11 +58,11 @@ void ATargetSpawner::Tick(float DeltaTime)
 
 void ATargetSpawner::SpawnTargetHandler(ATargetSpawner* Spawner)
 {
-	if (Spawner != this) return;
+	if(Spawner != this) return;
 
 	UWorld* world = GetWorld();
 
-	if (!world) return;
+	if(!world) return;
 
 	// Set random location variation
 	FVector targetLocation = GetActorLocation();
@@ -74,16 +74,13 @@ void ATargetSpawner::SpawnTargetHandler(ATargetSpawner* Spawner)
 	// Get random target type from weights, then spawn target
 	int randomIndex = GetRandomIndexFromArray(WaveSpawnWeights);
 
-	if (randomIndex == -1 || WaveSpawnWeights[randomIndex] == nullptr) return;
-	world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, targetRotation);
+	if(randomIndex == -1 || WaveSpawnWeights[randomIndex] == nullptr) return;
+	world->SpawnActor<ATarget>(WaveSpawnWeights[randomIndex], targetLocation, targetRotation);
 }
 
-int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array)
+int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ATarget>>& Array)
 {
-	if (Array.IsEmpty())
-	{
-		return -1; // Return -1 if invalid
-	}
+	if(Array.IsEmpty()) return -1;
 
 	int RandomIndex = FMath::RandRange(0, Array.Num() - 1);
 	return RandomIndex;
@@ -95,7 +92,7 @@ void ATargetSpawner::NewSpawnWeights(int target1, int target2)
 {
 	WaveSpawnWeights.SetNum(0);
 
-	if (TargetBlueprints.IsValidIndex(0) && TargetBlueprints[0] != nullptr)
+	if(TargetBlueprints.IsValidIndex(0) && TargetBlueprints[0] != nullptr)
 	{
 		uint8 Len = target1;
 		for (uint8 i = 0; i < Len; ++i)
@@ -104,10 +101,10 @@ void ATargetSpawner::NewSpawnWeights(int target1, int target2)
 		}
 	}
 
-	if (TargetBlueprints.IsValidIndex(1) && TargetBlueprints[1] != nullptr)
+	if(TargetBlueprints.IsValidIndex(1) && TargetBlueprints[1] != nullptr)
 	{
 		uint8 Len = target2;
-		for (uint8 i = 0; i < Len; ++i)
+		for(uint8 i = 0; i < Len; ++i)
 		{
 			WaveSpawnWeights.Add(TargetBlueprints[1]);
 		}

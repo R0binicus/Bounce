@@ -48,7 +48,9 @@ void UWeaponComponent::Fire()
     const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
     
     // MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-    const FVector SpawnLocation = GetOwner()->GetActorLocation()+SpawnRotation.RotateVector(MuzzleOffset);
+	const FVector OwnerLocation = GetOwner()->GetActorLocation();
+    const FVector SpawnLocation = OwnerLocation+SpawnRotation.RotateVector(MuzzleOffset);
+	const FVector KnockbackForce = OwnerLocation+SpawnRotation.RotateVector(FVector(100.f, 0.f, 0.f));
 
     // Set Spawn Collision Handling Override
     FActorSpawnParameters ActorSpawnParams;
@@ -60,13 +62,15 @@ void UWeaponComponent::Fire()
         AProjectile* shot = World->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-Scatter, Scatter), ActorSpawnParams);
 		if(shot == nullptr) continue;
 		
-        shot->SetProjectileValues(Damage, Bounces, Speed, Bounciness, GravityAmount, Lifespan);
+		float momentum = Character->GetVelocity().GetMax()+Speed;
+        shot->SetProjectileValues(Damage, Bounces, momentum, Bounciness, GravityAmount, Lifespan);
     }
 
     CanShoot = false;
     FireTimer = FireRate;
 
-    PlayerController->AddPitchInput(-RecoilAmount);
+    // PlayerController->AddPitchInput(-RecoilAmount);
+	Character->GetMovementComponent()->AddRadialImpulse(KnockbackForce, 1000.f, 1000.f, ERadialImpulseFalloff::RIF_Linear, true);
     RandomizeValues();
 	
 	// Play the firing sound

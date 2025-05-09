@@ -100,15 +100,15 @@ protected:
 
 	/** Applied friction while grounded */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveFrictionGround = 1.5f;
+	float MoveFrictionGround = 8.f;
 
 	/** Applied friction while sliding */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveFrictionSlide = 0.2f;
+	float MoveFrictionSlide = 0.1f;
 
 	/** Applied friction while airborne */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveFrictionAir = 0.2f;
+	float MoveFrictionAir = 0.6f;
 
 	/** Applied acceleration while walking */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
@@ -134,7 +134,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCamera() const { return FirstPersonCameraComponent; }
 
-	float CapsuleRadius = 5.f;
+	float CapsuleRadius = 15.f;
 	float CapsuleHeight = 80.f;
 	float CapsuleHalfed = 40.f;
 
