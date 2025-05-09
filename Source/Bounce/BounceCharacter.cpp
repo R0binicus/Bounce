@@ -9,6 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "EventDispatcher.h"
 #include "Engine/LocalPlayer.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -120,6 +121,7 @@ void ABounceCharacter::OnHealthUpdate()
 	{
 		FString deathMessage = FString::Printf(TEXT("You have been killed."));
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, deathMessage);
+		UEventDispatcher::GetEventManagerSingleton()->Event_GameOver.Broadcast();
 	}
 }
 
