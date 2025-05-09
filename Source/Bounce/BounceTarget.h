@@ -26,8 +26,11 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
 	float MaxHealth;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	int Score = 1;
 
 	UPROPERTY()
 	float CurrentHealth;
