@@ -36,6 +36,7 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 			if (CurrentHealth > 0) return;
 			Destroy();
 			UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
+			UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);
 		}
 	}
 }
