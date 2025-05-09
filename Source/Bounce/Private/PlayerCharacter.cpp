@@ -137,7 +137,7 @@ void APlayerCharacter::Slide(const FInputActionValue& Value)
 	CharacterMovement->MaxWalkSpeed = MoveSpeedSlide;
 	CharacterMovement->GroundFriction = MoveFrictionSlide;
 	CharacterMovement->BrakingDecelerationWalking = 128.f;
-	CharacterMovement->AddImpulse(GetVelocity()*0.2f, true);
+	CharacterMovement->AddImpulse(GetVelocity()*0.3f, true);
 
 	GetCapsuleComponent()->SetCapsuleSize(CapsuleRadius, CapsuleHalfed);
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, CapsuleHalfed-10.f));

@@ -92,11 +92,11 @@ protected:
 
 	/** Maximum speed while sprinting */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveSpeedSprint = 1200.f;
+	float MoveSpeedSprint = 1300.f;
 
 	/** Maximum speed while sliding */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveSpeedSlide = 1500.f;
+	float MoveSpeedSlide = 1800.f;
 
 	/** Applied friction while grounded */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
@@ -108,7 +108,7 @@ protected:
 
 	/** Applied friction while airborne */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveFrictionAir = 0.6f;
+	float MoveFrictionAir = 1.2f;
 
 	/** Applied acceleration while walking */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")

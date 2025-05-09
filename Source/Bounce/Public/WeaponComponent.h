@@ -81,6 +81,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float RecoilAmount = 0.5f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float KnockbackForce = 1000.0f;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	float Damage = 10.0f;
 
