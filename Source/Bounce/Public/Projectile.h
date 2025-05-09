@@ -22,15 +22,6 @@ class BOUNCE_API AProjectile : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Movement, meta=(AllowPrivateAccess="true"))
 	UProjectileMovementComponent* MovementComponent;
 
-protected:
-	// Damage dealt to hit actor on collision start
-	UPROPERTY(EditDefaultsOnly, Category="Projectile")
-	float Damage = 10.0f;
-
-	// Maximum number of bounces before the projectile is destroyed
-	UPROPERTY(EditDefaultsOnly, Category="Projectile")
-	int Bounces = 5;
-
 public:
 	AProjectile();
 
@@ -48,4 +39,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Projectile")
 	void SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan);
+
+protected:
+	// Damage dealt to hit actor on collision start
+	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	float Damage = 10.0f;
+
+	// Maximum number of bounces before the projectile is destroyed
+	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	int Bounces = 5;
 };

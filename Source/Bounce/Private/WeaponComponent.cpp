@@ -57,8 +57,10 @@ void UWeaponComponent::Fire()
     // Spawn the specified amount of projectiles at the muzzle
     for(uint8 i = 0; i < Amount; ++i)
     {
-        AProjectile* tempProjectile = World->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-Scatter, Scatter), ActorSpawnParams);
-        tempProjectile->SetProjectileValues(Damage, Bounces, Speed, Bounciness, GravityAmount, Lifespan);
+        AProjectile* shot = World->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-Scatter, Scatter), ActorSpawnParams);
+		if(shot == nullptr) continue;
+		
+        shot->SetProjectileValues(Damage, Bounces, Speed, Bounciness, GravityAmount, Lifespan);
     }
 
     CanShoot = false;
