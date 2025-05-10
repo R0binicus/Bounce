@@ -29,7 +29,11 @@ protected:
 	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
-	float SpawningAreaWidth = 1000.0f;
+	float SpawningAreaSizeX = 1000.0f;
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	float SpawningAreaSizeY = 1000.0f;
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	float SpawningAreaSizeZ = 0.0f;
 
 	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
 

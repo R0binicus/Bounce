@@ -88,8 +88,9 @@ void ATargetSpawner::NewTargetHandler(ATargetSpawner* Spawner)
 
 ABounceTarget* ATargetSpawner::SpawnTarget(FVector targetLocation, UWorld* world)
 {
-	targetLocation.X += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
-	targetLocation.Y += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
+	targetLocation.X += FMath::RandRange(-SpawningAreaSizeX, SpawningAreaSizeX);
+	targetLocation.Y += FMath::RandRange(-SpawningAreaSizeY, SpawningAreaSizeY);
+	targetLocation.Z += FMath::RandRange(-SpawningAreaSizeZ, SpawningAreaSizeZ);
 	FRotator targetRotation = FRotator(0.0f, FMath::RandRange(0.0f, 360.0f), 0.0f);
 
 	// Get random target type from weights, then spawn target
