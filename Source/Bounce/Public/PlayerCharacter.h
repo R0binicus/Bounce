@@ -63,8 +63,8 @@ class BOUNCE_API APlayerCharacter : public ACharacter
 public:
 	APlayerCharacter();
 
-	// UFUNCTION()
-	// void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	 UFUNCTION()
+	 void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 protected:
 	virtual void BeginPlay() override;
@@ -85,6 +85,9 @@ protected:
 
 	/** Called for releasing slide */
     void StopSliding(const FInputActionValue& Value);
+
+	/** Response to health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify*/
+	void OnHealthUpdate();
 
 	/** Maximum speed while walking */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
@@ -121,6 +124,14 @@ protected:
 	/** Applied acceleration while sliding */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
 	float MoveAccelerationSlide = 0.f;
+
+	/** The player's maximum health. This is the highest value of their health can be. This value is a value of the player's health, which starts at when spawned.*/
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float MaxHealth = 100.0f;
+
+	/** The player's current health. When reduced to 0, they are considered dead.*/
+	UPROPERTY()
+	float CurrentHealth;
 
 protected:
 	// APawn interface
@@ -173,4 +184,23 @@ public:
 	/** Getter for sliding acceleration */
 	UFUNCTION(BlueprintCallable, Category="Movement")
 	FORCEINLINE float GetAccelerationSlide() const { return MoveAccelerationSlide; }
+
+	// Health code copied from BounceCharacter
+
+	/** Getter for Max Health.*/
+	UFUNCTION(BlueprintPure, Category = "Health")
+	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
+
+	/** Getter for Current Health.*/
+	UFUNCTION(BlueprintPure, Category = "Health")
+	FORCEINLINE float GetCurrentHealth() const { return CurrentHealth; }
+
+	/** Setter for Current Health. Clamps the value between 0 and MaxHealth and calls OnHealthUpdate. Should only be called on the server.*/
+
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void SetCurrentHealth(float healthValue);
+
+	/** Event for taking damage. Overridden from APawn.*/
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	float TakeDamage(float DamageTaken, AActor* DamageCauser);
 };

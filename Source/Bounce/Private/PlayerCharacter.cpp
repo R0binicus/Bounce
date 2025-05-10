@@ -2,6 +2,7 @@
 
 
 #include "PlayerCharacter.h"
+#include "Projectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -48,6 +49,10 @@ void APlayerCharacter::BeginPlay()
 	CharacterMovement->MaxWalkSpeed = MoveSpeedWalk;
 	CharacterMovement->GroundFriction = MoveFrictionGround;
 	CharacterMovement->AirControl = MoveFrictionAir;
+
+	CurrentHealth = MaxHealth;
+
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &APlayerCharacter::OnHit);
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
@@ -153,4 +158,43 @@ void APlayerCharacter::StopSliding(const FInputActionValue& Value)
 
 	GetCapsuleComponent()->SetCapsuleSize(CapsuleRadius, CapsuleHeight);
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, CapsuleHeight-10.f));
+}
+
+void APlayerCharacter::OnHealthUpdate()
+{
+	FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, healthMessage);
+
+	if (CurrentHealth <= 0)
+	{
+		FString deathMessage = FString::Printf(TEXT("You have been killed."));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, deathMessage);
+		UEventDispatcher::GetEventManagerSingleton()->Event_GameOver.Broadcast();
+	}
+}
+
+void APlayerCharacter::SetCurrentHealth(float healthValue)
+{
+	CurrentHealth = FMath::Clamp(healthValue, 0.f, MaxHealth);
+	UE_LOG(LogClass, Log, TEXT("Current Health: %f"), CurrentHealth);
+	OnHealthUpdate();
+}
+
+float APlayerCharacter::TakeDamage(float DamageTaken, AActor* DamageCauser)
+{
+	float damageApplied = CurrentHealth - DamageTaken;
+	SetCurrentHealth(damageApplied);
+	return damageApplied;
+}
+
+void APlayerCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+	{
+		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
+		if (AProjectile* projectile = Cast<AProjectile>(OtherActor))
+		{
+			TakeDamage(projectile->GetProjectileDamage(), OtherActor);
+		}
+	}
 }
