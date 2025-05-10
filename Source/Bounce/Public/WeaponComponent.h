@@ -7,6 +7,7 @@
 #include "WeaponComponent.generated.h"
 
 class APlayerCharacter;
+class UWeaponPart;
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BOUNCE_API UWeaponComponent : public USkeletalMeshComponent
@@ -32,6 +33,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Weapon)
 	UAnimMontage* FireAnimation;
 
+	/** Weapon parts attached */
+	UPROPERTY(EditDefaultsOnly, Category=Weapon)
+	TArray<class UWeaponPart*> WeaponParts;
+
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
 	class UInputMappingContext* FireMappingContext;
@@ -51,6 +56,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	bool EquipWeapon(APlayerCharacter* TargetCharacter);
 
+	/** Add a new weapon part to the array */
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	bool AttachPart(UWeaponPart* TargetPart);
+
 	/** Make the weapon Fire a Projectile */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void Fire();
@@ -61,7 +70,13 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void ResetValues();
+	
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void RandomizeValues();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void CalculateValues();
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float Scatter = 4.0f;

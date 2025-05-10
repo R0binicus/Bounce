@@ -3,6 +3,7 @@
 
 #include "WeaponComponent.h"
 #include "PlayerCharacter.h"
+#include "WeaponPart.h"
 #include "Projectile.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/PlayerCameraManager.h"
@@ -111,6 +112,15 @@ bool UWeaponComponent::EquipWeapon(APlayerCharacter* TargetCharacter)
 	return true;
 }
 
+bool UWeaponComponent::AttachPart(UWeaponPart* TargetPart)
+{
+	if(TargetPart == nullptr || WeaponParts.Contains(TargetPart)) return false;
+
+	WeaponParts.Add(TargetPart);
+	CalculateValues();
+	return true;
+}
+
 void UWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if(Character == nullptr) return;
@@ -135,6 +145,21 @@ FRotator UWeaponComponent::RandDouble(float max, float min)
 	return FRotator(pitch, yaw, roll);
 }
 
+void UWeaponComponent::ResetValues()
+{
+	Scatter = 0.f;
+	Amount = 1;
+	FireRate = 1.f;
+	RecoilAmount = 0.f;
+	Damage = 1.f;
+	Bounces = 5;
+	Speed = 15000.f;
+	Bounciness = 1.f;
+	GravityEnabled = true;
+    GravityAmount = 1.f;
+	Lifespan = 50.f;
+}
+
 void UWeaponComponent::RandomizeValues()
 {
 	Scatter = FMath::FRandRange(0.0f, 10.0f);
@@ -148,4 +173,28 @@ void UWeaponComponent::RandomizeValues()
 	GravityEnabled = FMath::RandBool();
     GravityAmount = (GravityEnabled) ? FMath::FRandRange(0.0f, 5.0f) : 0;
 	Lifespan = FMath::FRandRange(0.5f, 25.0f);
+}
+
+void UWeaponComponent::CalculateValues()
+{
+	ResetValues();
+
+	for(int i = 0; i < WeaponParts.Num(); i++) {
+		if(WeaponParts[i] == nullptr) {
+			WeaponParts.RemoveAt(i);
+			i--;
+			continue;
+		}
+
+		Scatter += WeaponParts[i]->Scatter;
+		Amount += WeaponParts[i]->Amount;
+		FireRate += WeaponParts[i]->FireRate;
+		RecoilAmount += WeaponParts[i]->RecoilAmount;
+		Damage += WeaponParts[i]->Damage;
+		Bounces += WeaponParts[i]->Bounces;
+		Speed += WeaponParts[i]->Speed;
+		Bounciness += WeaponParts[i]->Bounciness;
+    	GravityAmount += WeaponParts[i]->GravityAmount;
+		Lifespan += WeaponParts[i]->Lifespan;
+	}
 }

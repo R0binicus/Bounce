@@ -19,10 +19,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Part, meta=(AllowPrivateAccess="true"))
 	FVector PartOffset;
 
-	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly, Category=Projectile)
-	TSubclassOf<class AProjectile> ProjectileClass;
-
 	/** Sets default values for this component's properties */
 	UWeaponPart();
 
@@ -30,53 +26,52 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Part")
 	bool EquipPart(UWeaponComponent* TargetWeapon);
 
-protected:
-	/** Ends gameplay for this component */
-	UFUNCTION()
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void RandomizeValues();
-
 	/** Identifiable name of the part */
 	UPROPERTY(EditDefaultsOnly, Category="Part", meta=(AllowPrivateAccess="true"))
 	FString PartName = "UnknownWeaponPart";
 	
+	/** These values are all ADDED to the base WeaponComponent stats */
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float Scatter = 4.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	int Amount = 2;
+	float Scatter = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float FireRate = 0.5f;
+	int Amount = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float RecoilAmount = 0.5f;
+	float FireRate = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float KnockbackForce = 1000.0f;
+	float RecoilAmount = 0.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float KnockbackForce = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float Damage = 10.0f;
+	float Damage = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	int Bounces = 5;
+	int Bounces = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float Speed = 3000.0f;
+	float Speed = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float Bounciness = 1.0f;
+	float Bounciness = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	bool GravityEnabled = false;
+	float GravityAmount = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float GravityAmount = 0.0f;
+	float Lifespan = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float Lifespan = 10.0f;
+
+protected:
+	/** Ends gameplay for this component */
+	UFUNCTION()
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void RandomizeValues();
 
 private:
 	/** The WeaponComponent this part is attached to */

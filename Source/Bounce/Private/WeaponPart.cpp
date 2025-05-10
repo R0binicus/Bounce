@@ -14,11 +14,11 @@ UWeaponPart::UWeaponPart()
 
 bool UWeaponPart::EquipPart(UWeaponComponent* TargetWeapon)
 {
-	if(TargetWeapon == nullptr || TargetWeapon->GetAttachChildren().Contains(this)) false;
+	if(!Weapon->AttachPart(this)) return false;
     Weapon = TargetWeapon;
 
-	// FDetachmentTransformRules DetachmentRules(EDetachmentRule::KeepRelative, true);
-	// DetachFromComponent(DetachmentRules);
+	FDetachmentTransformRules DetachmentRules(EDetachmentRule::KeepRelative, true);
+	DetachFromComponent(DetachmentRules);
 
 	// Attach the weapon to the Player Character
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
@@ -54,7 +54,6 @@ void UWeaponPart::RandomizeValues()
 	Bounces = (int)FMath::RandRange(1, 10);
 	Speed = FMath::FRandRange(100.0f, 10000.0f);
 	Bounciness = FMath::FRandRange(0.1f, 3.0f);
-	GravityEnabled = FMath::RandBool();
-    GravityAmount = (GravityEnabled) ? FMath::FRandRange(0.0f, 5.0f) : 0;
+    GravityAmount = FMath::FRandRange(0.0f, 5.0f);
 	Lifespan = FMath::FRandRange(0.5f, 25.0f);
 }
