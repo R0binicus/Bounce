@@ -2,6 +2,7 @@
 
 #include "TargetSpawner.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/BoxComponent.h"
 #include "BounceTarget.h"
 #include "PlayerCharacter.h"
 #include "EventDispatcher.h"
@@ -11,6 +12,8 @@ ATargetSpawner::ATargetSpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("SpawnVolume Box"));
+	BoxComp->SetBoxExtent(FVector(1000, 1000, 0), false);
 }
 
 // Called when the game starts or when spawned
@@ -22,7 +25,12 @@ void ATargetSpawner::BeginPlay()
 	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.AddUniqueDynamic(this, &ATargetSpawner::NewTargetHandler);
 	UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.AddUniqueDynamic(this, &ATargetSpawner::NewSpawnWeights);
 
-	// Base spawn weights (100% the 1 hit target)
+	FVector boxExtents = BoxComp->GetUnscaledBoxExtent();
+
+	SpawningAreaSizeX = boxExtents.X;
+	SpawningAreaSizeY = boxExtents.Y;
+	SpawningAreaSizeZ = boxExtents.Z;
+
 	NewSpawnWeights(1, 0);
 }
 

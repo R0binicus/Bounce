@@ -28,11 +28,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;
 
-	UPROPERTY(EditAnywhere, Category = "Spawn")
 	float SpawningAreaSizeX = 1000.0f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
 	float SpawningAreaSizeY = 1000.0f;
-	UPROPERTY(EditAnywhere, Category = "Spawn")
 	float SpawningAreaSizeZ = 0.0f;
 
 	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
@@ -45,6 +42,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	/** Box component */
+	UPROPERTY(VisibleDefaultsOnly, Category = Spawn)
+	UBoxComponent* BoxComp;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<TSubclassOf<class ABounceTarget>> TargetBlueprints;
