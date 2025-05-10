@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "BounceTarget.h"
 #include "TargetSpawner.generated.h"
 
 UCLASS()
@@ -20,7 +21,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void SpawnTargetHandler(ATargetSpawner* Spawner);
+	void NewTargetHandler(ATargetSpawner* Spawner);
+
+	ABounceTarget* SpawnTarget(FVector targetLocation, UWorld* world);
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;

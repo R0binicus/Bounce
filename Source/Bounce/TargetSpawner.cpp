@@ -19,7 +19,7 @@ void ATargetSpawner::BeginPlay()
 	Super::BeginPlay();
 
 	// Bind events
-	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.AddUniqueDynamic(this, &ATargetSpawner::SpawnTargetHandler);
+	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.AddUniqueDynamic(this, &ATargetSpawner::NewTargetHandler);
 	UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.AddUniqueDynamic(this, &ATargetSpawner::NewSpawnWeights);
 
 	// Base spawn weights (100% the 1 hit target)
@@ -56,7 +56,7 @@ void ATargetSpawner::Tick(float DeltaTime)
 	}*/
 }
 
-void ATargetSpawner::SpawnTargetHandler(ATargetSpawner* Spawner)
+void ATargetSpawner::NewTargetHandler(ATargetSpawner* Spawner)
 {
 	if (Spawner != this) return;
 
@@ -66,16 +66,42 @@ void ATargetSpawner::SpawnTargetHandler(ATargetSpawner* Spawner)
 
 	// Set random location variation
 	FVector targetLocation = GetActorLocation();
+
+	ABounceTarget* target = nullptr;
+
+	// Attempt to spawn target 10 times before giving up to prevent crash
+	int32 i = 0;
+	while (i < 10)
+	{
+		target = SpawnTarget(targetLocation, world);
+		if (target != nullptr)
+		{
+			return;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	UE_LOG(LogClass, Error, TEXT("Target failed to spawn: %i"), i);
+}
+
+ABounceTarget* ATargetSpawner::SpawnTarget(FVector targetLocation, UWorld* world)
+{
 	targetLocation.X += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
 	targetLocation.Y += FMath::RandRange(-SpawningAreaWidth, SpawningAreaWidth);
 	FRotator targetRotation = FRotator(0.0f, FMath::RandRange(0.0f, 360.0f), 0.0f);
 
-
 	// Get random target type from weights, then spawn target
 	int randomIndex = GetRandomIndexFromArray(WaveSpawnWeights);
 
-	if (randomIndex == -1 || WaveSpawnWeights[randomIndex] == nullptr) return;
-	world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, targetRotation);
+	FActorSpawnParameters ActorSpawnParameters;
+	ActorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
+
+	if (randomIndex == -1 || WaveSpawnWeights[randomIndex] == nullptr) return nullptr;
+	ABounceTarget* target = world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, targetRotation, ActorSpawnParameters);
+
+	return target;
 }
 
 int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array)
