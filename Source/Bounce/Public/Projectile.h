@@ -1,0 +1,51 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Projectile.generated.h"
+
+class USphereComponent;
+class UProjectileMovementComponent;
+
+UCLASS(config=Game)
+class BOUNCE_API AProjectile : public AActor
+{
+	GENERATED_BODY()
+
+	/** Sphere collision component */
+	UPROPERTY(VisibleDefaultsOnly, Category=Projectile)
+	USphereComponent* CollisionComponent;
+
+	/** Projectile movement component */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Movement, meta=(AllowPrivateAccess="true"))
+	UProjectileMovementComponent* MovementComponent;
+
+public:
+	AProjectile();
+
+	/** called when projectile hits something */
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	/** Returns CollisionComp subobject **/
+	USphereComponent* GetCollisionComp() const { return CollisionComponent; }
+	/** Returns ProjectileMovement subobject **/
+	UProjectileMovementComponent* GetProjectileMovement() const { return MovementComponent; }
+
+	UFUNCTION(BlueprintCallable, Category="Projectile")
+	float GetProjectileDamage();
+
+	UFUNCTION(BlueprintCallable, Category="Projectile")
+	void SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan);
+
+protected:
+	// Damage dealt to hit actor on collision start
+	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	float Damage = 10.0f;
+
+	// Maximum number of bounces before the projectile is destroyed
+	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	int Bounces = 5;
+};
