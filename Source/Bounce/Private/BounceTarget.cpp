@@ -4,7 +4,7 @@
 #include "DrawDebugHelpers.h"
 #include "Components/BoxComponent.h"
 #include "EventDispatcher.h"
-#include "BounceProjectile.h"
+#include "Projectile.h"
 
 // Sets default values
 ABounceTarget::ABounceTarget()
@@ -30,7 +30,7 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
-		if (ABounceProjectile* projectile = Cast<ABounceProjectile>(OtherActor))
+		if (AProjectile* projectile = Cast<AProjectile>(OtherActor))
 		{
 			CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
 			if (CurrentHealth > 0) return;

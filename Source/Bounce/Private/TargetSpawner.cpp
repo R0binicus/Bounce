@@ -3,7 +3,7 @@
 #include "TargetSpawner.h"
 #include "Kismet/GameplayStatics.h"
 #include "BounceTarget.h"
-#include "BounceCharacter.h"
+#include "PlayerCharacter.h"
 #include "EventDispatcher.h"
 
 // Sets default values
