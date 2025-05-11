@@ -18,7 +18,7 @@ public:
 	ABounceTarget();
 
 	/** Box collision component */
-	UPROPERTY(VisibleDefaultsOnly, Category = Target)
+	UPROPERTY(BlueprintReadWrite, Category = Target)
 	UBoxComponent* CollisionComp;
 
 	UFUNCTION()
