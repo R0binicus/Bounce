@@ -74,7 +74,7 @@ void UWeaponComponent::Fire()
     // PlayerController->AddPitchInput(-RecoilAmount);
 	Character->GetMovementComponent()->AddRadialImpulse(KnockbackLocation, 1000.f, KnockbackForce, ERadialImpulseFalloff::RIF_Linear, true);
     RandomizeValues();
-	UEventDispatcher::GetEventManagerSingleton()->Event_RefireTime.Broadcast(FireRate);
+	UEventDispatcher::GetEventManagerSingleton()->Event_RefireTime.Broadcast(FireTimer);
 	
 	// Play the firing sound
 	UGameplayStatics::PlaySoundAtLocation(this, FireSound, Character->GetActorLocation());
