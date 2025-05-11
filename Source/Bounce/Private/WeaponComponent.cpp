@@ -11,6 +11,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Animation/AnimInstance.h"
+#include "EventDispatcher.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 
@@ -73,6 +74,7 @@ void UWeaponComponent::Fire()
     // PlayerController->AddPitchInput(-RecoilAmount);
 	Character->GetMovementComponent()->AddRadialImpulse(KnockbackLocation, 1000.f, KnockbackForce, ERadialImpulseFalloff::RIF_Linear, true);
     RandomizeValues();
+	UEventDispatcher::GetEventManagerSingleton()->Event_RefireTime.Broadcast(FireRate);
 	
 	// Play the firing sound
 	UGameplayStatics::PlaySoundAtLocation(this, FireSound, Character->GetActorLocation());
