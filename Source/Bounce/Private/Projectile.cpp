@@ -37,6 +37,12 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 {
 	Bounces--;
 	if(Bounces <= 0) Destroy();
+
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+	{
+		if (OtherComp->GetCollisionProfileName() != "Target") return;
+		Destroy();
+	}
 }
 
 float AProjectile::GetProjectileDamage()
