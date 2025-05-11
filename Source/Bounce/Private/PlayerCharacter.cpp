@@ -107,6 +107,7 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 	FVector2D MovementVector = Value.Get<FVector2D>();
 	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 	AddMovementInput(GetActorRightVector(), MovementVector.X);
+	CharacterMovement->ApplyImpartedMovementBaseVelocity();
 }
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
@@ -160,11 +161,12 @@ void APlayerCharacter::Slide(const FInputActionValue& Value)
 	CharacterMovement->MaxAcceleration = MoveAccelerationSlide;
 	CharacterMovement->MaxWalkSpeed = MoveSpeedSlide;
 	CharacterMovement->GroundFriction = MoveFrictionSlide;
-	CharacterMovement->BrakingDecelerationWalking = 128.f;
-	CharacterMovement->AddImpulse(GetVelocity()*0.3f, true);
-
+	CharacterMovement->BrakingDecelerationWalking = 1.f;
 	GetCapsuleComponent()->SetCapsuleSize(CapsuleRadius, CapsuleHalfed);
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, CapsuleHalfed-10.f));
+	if(GetVelocity().Length() > MoveSpeedSlide) return;
+
+	CharacterMovement->AddImpulse(GetVelocity()*0.5f, true);
 }
 
 void APlayerCharacter::StopSliding(const FInputActionValue& Value)

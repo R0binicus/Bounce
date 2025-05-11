@@ -68,7 +68,7 @@ void UWeaponComponent::Fire()
     const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
     
     // Establish spawn point for projectiles based on camera rotation
-	const FVector SpawnOffset = SpawnRotation.RotateVector(FVector(300.f, 0.f, 0.f));
+	const FVector SpawnOffset = SpawnRotation.RotateVector(FVector(150.f, 0.f, 0.f));
     const FVector SpawnLocation = GetOwner()->GetActorLocation()+SpawnOffset;
 	const FVector KnockbackLocation = SpawnLocation+SpawnOffset;
 
@@ -77,6 +77,7 @@ void UWeaponComponent::Fire()
     ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
     // Spawn the specified amount of projectiles at the muzzle
+	int shots = 0;
     for(uint8 i = 0; i < Amount; ++i)
     {
         AProjectile* shot = World->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-Scatter, Scatter), ActorSpawnParams);
@@ -84,7 +85,9 @@ void UWeaponComponent::Fire()
 		
 		float momentum = Character->GetVelocity().GetMax()+Speed;
         shot->SetProjectileValues(Damage, Bounces, momentum, Bounciness, GravityAmount, Lifespan, Scale);
+		shots++;
     }
+	if(shots == 0) return;
 
     CanShoot = false;
     FireTimer = FireRate;

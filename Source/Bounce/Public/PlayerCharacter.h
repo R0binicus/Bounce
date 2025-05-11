@@ -102,7 +102,7 @@ protected:
 
 	/** Maximum speed while sliding */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveSpeedSlide = 1800.f;
+	float MoveSpeedSlide = 2300.f;
 
 	/** Applied friction while grounded */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
@@ -110,7 +110,7 @@ protected:
 
 	/** Applied friction while sliding */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveFrictionSlide = 0.1f;
+	float MoveFrictionSlide = 1.f;
 
 	/** Applied friction while airborne */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
@@ -126,7 +126,7 @@ protected:
 
 	/** Applied acceleration while sliding */
 	UPROPERTY(EditDefaultsOnly, Category="Movement")
-	float MoveAccelerationSlide = 0.f;
+	float MoveAccelerationSlide = 32.f;
 
 	/** The player's maximum health. This is the highest value of their health can be. This value is a value of the player's health, which starts at when spawned.*/
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
