@@ -72,6 +72,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
@@ -148,6 +149,9 @@ protected:
 
 	UPROPERTY()
 	bool Sliding;
+
+	UPROPERTY()
+	bool Jumped;
 
 protected:
 	// APawn interface

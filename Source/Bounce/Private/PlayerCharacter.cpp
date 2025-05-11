@@ -168,9 +168,12 @@ void APlayerCharacter::Slide(const FInputActionValue& Value)
 	CharacterMovement->BrakingDecelerationWalking = 1.f;
 	GetCapsuleComponent()->SetCapsuleSize(CapsuleRadius, CapsuleHalfed);
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, CapsuleHalfed-10.f));
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	FRotator rotation = FirstPersonCameraComponent->GetComponentRotation();
+	FVector velocity = rotation.RotateVector(FVector(GetVelocity().Length()*0.5, 0.f, -1.f));
 	if(GetVelocity().Length() > MoveSpeedSlide) return;
 
-	CharacterMovement->AddImpulse(GetVelocity()*0.5f, true);
+	CharacterMovement->AddImpulse(velocity, true);
 }
 
 void APlayerCharacter::StopSliding(const FInputActionValue& Value)
