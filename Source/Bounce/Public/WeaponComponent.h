@@ -15,6 +15,7 @@ class BOUNCE_API UWeaponComponent : public USkeletalMeshComponent
 	GENERATED_BODY()
 
 public:
+	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	/** Weapon location offset */
@@ -119,6 +120,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	float Lifespan = 10.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	FVector Scale = FVector(1.f, 1.f, 1.f);
 
 private:
 	/** The Character holding this weapon */

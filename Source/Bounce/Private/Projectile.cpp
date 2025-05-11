@@ -3,14 +3,14 @@
 
 #include "Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
 {
  	// Use a sphere as a simple collision representation
-	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->InitSphereRadius(1.0f);
+	CollisionComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	CollisionComponent->SetRelativeScale3D(FVector(Scale));
 	CollisionComponent->BodyInstance.SetCollisionProfileName("Projectile");
 	CollisionComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
@@ -36,7 +36,10 @@ AProjectile::AProjectile()
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	Bounces--;
-	if(Bounces <= 0) Destroy();
+	//Radius -= 0.01f;
+	//CollisionComponent->SetSphereRadius(Radius);
+	//CollisionComponent->SetRelativeScale3D(FVector(Radius, Radius, Radius));
+	if(Bounces <= 0 || Scale.IsNearlyZero(0.1f)) Destroy();
 }
 
 float AProjectile::GetProjectileDamage()
@@ -44,13 +47,16 @@ float AProjectile::GetProjectileDamage()
 	return Damage;
 }
 
-void AProjectile::SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan)
+void AProjectile::SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan, FVector _scale)
 {
 	Damage = _damage;
 	Bounces = _bounces;
+	Scale = _scale;
+
 	MovementComponent->InitialSpeed = _speed;
 	MovementComponent->MaxSpeed = _speed;
 	MovementComponent->Bounciness = _bounciness;
 	MovementComponent->ProjectileGravityScale = _gravity;
 	SetLifeSpan(_lifespan);
+	CollisionComponent->SetRelativeScale3D(Scale);
 }

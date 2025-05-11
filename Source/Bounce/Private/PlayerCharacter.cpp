@@ -118,10 +118,23 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 	AddControllerPitchInput(LookAxisVector.Y);
 }
 
+void APlayerCharacter::Walk()
+{
+	if(Controller == nullptr) return;
+
+	Sprinting = false;
+	Sliding = false;
+	CharacterMovement->MaxAcceleration = MoveAccelerationWalk;
+	CharacterMovement->MaxWalkSpeed = MoveSpeedWalk;
+	CharacterMovement->GroundFriction = MoveFrictionGround;
+	CharacterMovement->BrakingDecelerationWalking = 2048.f;
+}
+
 void APlayerCharacter::Sprint(const FInputActionValue& Value)
 {
 	if(Controller == nullptr) return;
 
+	Sprinting = true;
 	CharacterMovement->MaxAcceleration = MoveAccelerationSprint;
 	CharacterMovement->MaxWalkSpeed = MoveSpeedSprint;
 }
@@ -130,14 +143,20 @@ void APlayerCharacter::StopSprinting(const FInputActionValue& Value)
 {
 	if(Controller == nullptr) return;
 
-	CharacterMovement->MaxAcceleration = MoveAccelerationWalk;
-	CharacterMovement->MaxWalkSpeed = MoveSpeedWalk;
+	Sprinting = false;
+
+	if(Sliding) {
+		Slide(true);
+	} else {
+		Walk();
+	}
 }
 
 void APlayerCharacter::Slide(const FInputActionValue& Value)
 {
 	if(Controller == nullptr) return;
 
+	Sliding = true;
 	CharacterMovement->MaxAcceleration = MoveAccelerationSlide;
 	CharacterMovement->MaxWalkSpeed = MoveSpeedSlide;
 	CharacterMovement->GroundFriction = MoveFrictionSlide;
@@ -151,13 +170,18 @@ void APlayerCharacter::Slide(const FInputActionValue& Value)
 void APlayerCharacter::StopSliding(const FInputActionValue& Value)
 {
 	if(Controller == nullptr) return;
-	CharacterMovement->MaxAcceleration = MoveAccelerationWalk;
-	CharacterMovement->MaxWalkSpeed = MoveSpeedWalk;
-	CharacterMovement->GroundFriction = MoveFrictionGround;
-	CharacterMovement->BrakingDecelerationWalking = 2048.f;
 
+	Sliding = false;
 	GetCapsuleComponent()->SetCapsuleSize(CapsuleRadius, CapsuleHeight);
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, CapsuleHeight-10.f));
+
+	if(Sprinting) {
+		Sprint(true);
+	} else {
+		Walk();
+	}
+
+	
 }
 
 void APlayerCharacter::OnHealthUpdate()

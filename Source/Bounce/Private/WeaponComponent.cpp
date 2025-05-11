@@ -23,6 +23,24 @@ UWeaponComponent::UWeaponComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+void UWeaponComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	for(int i = 0; i < WeaponParts.Num(); i++) {
+		if(WeaponParts[i] == nullptr) {
+			WeaponParts.RemoveAt(i);
+			i--;
+			continue;
+		}
+
+		// Attach the weapon to the Player Character
+		FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative, true);
+		WeaponParts[i]->AttachToComponent(this, AttachmentRules, FName(WeaponParts[i]->PartName));
+		//SetRelativeLocation(PartOffset);
+	}
+}
+
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -49,10 +67,10 @@ void UWeaponComponent::Fire()
     APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
     const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
     
-    // MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-	const FVector OwnerLocation = GetOwner()->GetActorLocation();
-    const FVector SpawnLocation = OwnerLocation+SpawnRotation.RotateVector(MuzzleOffset);
-	const FVector KnockbackLocation = OwnerLocation+SpawnRotation.RotateVector(FVector(100.f, 0.f, 0.f));
+    // Establish spawn point for projectiles based on camera rotation
+	const FVector SpawnOffset = SpawnRotation.RotateVector(FVector(300.f, 0.f, 0.f));
+    const FVector SpawnLocation = GetOwner()->GetActorLocation()+SpawnOffset;
+	const FVector KnockbackLocation = SpawnLocation+SpawnOffset;
 
     // Set Spawn Collision Handling Override
     FActorSpawnParameters ActorSpawnParams;
@@ -65,7 +83,7 @@ void UWeaponComponent::Fire()
 		if(shot == nullptr) continue;
 		
 		float momentum = Character->GetVelocity().GetMax()+Speed;
-        shot->SetProjectileValues(Damage, Bounces, momentum, Bounciness, GravityAmount, Lifespan);
+        shot->SetProjectileValues(Damage, Bounces, momentum, Bounciness, GravityAmount, Lifespan, Scale);
     }
 
     CanShoot = false;
@@ -73,7 +91,7 @@ void UWeaponComponent::Fire()
 
     // PlayerController->AddPitchInput(-RecoilAmount);
 	Character->GetMovementComponent()->AddRadialImpulse(KnockbackLocation, 1000.f, KnockbackForce, ERadialImpulseFalloff::RIF_Linear, true);
-    RandomizeValues();
+    //RandomizeValues();
 	UEventDispatcher::GetEventManagerSingleton()->Event_RefireTime.Broadcast(FireTimer);
 	
 	// Play the firing sound
@@ -162,21 +180,6 @@ void UWeaponComponent::ResetValues()
 	Lifespan = 50.f;
 }
 
-void UWeaponComponent::RandomizeValues()
-{
-	Scatter = FMath::FRandRange(0.0f, 10.0f);
-	Amount = (int)FMath::RandRange(1, 10);
-	FireRate = FMath::FRandRange(0.0f, 3.0f);
-	RecoilAmount = FMath::FRandRange(0.0f, 7.0f);
-	Damage = FMath::FRandRange(1.0f, 50.0f);
-	Bounces = (int)FMath::RandRange(1, 10);
-	Speed = FMath::FRandRange(100.0f, 10000.0f);
-	Bounciness = FMath::FRandRange(0.1f, 3.0f);
-	GravityEnabled = FMath::RandBool();
-    GravityAmount = (GravityEnabled) ? FMath::FRandRange(0.0f, 5.0f) : 0;
-	Lifespan = FMath::FRandRange(0.5f, 25.0f);
-}
-
 void UWeaponComponent::CalculateValues()
 {
 	ResetValues();
@@ -198,5 +201,21 @@ void UWeaponComponent::CalculateValues()
 		Bounciness += WeaponParts[i]->Bounciness;
     	GravityAmount += WeaponParts[i]->GravityAmount;
 		Lifespan += WeaponParts[i]->Lifespan;
+		//Add Scale
 	}
+}
+
+void UWeaponComponent::RandomizeValues()
+{
+	Scatter = FMath::FRandRange(0.0f, 10.0f);
+	Amount = (int)FMath::RandRange(1, 10);
+	FireRate = FMath::FRandRange(0.0f, 3.0f);
+	RecoilAmount = FMath::FRandRange(0.0f, 7.0f);
+	Damage = FMath::FRandRange(1.0f, 50.0f);
+	Bounces = (int)FMath::RandRange(1, 10);
+	Speed = FMath::FRandRange(100.0f, 10000.0f);
+	Bounciness = FMath::FRandRange(0.1f, 3.0f);
+	GravityEnabled = FMath::RandBool();
+    GravityAmount = (GravityEnabled) ? FMath::FRandRange(0.0f, 5.0f) : 0;
+	Lifespan = FMath::FRandRange(0.5f, 25.0f);
 }
