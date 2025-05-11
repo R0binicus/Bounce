@@ -23,6 +23,7 @@ APlayerCharacter::APlayerCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(CapsuleRadius, CapsuleHeight);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 		
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));

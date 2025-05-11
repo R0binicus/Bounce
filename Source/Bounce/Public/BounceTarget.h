@@ -18,8 +18,11 @@ public:
 	ABounceTarget();
 
 	/** Box collision component */
-	UPROPERTY(VisibleDefaultsOnly, Category = Target)
+	UPROPERTY(BlueprintReadWrite, Category = Target)
 	UBoxComponent* CollisionComp;
+
+	UPROPERTY(BlueprintReadWrite, Category = Target)
+	bool IsDead = false;
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

@@ -35,6 +35,7 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 			CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
 			if (CurrentHealth > 0) return;
 			//Destroy();
+			IsDead = true;
 			SetLifeSpan(CorpseTime);
 			CollisionComp->SetCollisionProfileName("DeadTarget");
 			CollisionComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore); // Or Overlap, Ignore etc.
