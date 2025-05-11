@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Projectile")
 	float GetProjectileDamage();
 
+	UFUNCTION(BlueprintCallable, Category = "Projectile")
+	FProjectileValues GetProjectileValues();
+
 	UFUNCTION(BlueprintCallable, Category="Projectile")
 	void SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan, FVector _scale);
 
