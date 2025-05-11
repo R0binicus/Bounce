@@ -5,13 +5,14 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
 {
  	// Use a sphere as a simple collision representation
-	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->InitSphereRadius(1.0f);
+	CollisionComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	CollisionComponent->SetRelativeScale3D(FVector(Scale));
 	CollisionComponent->BodyInstance.SetCollisionProfileName("Projectile");
 	CollisionComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
@@ -62,13 +63,16 @@ float AProjectile::GetProjectileDamage()
 	return Damage;
 }
 
-void AProjectile::SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan)
+void AProjectile::SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan, FVector _scale)
 {
 	Damage = _damage;
 	Bounces = _bounces;
+	Scale = _scale;
+
 	MovementComponent->InitialSpeed = _speed;
 	MovementComponent->MaxSpeed = _speed;
 	MovementComponent->Bounciness = _bounciness;
 	MovementComponent->ProjectileGravityScale = _gravity;
 	SetLifeSpan(_lifespan);
+	CollisionComponent->SetRelativeScale3D(Scale);
 }

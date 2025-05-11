@@ -78,6 +78,9 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	/** Called for default movement */
+    void Walk();
+
 	/** Called for holding sprint */
     void Sprint(const FInputActionValue& Value);
 
@@ -139,6 +142,12 @@ protected:
 	/** The player's current health. When reduced to 0, they are considered dead.*/
 	UPROPERTY()
 	float CurrentHealth;
+
+	UPROPERTY()
+	bool Sprinting;
+
+	UPROPERTY()
+	bool Sliding;
 
 protected:
 	// APawn interface

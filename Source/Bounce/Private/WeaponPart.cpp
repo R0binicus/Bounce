@@ -23,8 +23,7 @@ bool UWeaponPart::EquipPart(UWeaponComponent* TargetWeapon)
 	// Attach the weapon to the Player Character
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
 	AttachToComponent(Weapon, AttachmentRules, FName(PartName));
-	SetRelativeLocation(PartOffset);
-	SetVisibility(true);
+	//SetRelativeLocation(PartOffset);
 
 	return true;
 }
