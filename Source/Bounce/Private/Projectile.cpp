@@ -5,6 +5,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
+#include "ProjectileValues.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -61,6 +62,11 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 float AProjectile::GetProjectileDamage()
 {
 	return Damage;
+}
+
+FProjectileValues AProjectile::GetProjectileValues()
+{
+	return FProjectileValues(Damage, Bounces, MovementComponent->MaxSpeed, MovementComponent->Bounciness, MovementComponent->ProjectileGravityScale, InitialLifeSpan, Scale);
 }
 
 void AProjectile::SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan, FVector _scale)

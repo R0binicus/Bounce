@@ -126,7 +126,7 @@ int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABoun
 
 // Set WaveSpawnWeights to be empty, then add the target types
 // back into the array based on the input weights
-void ATargetSpawner::NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int targes6)
+void ATargetSpawner::NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int target6)
 {
 	WaveSpawnWeights.SetNum(0);
 
@@ -154,6 +154,33 @@ void ATargetSpawner::NewSpawnWeights(int target1, int target2, int target3, int 
 		for (uint8 i = 0; i < Len; ++i)
 		{
 			WaveSpawnWeights.Add(TargetBlueprints[2]);
+		}
+	}
+
+	if (TargetBlueprints.IsValidIndex(3) && TargetBlueprints[3] != nullptr)
+	{
+		uint8 Len = target4;
+		for (uint8 i = 0; i < Len; ++i)
+		{
+			WaveSpawnWeights.Add(TargetBlueprints[3]);
+		}
+	}
+
+	if (TargetBlueprints.IsValidIndex(4) && TargetBlueprints[4] != nullptr)
+	{
+		uint8 Len = target5;
+		for (uint8 i = 0; i < Len; ++i)
+		{
+			WaveSpawnWeights.Add(TargetBlueprints[4]);
+		}
+	}
+
+	if (TargetBlueprints.IsValidIndex(5) && TargetBlueprints[5] != nullptr)
+	{
+		uint8 Len = target6;
+		for (uint8 i = 0; i < Len; ++i)
+		{
+			WaveSpawnWeights.Add(TargetBlueprints[5]);
 		}
 	}
 }
