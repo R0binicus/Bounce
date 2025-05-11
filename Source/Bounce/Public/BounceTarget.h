@@ -34,4 +34,7 @@ protected:
 
 	UPROPERTY()
 	float CurrentHealth;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	float CorpseTime = 5.f;
 };

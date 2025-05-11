@@ -3,6 +3,8 @@
 
 #include "Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -35,11 +37,25 @@ AProjectile::AProjectile()
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (BounceSound == nullptr) return;
 	Bounces--;
-	//Radius -= 0.01f;
-	//CollisionComponent->SetSphereRadius(Radius);
-	//CollisionComponent->SetRelativeScale3D(FVector(Radius, Radius, Radius));
-	if(Bounces <= 0 || Scale.IsNearlyZero(0.1f)) Destroy();
+	if (Bounces <= 0)
+	{
+		Destroy();
+		return;
+	}
+
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+	{
+		if (OtherComp->GetCollisionProfileName() == "Target")
+		{
+			Destroy();
+			return;
+		}
+	}
+
+	// Play the firing sound
+	UGameplayStatics::PlaySoundAtLocation(this, BounceSound, GetActorLocation());
 }
 
 float AProjectile::GetProjectileDamage()

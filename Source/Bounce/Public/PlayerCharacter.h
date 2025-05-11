@@ -55,6 +55,10 @@ class BOUNCE_API APlayerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
 	class UInputAction* SprintAction;
 
+	/** Pause Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
+	UInputAction* PauseAction;
+
 	/** Sprint Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
 	class UInputAction* SlideAction;
@@ -88,6 +92,9 @@ protected:
 
 	/** Called for releasing slide */
     void StopSliding(const FInputActionValue& Value);
+
+	/** Called for pause */
+	void Pause(const FInputActionValue& Value);
 
 	/** Response to health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify*/
 	void OnHealthUpdate();

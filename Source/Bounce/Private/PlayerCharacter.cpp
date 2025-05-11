@@ -93,6 +93,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		// Sliding
 		EnhancedInputComponent->BindAction(SlideAction, ETriggerEvent::Started, this, &APlayerCharacter::Slide);
 		EnhancedInputComponent->BindAction(SlideAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopSliding);
+
+		// Paused
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &APlayerCharacter::Pause);
 	}
 	else
 	{
@@ -184,6 +187,12 @@ void APlayerCharacter::StopSliding(const FInputActionValue& Value)
 	}
 
 	
+}
+
+void APlayerCharacter::Pause(const FInputActionValue& Value)
+{
+	if (Controller == nullptr) return;
+	UEventDispatcher::GetEventManagerSingleton()->Event_Pause.Broadcast();
 }
 
 void APlayerCharacter::OnHealthUpdate()
