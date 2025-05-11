@@ -40,6 +40,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Projectile")
 	void SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan);
 
+	/** Sound to play each time we bounce */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	USoundBase* BounceSound;
+
 protected:
 	// Damage dealt to hit actor on collision start
 	UPROPERTY(EditDefaultsOnly, Category="Projectile")
