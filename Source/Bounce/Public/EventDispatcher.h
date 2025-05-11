@@ -17,6 +17,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_WaveWeights, int, Targets1, 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_SpawnTarget, ATargetSpawner*, Spawner);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_AddScore, int, Score);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_GameOver);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_HealthChange, float, MaxHealth, float, CurrentHealth);
 
 UCLASS()
 class BOUNCE_API UEventDispatcher : public UBlueprintFunctionLibrary
@@ -58,6 +59,9 @@ public: // These are the event multi dispatchers
 
 	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
 	FEvent_GameOver Event_GameOver;
+
+	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	FEvent_HealthChange Event_HealthChange;
 
 public:
 	UFUNCTION(BlueprintPure, Category = "Create Event Dispatcher")

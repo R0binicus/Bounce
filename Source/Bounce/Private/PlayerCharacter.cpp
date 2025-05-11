@@ -162,13 +162,10 @@ void APlayerCharacter::StopSliding(const FInputActionValue& Value)
 
 void APlayerCharacter::OnHealthUpdate()
 {
-	FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, healthMessage);
+	UEventDispatcher::GetEventManagerSingleton()->Event_HealthChange.Broadcast(MaxHealth, CurrentHealth);
 
 	if (CurrentHealth <= 0)
 	{
-		FString deathMessage = FString::Printf(TEXT("You have been killed."));
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, deathMessage);
 		UEventDispatcher::GetEventManagerSingleton()->Event_GameOver.Broadcast();
 	}
 }
@@ -176,7 +173,6 @@ void APlayerCharacter::OnHealthUpdate()
 void APlayerCharacter::SetCurrentHealth(float healthValue)
 {
 	CurrentHealth = FMath::Clamp(healthValue, 0.f, MaxHealth);
-	UE_LOG(LogClass, Log, TEXT("Current Health: %f"), CurrentHealth);
 	OnHealthUpdate();
 }
 
