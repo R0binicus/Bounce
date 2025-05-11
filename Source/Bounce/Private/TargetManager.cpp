@@ -66,7 +66,12 @@ void ATargetManager::TargetKillHandler()
 	if (CurrentWave == 0 && KilledTargets >= Wave2Amnt)
 	{
 		CurrentWave = 1;
-		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1);
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1, 0, 0, 0, 0);
+	}
+	else if (CurrentWave == 1 && KilledTargets >= 30)
+	{
+		CurrentWave = 2;
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 2, 1, 0, 0, 0);
 	}
 }
 
