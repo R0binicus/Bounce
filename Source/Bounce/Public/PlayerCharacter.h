@@ -72,6 +72,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Landed(const FHitResult &Hit) override;
 	
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -93,6 +94,9 @@ protected:
 
 	/** Called for releasing slide */
     void StopSliding(const FInputActionValue& Value);
+
+	/** Called for default movement */
+    void Bounce(const FInputActionValue& Value);
 
 	/** Called for pause */
 	void Pause(const FInputActionValue& Value);
@@ -151,7 +155,7 @@ protected:
 	bool Sliding;
 
 	UPROPERTY()
-	bool Jumped;
+	bool Bounced;
 
 protected:
 	// APawn interface

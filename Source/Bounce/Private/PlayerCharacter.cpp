@@ -56,6 +56,14 @@ void APlayerCharacter::BeginPlay()
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &APlayerCharacter::OnHit);
 }
 
+// Called when hitting the ground
+void APlayerCharacter::Landed(const FHitResult &Hit)
+{
+	Super::Landed(Hit);
+
+	Bounced = false;
+}
+
 //////////////////////////////////////////////////////////////////////////// Input
 
 void APlayerCharacter::NotifyControllerChanged()
@@ -78,7 +86,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::Bounce);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
@@ -189,8 +197,19 @@ void APlayerCharacter::StopSliding(const FInputActionValue& Value)
 	} else {
 		Walk();
 	}
+}
 
-	
+void APlayerCharacter::Bounce(const FInputActionValue& Value)
+{
+	if(CanJump()) {
+		Jump();
+	} else {
+		if(Bounced) return;
+
+		CharacterMovement->AddImpulse(FVector(0.f, 0.f, CharacterMovement->JumpZVelocity*0.5f), true);
+		Bounced = true;
+	}
+
 }
 
 void APlayerCharacter::Pause(const FInputActionValue& Value)
