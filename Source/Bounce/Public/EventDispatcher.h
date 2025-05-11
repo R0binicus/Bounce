@@ -19,7 +19,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_AddScore, int, Score);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_GameOver);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_HealthChange, float, MaxHealth, float, CurrentHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_RefireTime, float, RefireTime);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_Pause);
 
 UCLASS()
 class BOUNCE_API UEventDispatcher : public UBlueprintFunctionLibrary
@@ -67,6 +67,9 @@ public: // These are the event multi dispatchers
 
 	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
 	FEvent_RefireTime Event_RefireTime;
+
+	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	FEvent_Pause Event_Pause;
 
 public:
 	UFUNCTION(BlueprintPure, Category = "Create Event Dispatcher")

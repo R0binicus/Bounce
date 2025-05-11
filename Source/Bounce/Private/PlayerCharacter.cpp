@@ -93,6 +93,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		// Sliding
 		EnhancedInputComponent->BindAction(SlideAction, ETriggerEvent::Started, this, &APlayerCharacter::Slide);
 		EnhancedInputComponent->BindAction(SlideAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopSliding);
+
+		// Paused
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &APlayerCharacter::Pause);
 	}
 	else
 	{
@@ -158,6 +161,12 @@ void APlayerCharacter::StopSliding(const FInputActionValue& Value)
 
 	GetCapsuleComponent()->SetCapsuleSize(CapsuleRadius, CapsuleHeight);
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, CapsuleHeight-10.f));
+}
+
+void APlayerCharacter::Pause(const FInputActionValue& Value)
+{
+	if (Controller == nullptr) return;
+	UEventDispatcher::GetEventManagerSingleton()->Event_Pause.Broadcast();
 }
 
 void APlayerCharacter::OnHealthUpdate()
