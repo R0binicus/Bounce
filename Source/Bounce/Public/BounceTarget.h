@@ -28,6 +28,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
 	USoundBase* KillSound;
 
+	/** Sound to play when we die */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	USoundBase* HitSound;
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
