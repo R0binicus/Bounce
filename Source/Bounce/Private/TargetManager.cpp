@@ -63,31 +63,31 @@ void ATargetManager::TargetKillHandler()
 	KilledTargets++;
 	// If 1st wave and amount of targets killed has hit the 
 	// threshhold, advance to wave 2
-	if (CurrentWave == 0 && KilledTargets >= Wave2Amnt)
+	if (CurrentWave == 0 && KilledTargets >= WaveThresholds[0])
 	{
 		CurrentWave = 1;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1, 0, 0, 0, 0);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
-	else if (CurrentWave == 1 && KilledTargets >= 15)
+	else if (CurrentWave == 1 && KilledTargets >= WaveThresholds[1])
 	{
 		CurrentWave = 2;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 2, 1, 0, 0, 0);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
-	else if (CurrentWave == 2 && KilledTargets >= 25)
+	else if (CurrentWave == 2 && KilledTargets >= WaveThresholds[2])
 	{
 		CurrentWave = 3;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 1, 2, 1, 0, 0);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
-	else if (CurrentWave == 3 && KilledTargets >= 45)
+	else if (CurrentWave == 3 && KilledTargets >= WaveThresholds[3])
 	{
 		CurrentWave = 4;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 1, 1, 1, 1, 1);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
-	else if (CurrentWave == 4 && KilledTargets >= 60)
+	else if (CurrentWave == 4 && KilledTargets >= WaveThresholds[4])
 	{
 		CurrentWave = 5;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 0, 1, 1, 2, 2);
