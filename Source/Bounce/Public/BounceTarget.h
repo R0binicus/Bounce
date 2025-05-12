@@ -24,6 +24,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = Target)
 	bool IsDead = false;
 
+	/** Sound to play when we die */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	USoundBase* KillSound;
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 

@@ -4,6 +4,7 @@
 #include "DrawDebugHelpers.h"
 #include "Components/BoxComponent.h"
 #include "EventDispatcher.h"
+#include "Kismet/GameplayStatics.h"
 #include "Projectile.h"
 
 // Sets default values
@@ -37,6 +38,7 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 			//Destroy();
 			IsDead = true;
 			SetLifeSpan(CorpseTime);
+			UGameplayStatics::PlaySoundAtLocation(this, KillSound, GetActorLocation());
 			CollisionComp->SetCollisionProfileName("DeadTarget");
 			CollisionComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore); // Or Overlap, Ignore etc.
 			CollisionComp->SetSimulatePhysics(true);

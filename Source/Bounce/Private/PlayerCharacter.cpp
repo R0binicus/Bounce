@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "EventDispatcher.h"
+#include "Kismet/GameplayStatics.h"
 #include "Engine/LocalPlayer.h"
 
 DEFINE_LOG_CATEGORY(LogPlayerCharacter);
@@ -238,6 +239,7 @@ float APlayerCharacter::TakeDamage(float DamageTaken, AActor* DamageCauser)
 {
 	float damageApplied = CurrentHealth - DamageTaken;
 	SetCurrentHealth(damageApplied);
+	UGameplayStatics::PlaySoundAtLocation(this, DamageSound, GetActorLocation());
 	return damageApplied;
 }
 

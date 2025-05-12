@@ -230,4 +230,8 @@ public:
 	/** Event for taking damage. Overridden from APawn.*/
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float TakeDamage(float DamageTaken, AActor* DamageCauser);
+
+	/** Sound to play when we take damage */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	USoundBase* DamageSound;
 };
