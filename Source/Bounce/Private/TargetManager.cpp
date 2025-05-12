@@ -67,31 +67,26 @@ void ATargetManager::TargetKillHandler()
 	{
 		CurrentWave = 1;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1, 0, 0, 0, 0);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
 	else if (CurrentWave == 1 && KilledTargets >= WaveThresholds[1])
 	{
 		CurrentWave = 2;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 2, 1, 0, 0, 0);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
 	else if (CurrentWave == 2 && KilledTargets >= WaveThresholds[2])
 	{
 		CurrentWave = 3;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 1, 2, 1, 0, 0);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
 	else if (CurrentWave == 3 && KilledTargets >= WaveThresholds[3])
 	{
 		CurrentWave = 4;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 1, 1, 1, 1, 1);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
 	else if (CurrentWave == 4 && KilledTargets >= WaveThresholds[4])
 	{
 		CurrentWave = 5;
 		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 0, 1, 1, 2, 2);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Wave Num: %i"), CurrentWave));
 	}
 }
 

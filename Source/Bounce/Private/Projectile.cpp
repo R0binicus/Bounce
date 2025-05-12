@@ -48,7 +48,9 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
-		if (OtherComp->GetCollisionProfileName() == "Target" || OtherComp->GetCollisionProfileName() == "Pawn")
+		if (OtherComp->GetCollisionProfileName() == "Target" || 
+			OtherComp->GetCollisionProfileName() == "Pawn" ||
+			OtherComp->GetCollisionProfileName() == "ChaseTarget")
 		{
 			Destroy();
 			return;
