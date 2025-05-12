@@ -183,7 +183,7 @@ void UWeaponComponent::ResetValues()
 {
 	Scatter = 50.f;
 	Amount = 10;
-	FireRate = 5.f;
+	FireRate = 1.f;
 	RecoilAmount = 0.f;
 	Damage = 1.f;
 	Bounces = 10;
