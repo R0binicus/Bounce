@@ -69,7 +69,7 @@ public:
 	float Lifespan = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	FVector Scale = FVector(1.f, 1.f, 1.f);
+	FVector Scale = FVector(0.f, 0.f, 0.f);
 
 protected:
 	/** Ends gameplay for this component */
