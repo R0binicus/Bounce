@@ -31,7 +31,7 @@ void ATargetSpawner::BeginPlay()
 	SpawningAreaSizeY = boxExtents.Y;
 	SpawningAreaSizeZ = boxExtents.Z;
 
-	NewSpawnWeights(1, 0, 0, 0, 0, 0);
+	NewSpawnWeights(1, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
 // Called every frame
@@ -126,7 +126,7 @@ int ATargetSpawner::GetRandomIndexFromArray(const TArray<TSubclassOf<class ABoun
 
 // Set WaveSpawnWeights to be empty, then add the target types
 // back into the array based on the input weights
-void ATargetSpawner::NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int target6)
+void ATargetSpawner::NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int target6, int target7, int target8, int target9)
 {
 	WaveSpawnWeights.SetNum(0);
 
@@ -181,6 +181,33 @@ void ATargetSpawner::NewSpawnWeights(int target1, int target2, int target3, int 
 		for (uint8 i = 0; i < Len; ++i)
 		{
 			WaveSpawnWeights.Add(TargetBlueprints[5]);
+		}
+	}
+
+	if (TargetBlueprints.IsValidIndex(6) && TargetBlueprints[6] != nullptr)
+	{
+		uint8 Len = target7;
+		for (uint8 i = 0; i < Len; ++i)
+		{
+			WaveSpawnWeights.Add(TargetBlueprints[6]);
+		}
+	}
+
+	if (TargetBlueprints.IsValidIndex(7) && TargetBlueprints[7] != nullptr)
+	{
+		uint8 Len = target8;
+		for (uint8 i = 0; i < Len; ++i)
+		{
+			WaveSpawnWeights.Add(TargetBlueprints[7]);
+		}
+	}
+
+	if (TargetBlueprints.IsValidIndex(8) && TargetBlueprints[8] != nullptr)
+	{
+		uint8 Len = target9;
+		for (uint8 i = 0; i < Len; ++i)
+		{
+			WaveSpawnWeights.Add(TargetBlueprints[8]);
 		}
 	}
 }

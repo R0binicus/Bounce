@@ -35,7 +35,7 @@ protected:
 	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
 
 	UFUNCTION()
-	void NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int targes6);
+	void NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int target6, int target7, int target8, int target9);
 
 	float TargetTimer;
 

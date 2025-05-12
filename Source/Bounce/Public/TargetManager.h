@@ -30,7 +30,7 @@ protected:
 	int InitialSpawnAmnt = 10;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
-	TArray<int> WaveThresholds = TArray<int>{10, 15, 25, 45, 60};
+	TArray<int> WaveThresholds = TArray<int>{10, 15, 25, 45, 60, 80, 100};
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int MaxTargets = 20;

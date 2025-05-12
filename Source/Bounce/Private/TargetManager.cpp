@@ -66,27 +66,37 @@ void ATargetManager::TargetKillHandler()
 	if (CurrentWave == 0 && KilledTargets >= WaveThresholds[0])
 	{
 		CurrentWave = 1;
-		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1, 0, 0, 0, 0);
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 1, 0, 0, 0, 0, 0, 0, 0);
 	}
 	else if (CurrentWave == 1 && KilledTargets >= WaveThresholds[1])
 	{
 		CurrentWave = 2;
-		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 2, 1, 0, 0, 0);
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(1, 2, 1, 0, 0, 0, 0, 0, 0);
 	}
 	else if (CurrentWave == 2 && KilledTargets >= WaveThresholds[2])
 	{
 		CurrentWave = 3;
-		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 1, 2, 1, 0, 0);
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 1, 2, 1, 0, 0, 0, 0, 0);
 	}
 	else if (CurrentWave == 3 && KilledTargets >= WaveThresholds[3])
 	{
 		CurrentWave = 4;
-		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 1, 1, 1, 1, 1);
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 1, 1, 1, 1, 1, 0, 0, 0);
 	}
 	else if (CurrentWave == 4 && KilledTargets >= WaveThresholds[4])
 	{
 		CurrentWave = 5;
-		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 0, 1, 1, 2, 2);
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 0, 1, 1, 2, 2, 0, 0, 0);
+	}
+	else if (CurrentWave == 5 && KilledTargets >= WaveThresholds[5])
+	{
+		CurrentWave = 6;
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 0, 0, 1, 1, 1, 1, 1, 0);
+	}
+	else if (CurrentWave == 6 && KilledTargets >= WaveThresholds[6])
+	{
+		CurrentWave = 7;
+		UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.Broadcast(0, 0, 0, 0, 1, 1, 1, 1, 1);
 	}
 }
 
