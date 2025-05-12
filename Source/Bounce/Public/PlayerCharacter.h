@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Logging/LogMacros.h"
+#include "WeaponComponent.h"
 #include "PlayerCharacter.generated.h"
 
 class UInputComponent;
@@ -14,6 +15,7 @@ class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 class UCharacterMovementComponent;
+class UWeaponComponent;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogPlayerCharacter, Log, All);
@@ -63,12 +65,16 @@ class BOUNCE_API APlayerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
 	class UInputAction* SlideAction;
 
+	/** Weapon Component */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Weapon, meta=(AllowPrivateAccess="true"))
+	UWeaponComponent* WeaponComponent;
+
 // Called when the game starts or when spawned
 public:
 	APlayerCharacter();
 
-	 UFUNCTION()
-	 void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 protected:
 	virtual void BeginPlay() override;
@@ -176,8 +182,16 @@ public:
 	float CapsuleHeight = 80.f;
 	float CapsuleHalfed = 40.f;
 
+	/** Getter for Weapon Component */
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	FORCEINLINE UWeaponComponent* GetWeaponComponent() { return WeaponComponent; }
+
+	/** Setter for Weapon Component */
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	void SetWeaponComponent(UWeaponComponent* _weaponComponent) { WeaponComponent = _weaponComponent; }
+
 	/** Getter for walking speed */
-	UFUNCTION(BlueprintPure, Category="Movement")
+	UFUNCTION(BlueprintCallable, Category="Movement")
 	FORCEINLINE float GetSpeedWalk() const { return MoveSpeedWalk; }
 
 	/** Getter for sprinting speed */

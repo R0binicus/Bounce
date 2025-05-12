@@ -26,6 +26,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Part")
 	bool EquipPart(UWeaponComponent* TargetWeapon);
 
+	/** Converts all values into drawable text */
+	UFUNCTION(BlueprintCallable, Category="Part")
+	FString DisplayStats();
+
 	/** Identifiable name of the part */
 	UPROPERTY(EditDefaultsOnly, Category="Part", meta=(AllowPrivateAccess="true"))
 	FString PartName = "UnknownWeaponPart";
@@ -64,6 +68,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	float Lifespan = 0.f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	FVector Scale = FVector(1.f, 1.f, 1.f);
 
 protected:
 	/** Ends gameplay for this component */

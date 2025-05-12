@@ -131,17 +131,28 @@ bool UWeaponComponent::EquipWeapon(APlayerCharacter* TargetCharacter)
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UWeaponComponent::Fire);
 	}
 
+	Character->SetWeaponComponent(this);
 	CanShoot = true;
 	return true;
 }
 
 bool UWeaponComponent::AttachPart(UWeaponPart* TargetPart)
 {
-	if(TargetPart == nullptr || WeaponParts.Contains(TargetPart)) return false;
+	bool show = true;
+
+	for(int i = 0; i < WeaponParts.Num(); i++) {
+		if(WeaponParts[i] == nullptr) continue;
+		if(WeaponParts[i]->PartName == TargetPart->PartName) {
+			//Item already equipped so don't render it again
+			show = false;
+			break;
+		}
+	}
 
 	WeaponParts.Add(TargetPart);
 	CalculateValues();
-	return true;
+
+	return show;
 }
 
 void UWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -170,17 +181,18 @@ FRotator UWeaponComponent::RandDouble(float max, float min)
 
 void UWeaponComponent::ResetValues()
 {
-	Scatter = 0.f;
-	Amount = 1;
-	FireRate = 1.f;
+	Scatter = 50.f;
+	Amount = 10;
+	FireRate = 5.f;
 	RecoilAmount = 0.f;
 	Damage = 1.f;
-	Bounces = 5;
+	Bounces = 10;
 	Speed = 15000.f;
 	Bounciness = 1.f;
 	GravityEnabled = true;
-    GravityAmount = 1.f;
+    GravityAmount = 0.1f;
 	Lifespan = 50.f;
+	Scale = FVector(1.f, 1.f, 1.f);
 }
 
 void UWeaponComponent::CalculateValues()
@@ -188,11 +200,7 @@ void UWeaponComponent::CalculateValues()
 	ResetValues();
 
 	for(int i = 0; i < WeaponParts.Num(); i++) {
-		if(WeaponParts[i] == nullptr) {
-			WeaponParts.RemoveAt(i);
-			i--;
-			continue;
-		}
+		if(WeaponParts[i] == nullptr) continue;
 
 		Scatter += WeaponParts[i]->Scatter;
 		Amount += WeaponParts[i]->Amount;
@@ -204,7 +212,7 @@ void UWeaponComponent::CalculateValues()
 		Bounciness += WeaponParts[i]->Bounciness;
     	GravityAmount += WeaponParts[i]->GravityAmount;
 		Lifespan += WeaponParts[i]->Lifespan;
-		//Add Scale
+		Scale += WeaponParts[i]->Scale;
 	}
 }
 
@@ -221,4 +229,6 @@ void UWeaponComponent::RandomizeValues()
 	GravityEnabled = FMath::RandBool();
     GravityAmount = (GravityEnabled) ? FMath::FRandRange(0.0f, 5.0f) : 0;
 	Lifespan = FMath::FRandRange(0.5f, 25.0f);
+	float s = FMath::FRandRange(1.0f, 2.5f);
+	Scale = FVector(s, s, s);
 }
