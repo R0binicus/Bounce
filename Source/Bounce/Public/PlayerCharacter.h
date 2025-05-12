@@ -144,6 +144,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float MaxHealth = 100.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float ProjDamageMultiplier = 5.f;
+
 	/** The player's current health. When reduced to 0, they are considered dead.*/
 	UPROPERTY()
 	float CurrentHealth;

@@ -248,7 +248,7 @@ void APlayerCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
 		if (AProjectile* projectile = Cast<AProjectile>(OtherActor))
 		{
-			TakeDamage(projectile->GetProjectileDamage(), OtherActor);
+			TakeDamage(projectile->GetProjectileDamage()*ProjDamageMultiplier, OtherActor);
 		}
 	}
 }
