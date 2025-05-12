@@ -34,17 +34,22 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 		if (AProjectile* projectile = Cast<AProjectile>(OtherActor))
 		{
 			CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
-			if (CurrentHealth > 0) return;
-			//Destroy();
-			IsDead = true;
-			SetLifeSpan(CorpseTime);
-			UGameplayStatics::PlaySoundAtLocation(this, KillSound, GetActorLocation());
-			CollisionComp->SetCollisionProfileName("DeadTarget");
-			CollisionComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore); // Or Overlap, Ignore etc.
-			CollisionComp->SetSimulatePhysics(true);
-			CollisionComp->AddRadialImpulse(OtherActor->GetActorLocation(), 1000.f, 1000.f, ERadialImpulseFalloff::RIF_Linear, true);
-			UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
-			UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);
+			if (CurrentHealth > 0)
+			{
+				UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+			}
+			else
+			{
+				IsDead = true;
+				SetLifeSpan(CorpseTime);
+				UGameplayStatics::PlaySoundAtLocation(this, KillSound, GetActorLocation());
+				CollisionComp->SetCollisionProfileName("DeadTarget");
+				CollisionComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore); // Or Overlap, Ignore etc.
+				CollisionComp->SetSimulatePhysics(true);
+				CollisionComp->AddRadialImpulse(OtherActor->GetActorLocation(), 1000.f, 1000.f, ERadialImpulseFalloff::RIF_Linear, true);
+				UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
+				UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);
+			}
 		}
 	}
 }
