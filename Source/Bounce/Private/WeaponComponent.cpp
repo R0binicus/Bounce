@@ -53,7 +53,8 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UWeaponComponent::Fire()
 {
 	if(!CanShoot) return;
-	if(Character == nullptr || Character->GetController() == nullptr) return;
+	if(Character == nullptr) return;
+	if(Character->GetController() == nullptr) return;
     if(ProjectileClass == nullptr) return;
 	if(FireSound == nullptr) return;
 	if(FireAnimation == nullptr) return;
@@ -106,7 +107,8 @@ void UWeaponComponent::Fire()
 
 bool UWeaponComponent::EquipWeapon(APlayerCharacter* TargetCharacter)
 {
-	if(TargetCharacter == nullptr || TargetCharacter->GetInstanceComponents().FindItemByClass<UWeaponComponent>()) return false;
+	if(TargetCharacter == nullptr) return false;
+	if(TargetCharacter->GetInstanceComponents().FindItemByClass<UWeaponComponent>()) return false;
     Character = TargetCharacter;
 
 	FDetachmentTransformRules DetachmentRules(EDetachmentRule::KeepRelative, true);
@@ -170,15 +172,6 @@ void UWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-FRotator UWeaponComponent::RandDouble(float max, float min)
-{
-	double pitch = static_cast<double>(FMath::FRandRange(min, max));
-	double yaw = static_cast<double>(FMath::FRandRange(min, max));
-	double roll = static_cast<double>(FMath::FRandRange(min, max));
-
-	return FRotator(pitch, yaw, roll);
-}
-
 void UWeaponComponent::ResetValues()
 {
 	Scatter = 50.f;
@@ -231,4 +224,13 @@ void UWeaponComponent::RandomizeValues()
 	Lifespan = FMath::FRandRange(0.5f, 25.0f);
 	float s = FMath::FRandRange(1.0f, 2.5f);
 	Scale = FVector(s, s, s);
+}
+
+FRotator UWeaponComponent::RandDouble(float max, float min)
+{
+	double pitch = static_cast<double>(FMath::FRandRange(min, max));
+	double yaw = static_cast<double>(FMath::FRandRange(min, max));
+	double roll = static_cast<double>(FMath::FRandRange(min, max));
+
+	return FRotator(pitch, yaw, roll);
 }

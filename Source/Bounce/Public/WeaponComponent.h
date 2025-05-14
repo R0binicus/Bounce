@@ -14,71 +14,11 @@ class BOUNCE_API UWeaponComponent : public USkeletalMeshComponent
 {
 	GENERATED_BODY()
 
-public:
-	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
-	/** Weapon location offset */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Weapon, meta=(AllowPrivateAccess="true"))
-	FVector WeaponOffset;
-
-	/** Gun muzzle's offset from the characters location */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Weapon)
-	FVector MuzzleOffset;
-
-	/** Sound to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Weapon)
-	USoundBase* FireSound;
-	
-	/** AnimMontage to play each time we fire */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Weapon)
-	UAnimMontage* FireAnimation;
-
-	/** Weapon parts attached */
-	UPROPERTY(EditDefaultsOnly, Category=Weapon)
-	TArray<class UWeaponPart*> WeaponParts;
-
-	/** MappingContext */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
-	class UInputMappingContext* FireMappingContext;
-
-	/** Fire Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
-	class UInputAction* FireAction;
-
-	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly, Category=Projectile)
-	TSubclassOf<class AProjectile> ProjectileClass;
-
-	/** Sets default values for this component's properties */
-	UWeaponComponent();
-
-	/** Attaches the actor to a FirstPersonCharacter */
-	UFUNCTION(BlueprintCallable, Category="Weapon")
-	bool EquipWeapon(APlayerCharacter* TargetCharacter);
-
-	/** Add a new weapon part to the array */
-	UFUNCTION(BlueprintCallable, Category="Weapon")
-	bool AttachPart(UWeaponPart* TargetPart);
-
-	/** Make the weapon Fire a Projectile */
-	UFUNCTION(BlueprintCallable, Category="Weapon")
-	void Fire();
+private:
+	/** The Character holding this weapon */
+	APlayerCharacter* Character;
 
 protected:
-	/** Ends gameplay for this component */
-	UFUNCTION()
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void ResetValues();
-	
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void RandomizeValues();
-
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void CalculateValues();
-	
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float Scatter = 4.0f;
 
@@ -124,9 +64,72 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	FVector Scale = FVector(1.f, 1.f, 1.f);
 
-private:
-	/** The Character holding this weapon */
-	APlayerCharacter* Character;
+public:
+	/** Weapon location offset */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	FVector WeaponOffset;
+
+	/** Gun muzzle's offset from the characters location */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	FVector MuzzleOffset;
+
+	/** Sound to play each time we fire */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	USoundBase* FireSound;
+
+	/** AnimMontage to play each time we fire */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	UAnimMontage* FireAnimation;
+
+	/** Weapon parts attached */
+	UPROPERTY(EditDefaultsOnly, Category = Weapon)
+	TArray<class UWeaponPart*> WeaponParts;
+
+	/** MappingContext */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputMappingContext* FireMappingContext;
+
+	/** Fire Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* FireAction;
+
+	/** Projectile class to spawn */
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AProjectile> ProjectileClass;
+
+public:
+	UWeaponComponent();
+
+protected:
+	/** Ends gameplay for this component */
+	UFUNCTION()
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void ResetValues();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void CalculateValues();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void RandomizeValues();
 
 	FRotator RandDouble(float max, float min);
+
+public:
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	/** Make the weapon Fire a Projectile */
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void Fire();
+
+	/** Attaches the actor to a FirstPersonCharacter */
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	bool EquipWeapon(APlayerCharacter* TargetCharacter);
+
+	/** Add a new weapon part to the array */
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	bool AttachPart(UWeaponPart* TargetPart);
 };
