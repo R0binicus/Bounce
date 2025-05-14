@@ -28,28 +28,27 @@ void ABounceTarget::BeginPlay()
 
 void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
-	{
-		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
-		if (AProjectile* projectile = Cast<AProjectile>(OtherActor))
+	if (OtherActor == nullptr) return;
+	if (OtherActor == this) return;
+	if (OtherComp == nullptr) return;
+	if (OtherComp->GetCollisionProfileName() != "Projectile") return;
+	if (AProjectile* projectile = Cast<AProjectile>(OtherActor)) {
+		CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
+		if (CurrentHealth > 0)
 		{
-			CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
-			if (CurrentHealth > 0)
-			{
-				UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
-			}
-			else
-			{
-				IsDead = true;
-				SetLifeSpan(CorpseTime);
-				UGameplayStatics::PlaySoundAtLocation(this, KillSound, GetActorLocation());
-				CollisionComp->SetCollisionProfileName("DeadTarget");
-				CollisionComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore); // Or Overlap, Ignore etc.
-				CollisionComp->SetSimulatePhysics(true);
-				CollisionComp->AddRadialImpulse(OtherActor->GetActorLocation(), 1000.f, 1000.f, ERadialImpulseFalloff::RIF_Linear, true);
-				UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
-				UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);
-			}
+			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+		}
+		else
+		{
+			IsDead = true;
+			SetLifeSpan(CorpseTime);
+			UGameplayStatics::PlaySoundAtLocation(this, KillSound, GetActorLocation());
+			CollisionComp->SetCollisionProfileName("DeadTarget");
+			CollisionComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore); // Or Overlap, Ignore etc.
+			CollisionComp->SetSimulatePhysics(true);
+			CollisionComp->AddRadialImpulse(OtherActor->GetActorLocation(), 1000.f, 1000.f, ERadialImpulseFalloff::RIF_Linear, true);
+			UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
+			UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);
 		}
 	}
 }

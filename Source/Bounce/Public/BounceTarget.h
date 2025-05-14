@@ -13,10 +13,20 @@ class BOUNCE_API ABounceTarget : public AActor
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this actor's properties
-	ABounceTarget();
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	float MaxHealth;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	int Score = 1;
+
+	UPROPERTY()
+	float CurrentHealth;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	float CorpseTime = 5.f;
+
+public:	
 	/** Box collision component */
 	UPROPERTY(BlueprintReadWrite, Category = Target)
 	UBoxComponent* CollisionComp;
@@ -32,20 +42,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
 	USoundBase* HitSound;
 
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
+public:
+	// Sets default values for this actor's properties
+	ABounceTarget();
 protected:
 	virtual void BeginPlay() override;
-	UPROPERTY(EditDefaultsOnly, Category = "Target")
-	float MaxHealth;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Target")
-	int Score = 1;
-
-	UPROPERTY()
-	float CurrentHealth;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Target")
-	float CorpseTime = 5.f;
+public:
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };
