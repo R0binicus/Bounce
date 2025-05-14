@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "WeaponPart.h"
 #include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
@@ -33,19 +32,15 @@ bool UWeaponPart::EquipPart(UWeaponComponent* TargetWeapon)
 	return true;
 }
 
+FString UWeaponPart::DisplayStats() {
+	//FString text = FString::Printf(TEXT("Weapon Part {\n  Scatter += &f\n  Bullets += &d\n  Fire Rate += &f\n  Recoil += &f\n  Damage += &f\n  Bounces += &d\n  Speed += &f\n  Rebound += &f\n  Gravity += &f\n  Lifespan += &f\n"), Scatter, Amount, FireRate, RecoilAmount, Damage, Bounces, Speed, Bounciness, GravityAmount, Lifespan);
+	return(PartName);
+}
+
 void UWeaponPart::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	// Maintain the EndPlay call chain
 	Super::EndPlay(EndPlayReason);
-}
-
-FRotator UWeaponPart::RandDouble(float max, float min)
-{
-	double pitch = static_cast<double>(FMath::FRandRange(min, max));
-	double yaw = static_cast<double>(FMath::FRandRange(min, max));
-	double roll = static_cast<double>(FMath::FRandRange(min, max));
-
-	return FRotator(pitch, yaw, roll);
 }
 
 void UWeaponPart::RandomizeValues()
@@ -64,7 +59,11 @@ void UWeaponPart::RandomizeValues()
 	Scale = FVector(s);
 }
 
-FString UWeaponPart::DisplayStats() {
-	//FString text = FString::Printf(TEXT("Weapon Part {\n  Scatter += &f\n  Bullets += &d\n  Fire Rate += &f\n  Recoil += &f\n  Damage += &f\n  Bounces += &d\n  Speed += &f\n  Rebound += &f\n  Gravity += &f\n  Lifespan += &f\n"), Scatter, Amount, FireRate, RecoilAmount, Damage, Bounces, Speed, Bounciness, GravityAmount, Lifespan);
-	return(PartName);
+FRotator UWeaponPart::RandDouble(float max, float min)
+{
+	double pitch = static_cast<double>(FMath::FRandRange(min, max));
+	double yaw = static_cast<double>(FMath::FRandRange(min, max));
+	double roll = static_cast<double>(FMath::FRandRange(min, max));
+
+	return FRotator(pitch, yaw, roll);
 }

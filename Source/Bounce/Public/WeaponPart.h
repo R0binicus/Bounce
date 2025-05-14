@@ -14,21 +14,14 @@ class BOUNCE_API UWeaponPart : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 
+private:
+	/** The WeaponComponent this part is attached to */
+	UWeaponComponent* Weapon;
+
 public:
 	/** Part offset location relative to owning weapon */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Part, meta=(AllowPrivateAccess="true"))
 	FVector PartOffset;
-
-	/** Sets default values for this component's properties */
-	UWeaponPart();
-
-	/** Attaches the actor to a FirstPersonCharacter */
-	UFUNCTION(BlueprintCallable, Category="Part")
-	bool EquipPart(UWeaponComponent* TargetWeapon);
-
-	/** Converts all values into drawable text */
-	UFUNCTION(BlueprintCallable, Category="Part")
-	FString DisplayStats();
 
 	/** Identifiable name of the part */
 	UPROPERTY(EditDefaultsOnly, Category="Part", meta=(AllowPrivateAccess="true"))
@@ -71,6 +64,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	FVector Scale = FVector(0.f, 0.f, 0.f);
 
+public:
+	/** Sets default values for this component's properties */
+	UWeaponPart();
+
 protected:
 	/** Ends gameplay for this component */
 	UFUNCTION()
@@ -79,9 +76,14 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void RandomizeValues();
 
-private:
-	/** The WeaponComponent this part is attached to */
-	UWeaponComponent* Weapon;
-
 	FRotator RandDouble(float max, float min);
+
+public:
+	/** Attaches the actor to a FirstPersonCharacter */
+	UFUNCTION(BlueprintCallable, Category = "Part")
+	bool EquipPart(UWeaponComponent* TargetWeapon);
+
+	/** Converts all values into drawable text */
+	UFUNCTION(BlueprintCallable, Category = "Part")
+	FString DisplayStats();
 };
