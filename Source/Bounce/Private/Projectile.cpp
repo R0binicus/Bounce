@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -36,31 +35,6 @@ AProjectile::AProjectile()
 	InitialLifeSpan = 10.0f;
 }
 
-void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	if (BounceSound == nullptr) return;
-	Bounces--;
-	if (Bounces <= 0)
-	{
-		Destroy();
-		return;
-	}
-
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
-	{
-		if (OtherComp->GetCollisionProfileName() == "Target" || 
-			OtherComp->GetCollisionProfileName() == "Pawn" ||
-			OtherComp->GetCollisionProfileName() == "ChaseTarget")
-		{
-			Destroy();
-			return;
-		}
-	}
-
-	// Play the firing sound
-	UGameplayStatics::PlaySoundAtLocation(this, BounceSound, GetActorLocation());
-}
-
 float AProjectile::GetProjectileDamage()
 {
 	return Damage;
@@ -83,4 +57,28 @@ void AProjectile::SetProjectileValues(float _damage, int _bounces, float _speed,
 	MovementComponent->ProjectileGravityScale = _gravity;
 	SetLifeSpan(_lifespan);
 	CollisionComponent->SetRelativeScale3D(Scale);
+}
+
+void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (BounceSound == nullptr) return;
+	Bounces--;
+	if (Bounces <= 0) {
+		Destroy();
+		return;
+	}
+
+	if (OtherActor == nullptr) return;
+	if (OtherActor == this) return;
+	if (OtherComp == nullptr) return;
+
+	FName name = OtherComp->GetCollisionProfileName();
+
+	if (name == "Target" || name == "Pawn" || name == "ChaseTarget") {
+		Destroy();
+		return;
+	}
+
+	// Play the firing sound
+	UGameplayStatics::PlaySoundAtLocation(this, BounceSound, GetActorLocation());
 }
