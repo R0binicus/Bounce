@@ -210,7 +210,6 @@ void APlayerCharacter::Bounce(const FInputActionValue& Value)
 		CharacterMovement->AddImpulse(FVector(0.f, 0.f, CharacterMovement->JumpZVelocity*0.5f), true);
 		Bounced = true;
 	}
-
 }
 
 void APlayerCharacter::Pause(const FInputActionValue& Value)
@@ -223,10 +222,8 @@ void APlayerCharacter::OnHealthUpdate()
 {
 	UEventDispatcher::GetEventManagerSingleton()->Event_HealthChange.Broadcast(MaxHealth, CurrentHealth);
 
-	if (CurrentHealth <= 0)
-	{
-		UEventDispatcher::GetEventManagerSingleton()->Event_GameOver.Broadcast();
-	}
+	if (CurrentHealth > 0) return;
+	UEventDispatcher::GetEventManagerSingleton()->Event_GameOver.Broadcast();
 }
 
 void APlayerCharacter::SetCurrentHealth(float healthValue)
@@ -245,12 +242,13 @@ float APlayerCharacter::TakeDamage(float DamageTaken, AActor* DamageCauser)
 
 void APlayerCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+	if (OtherActor == nullptr) return;
+	if (OtherActor == this) return;
+	if (OtherComp == nullptr) return;
+
+	if (OtherComp->GetCollisionProfileName() != "Projectile") return;
+	if (AProjectile* projectile = Cast<AProjectile>(OtherActor)) // Not sure how to remove the nested if statement here
 	{
-		if (OtherComp->GetCollisionProfileName() != "Projectile") return;
-		if (AProjectile* projectile = Cast<AProjectile>(OtherActor))
-		{
-			TakeDamage(projectile->GetProjectileDamage()*ProjDamageMultiplier, OtherActor);
-		}
+		TakeDamage(projectile->GetProjectileDamage()*ProjDamageMultiplier, OtherActor);
 	}
 }
