@@ -72,10 +72,8 @@ void APlayerCharacter::NotifyControllerChanged()
 	Super::NotifyControllerChanged();
 
 	// Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller)) {
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer())) {
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
@@ -84,8 +82,7 @@ void APlayerCharacter::NotifyControllerChanged()
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {	
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
-	{
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		// Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::Bounce);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
@@ -106,16 +103,14 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		// Paused
 		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &APlayerCharacter::Pause);
-	}
-	else
-	{
+	} else {
 		UE_LOG(LogPlayerCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This character uses the Enhanced Input system!"), *GetNameSafe(this));
 	}
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
-	if(Controller == nullptr) return;
+	if (Controller == nullptr) return;
 
 	FVector2D MovementVector = Value.Get<FVector2D>();
 	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
@@ -125,7 +120,7 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
 {
-	if(Controller == nullptr) return;
+	if (Controller == nullptr) return;
 
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 	AddControllerYawInput(LookAxisVector.X);
@@ -247,8 +242,7 @@ void APlayerCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 	if (OtherComp == nullptr) return;
 
 	if (OtherComp->GetCollisionProfileName() != "Projectile") return;
-	if (AProjectile* projectile = Cast<AProjectile>(OtherActor)) // Not sure how to remove the nested if statement here
-	{
+	if (AProjectile* projectile = Cast<AProjectile>(OtherActor)) {  // Not sure how to remove the nested if statement here 
 		TakeDamage(projectile->GetProjectileDamage()*ProjDamageMultiplier, OtherActor);
 	}
 }
