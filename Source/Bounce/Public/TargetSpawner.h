@@ -37,13 +37,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION()
-	void NewTargetHandler(ATargetSpawner* Spawner);
-
-	UFUNCTION()
-	void NewSpawnWeights(FTargetWaveData waveData);
-
 	ABounceTarget* SpawnTarget(FVector targetLocation, UWorld* world);
 
 	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
+
+public:
+	UFUNCTION()
+	void SpawnRandomTarget();
+
+	UFUNCTION()
+	void NewSpawnWeights(FTargetWaveData waveData);
 };

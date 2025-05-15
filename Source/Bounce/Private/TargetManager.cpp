@@ -9,7 +9,6 @@ ATargetManager::ATargetManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	EventManager = UEventDispatcher::GetEventManagerSingleton();
 }
 
 // Called when the game starts or when spawned
@@ -17,7 +16,7 @@ void ATargetManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	EventManager->Event_TargetKill.AddUniqueDynamic(this, &ATargetManager::TargetKillHandler);
+	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.AddUniqueDynamic(this, &ATargetManager::TargetKillHandler);
 
 	// Spawn InitialSpawnAmnt amount of targets
 	// delay used, because event can't be triggered same frame as BeginPlay, as that is when the events are bound
@@ -48,7 +47,11 @@ void ATargetManager::TargetKillHandler()
 	// wave threshhold, advance to next wave
 	if (KilledTargets < WaveData[CurrentWave].WaveThreshold) return;
 
-	EventManager->Event_WaveWeights.Broadcast(WaveData[CurrentWave]);
+	uint8 Len = TargetSpawners.Num();
+	for (uint8 i = 0; i < Len; ++i) {
+		if (TargetSpawners[i] == nullptr) return;
+		TargetSpawners[i]->NewSpawnWeights(WaveData[CurrentWave]);
+	}
 
 	CurrentWave++;
 }
@@ -61,7 +64,7 @@ void ATargetManager::SpawnTarget()
 
 	if (randomIndex == -1) return;
 	if (TargetSpawners[randomIndex] == nullptr) return;
-	EventManager->Event_SpawnTarget.Broadcast(TargetSpawners[randomIndex]);
+	TargetSpawners[randomIndex]->SpawnRandomTarget();
 	CurrentTargets++;
 }
 

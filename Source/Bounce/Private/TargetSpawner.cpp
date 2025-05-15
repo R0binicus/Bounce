@@ -5,7 +5,6 @@
 #include "Components/BoxComponent.h"
 #include "BounceTarget.h"
 #include "PlayerCharacter.h"
-#include "EventDispatcher.h"
 
 // Sets default values
 ATargetSpawner::ATargetSpawner()
@@ -19,10 +18,6 @@ void ATargetSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Bind events
-	UEventDispatcher::GetEventManagerSingleton()->Event_SpawnTarget.AddUniqueDynamic(this, &ATargetSpawner::NewTargetHandler);
-	UEventDispatcher::GetEventManagerSingleton()->Event_WaveWeights.AddUniqueDynamic(this, &ATargetSpawner::NewSpawnWeights);
-
 	FVector boxExtents = BoxComp->GetUnscaledBoxExtent();
 
 	SpawningAreaSizeX = boxExtents.X;
@@ -35,10 +30,8 @@ void ATargetSpawner::BeginPlay()
 	NewSpawnWeights(waveData);
 }
 
-void ATargetSpawner::NewTargetHandler(ATargetSpawner* Spawner)
+void ATargetSpawner::SpawnRandomTarget()
 {
-	if (Spawner != this) return;
-
 	UWorld* world = GetWorld();
 
 	if (!world) return;

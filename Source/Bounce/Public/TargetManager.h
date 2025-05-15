@@ -30,8 +30,6 @@ protected:
 
 	int CurrentWave = 0;
 
-	UEventDispatcher* EventManager;
-
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	float InitialSpawnDelay = 1.0f;
 
