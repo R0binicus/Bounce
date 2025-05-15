@@ -11,8 +11,26 @@ UCLASS()
 class BOUNCE_API ATargetSpawner : public AActor
 {
 	GENERATED_BODY()
-	
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;
+
+	float SpawningAreaSizeX = 1000.0f;
+	float SpawningAreaSizeY = 1000.0f;
+	float SpawningAreaSizeZ = 0.0f;
+
+	float TargetTimer;
+
 public:	
+	/** Box component */
+	UPROPERTY(VisibleDefaultsOnly, Category = Spawn)
+	UBoxComponent* BoxComp;
+
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	TArray<TSubclassOf<class ABounceTarget>> TargetBlueprints;
+
+public:
 	// Sets default values for this actor's properties
 	ATargetSpawner();
 
@@ -23,30 +41,10 @@ protected:
 	UFUNCTION()
 	void NewTargetHandler(ATargetSpawner* Spawner);
 
-	ABounceTarget* SpawnTarget(FVector targetLocation, UWorld* world);
-
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;
-
-	float SpawningAreaSizeX = 1000.0f;
-	float SpawningAreaSizeY = 1000.0f;
-	float SpawningAreaSizeZ = 0.0f;
-
-	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
-
 	UFUNCTION()
 	void NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int target6, int target7, int target8, int target9);
 
-	float TargetTimer;
+	ABounceTarget* SpawnTarget(FVector targetLocation, UWorld* world);
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	/** Box component */
-	UPROPERTY(VisibleDefaultsOnly, Category = Spawn)
-	UBoxComponent* BoxComp;
-
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	TArray<TSubclassOf<class ABounceTarget>> TargetBlueprints;
+	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
 };
