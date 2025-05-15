@@ -42,36 +42,33 @@ void ATargetManager::TargetKillHandler()
 
 	KilledTargets++;
 
-	// If 1st wave and amount of targets killed has hit the 
-	// threshhold, advance to wave 2
-	if (CurrentWave == 0 && KilledTargets >= WaveThresholds[0]) {
-		CurrentWave++;
+	// If amount of targets killed has hit the 
+	// wave threshhold, advance to next wave
+	if (KilledTargets < WaveThresholds[CurrentWave]) return;
+
+	if (CurrentWave == 0) {
 		EventManager->Event_WaveWeights.Broadcast(1, 1, 0, 0, 0, 0, 0, 0, 0);
 	}
-	else if (CurrentWave == 1 && KilledTargets >= WaveThresholds[1]) {
-		CurrentWave++;
+	else if (CurrentWave == 1) {
 		EventManager->Event_WaveWeights.Broadcast(1, 2, 1, 0, 0, 0, 0, 0, 0);
 	}
-	else if (CurrentWave == 2 && KilledTargets >= WaveThresholds[2]) {
-		CurrentWave++;
+	else if (CurrentWave == 2) {
 		EventManager->Event_WaveWeights.Broadcast(0, 1, 2, 1, 0, 0, 0, 0, 0);
 	}
-	else if (CurrentWave == 3 && KilledTargets >= WaveThresholds[3]) {
-		CurrentWave++;
+	else if (CurrentWave == 3) {
 		EventManager->Event_WaveWeights.Broadcast(0, 1, 1, 1, 1, 1, 0, 0, 0);
 	}
-	else if (CurrentWave == 4 && KilledTargets >= WaveThresholds[4]) {
-		CurrentWave++;
+	else if (CurrentWave == 4) {
 		EventManager->Event_WaveWeights.Broadcast(0, 0, 1, 1, 2, 2, 0, 0, 0);
 	}
-	else if (CurrentWave == 5 && KilledTargets >= WaveThresholds[5]) {
-		CurrentWave++;
+	else if (CurrentWave == 5) {
 		EventManager->Event_WaveWeights.Broadcast(0, 0, 0, 1, 1, 1, 1, 1, 0);
 	}
-	else if (CurrentWave == 6 && KilledTargets >= WaveThresholds[6]) {
-		CurrentWave++;
+	else if (CurrentWave == 6) {
 		EventManager->Event_WaveWeights.Broadcast(0, 0, 0, 0, 1, 1, 1, 1, 1);
 	}
+	else return;
+	CurrentWave++;
 }
 
 void ATargetManager::SpawnTarget()
