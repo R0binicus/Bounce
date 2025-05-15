@@ -5,27 +5,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "TargetSpawner.h"
+#include "EventDispatcher.h"
 #include "TargetManager.generated.h"
 
 UCLASS()
 class BOUNCE_API ATargetManager : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	ATargetManager();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	void TargetKillHandler();
-
-	UFUNCTION()
-	void SpawnTarget();
-
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int InitialSpawnAmnt = 10;
 
@@ -41,6 +29,8 @@ protected:
 
 	int CurrentWave = 0;
 
+	UEventDispatcher* EventManager;
+
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	float InitialSpawnDelay = 1.0f;
 
@@ -50,12 +40,24 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	float SpawnTimer = InitialSpawnDelay;
 
-	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	TArray<ATargetSpawner*> TargetSpawners;
+
+public:
+	ATargetManager();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void TargetKillHandler();
+
+	UFUNCTION()
+	void SpawnTarget();
+
+	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 };
