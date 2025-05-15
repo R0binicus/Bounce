@@ -34,12 +34,10 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 	if (OtherComp->GetCollisionProfileName() != "Projectile") return;
 	if (AProjectile* projectile = Cast<AProjectile>(OtherActor)) {
 		CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
-		if (CurrentHealth > 0)
-		{
+		if (CurrentHealth > 0) {
 			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
-		}
-		else
-		{
+		} 
+		else {
 			IsDead = true;
 			SetLifeSpan(CorpseTime);
 			UGameplayStatics::PlaySoundAtLocation(this, KillSound, GetActorLocation());

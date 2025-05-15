@@ -18,22 +18,16 @@ void ATargetManager::BeginPlay()
 	Super::BeginPlay();
 
 	EventManager->Event_TargetKill.AddUniqueDynamic(this, &ATargetManager::TargetKillHandler);
+
+	// Spawn InitialSpawnAmnt amount of targets
+	// delay used, because event can't be triggered same frame as BeginPlay, as that is when the events are bound
+	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ATargetManager::SpawnInitialTargets);
 }
 
 // Called every frame
 void ATargetManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	// 1 Second after game starts, spawn InitialSpawnAmnt amount of targets
-	// delay used, because event can't be triggered in BeginPlay, as that is when the events are bound
-	if (InitialSpawnDelay >= 1.0f) {
-		InitialSpawnDelay = 0.0f;
-
-		for (int i = 0; i < InitialSpawnAmnt; ++i) {
-			SpawnTarget();
-		}
-	}
 
 	SpawnTimer -= DeltaTime;
 
@@ -90,6 +84,13 @@ void ATargetManager::SpawnTarget()
 	if (TargetSpawners[randomIndex] == nullptr) return;
 	EventManager->Event_SpawnTarget.Broadcast(TargetSpawners[randomIndex]);
 	CurrentTargets++;
+}
+
+void ATargetManager::SpawnInitialTargets()
+{
+	for (int i = 0; i < InitialSpawnAmnt; ++i) {
+		SpawnTarget();
+	}
 }
 
 int ATargetManager::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array)

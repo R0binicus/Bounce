@@ -56,6 +56,9 @@ protected:
 	UFUNCTION()
 	void SpawnTarget();
 
+	UFUNCTION()
+	void SpawnInitialTargets();
+
 	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
 public:
 	// Called every frame
