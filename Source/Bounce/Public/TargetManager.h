@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "TargetSpawner.h"
 #include "EventDispatcher.h"
+#include "TargetWaveData.h"
 #include "TargetManager.generated.h"
 
 UCLASS()
@@ -17,8 +18,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int InitialSpawnAmnt = 10;
 
-	UPROPERTY(EditAnywhere, Category = "Spawners")
-	TArray<int> WaveThresholds = TArray<int>{10, 15, 25, 45, 60, 80, 100};
+	UPROPERTY(EditAnywhere, Category = Spawners)
+	TArray<FTargetWaveData> WaveData;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int MaxTargets = 20;

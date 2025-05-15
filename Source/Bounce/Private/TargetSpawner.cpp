@@ -29,7 +29,10 @@ void ATargetSpawner::BeginPlay()
 	SpawningAreaSizeY = boxExtents.Y;
 	SpawningAreaSizeZ = boxExtents.Z;
 
-	NewSpawnWeights(1, 0, 0, 0, 0, 0, 0, 0, 0);
+	// Default target spawning (wave one)
+	FTargetWaveData waveData;
+	waveData.WaveAmounts.Add(DefaultTargetSpawn, 1);
+	NewSpawnWeights(waveData);
 }
 
 void ATargetSpawner::NewTargetHandler(ATargetSpawner* Spawner)
@@ -81,70 +84,17 @@ ABounceTarget* ATargetSpawner::SpawnTarget(FVector targetLocation, UWorld* world
 
 // Set WaveSpawnWeights to be empty, then add the target types
 // back into the array based on the input weights
-void ATargetSpawner::NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int target6, int target7, int target8, int target9)
+void ATargetSpawner::NewSpawnWeights(FTargetWaveData waveData)
 {
 	WaveSpawnWeights.SetNum(0);
 
-	if (TargetBlueprints.IsValidIndex(0) && TargetBlueprints[0] != nullptr) {
-		uint8 Len = target1;
+	// Iterate over the TargetWaveData's TargetAmounts,
+	// in each target-weight pair, add the target (key) to the WaveSpawnWeights
+	// an amount equal to the weight (value)
+	for (auto& targetWeight : waveData.WaveAmounts) {
+		uint8 Len = targetWeight.Value;
 		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[0]);
-		}
-	}
-
-	if (TargetBlueprints.IsValidIndex(1) && TargetBlueprints[1] != nullptr) {
-		uint8 Len = target2;
-		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[1]);
-		}
-	}
-
-	if (TargetBlueprints.IsValidIndex(2) && TargetBlueprints[2] != nullptr) {
-		uint8 Len = target3;
-		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[2]);
-		}
-	}
-
-	if (TargetBlueprints.IsValidIndex(3) && TargetBlueprints[3] != nullptr) {
-		uint8 Len = target4;
-		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[3]);
-		}
-	}
-
-	if (TargetBlueprints.IsValidIndex(4) && TargetBlueprints[4] != nullptr) {
-		uint8 Len = target5;
-		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[4]);
-		}
-	}
-
-	if (TargetBlueprints.IsValidIndex(5) && TargetBlueprints[5] != nullptr) {
-		uint8 Len = target6;
-		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[5]);
-		}
-	}
-
-	if (TargetBlueprints.IsValidIndex(6) && TargetBlueprints[6] != nullptr) {
-		uint8 Len = target7;
-		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[6]);
-		}
-	}
-
-	if (TargetBlueprints.IsValidIndex(7) && TargetBlueprints[7] != nullptr) {
-		uint8 Len = target8;
-		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[7]);
-		}
-	}
-
-	if (TargetBlueprints.IsValidIndex(8) && TargetBlueprints[8] != nullptr) {
-		uint8 Len = target9;
-		for (uint8 i = 0; i < Len; ++i) {
-			WaveSpawnWeights.Add(TargetBlueprints[8]);
+			WaveSpawnWeights.Add(targetWeight.Key);
 		}
 	}
 }

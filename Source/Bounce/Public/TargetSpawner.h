@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "BounceTarget.h"
+#include "TargetWaveData.h"
 #include "TargetSpawner.generated.h"
 
 UCLASS()
@@ -13,7 +14,13 @@ class BOUNCE_API ATargetSpawner : public AActor
 	GENERATED_BODY()
 
 protected:
+	/** Box component */
+	UPROPERTY(VisibleDefaultsOnly, Category = Spawn)
+	UBoxComponent* BoxComp;
+
 	UPROPERTY(EditAnywhere, Category = "Spawn")
+	TSubclassOf<class ABounceTarget> DefaultTargetSpawn;
+
 	TArray<TSubclassOf<class ABounceTarget>> WaveSpawnWeights;
 
 	float SpawningAreaSizeX = 1000.0f;
@@ -21,14 +28,6 @@ protected:
 	float SpawningAreaSizeZ = 0.0f;
 
 	float TargetTimer;
-
-public:	
-	/** Box component */
-	UPROPERTY(VisibleDefaultsOnly, Category = Spawn)
-	UBoxComponent* BoxComp;
-
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	TArray<TSubclassOf<class ABounceTarget>> TargetBlueprints;
 
 public:
 	// Sets default values for this actor's properties
@@ -42,7 +41,7 @@ protected:
 	void NewTargetHandler(ATargetSpawner* Spawner);
 
 	UFUNCTION()
-	void NewSpawnWeights(int target1, int target2, int target3, int target4, int target5, int target6, int target7, int target8, int target9);
+	void NewSpawnWeights(FTargetWaveData waveData);
 
 	ABounceTarget* SpawnTarget(FVector targetLocation, UWorld* world);
 

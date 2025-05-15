@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Delegates/DelegateCombinations.h"
 #include "TargetSpawner.h"
+#include "TargetWaveData.h"
 #include "EventDispatcher.generated.h"
 
 // Delegates that can bind to multiple UFUNCTIONs simultaniously
@@ -13,14 +14,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_ExampleNoParams);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_ExampleOneParams, bool, MyBool);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_ExampleTwoParams, bool, MyBool, float, MyFloat);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_TargetKill);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_NineParams(FEvent_WaveWeights, int, Targets1, int, Targets2, int, Targets3, int, Targets4, int, Targets5, int, Targets6, int, Targets7, int, Targets8, int, Targets9);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_WaveWeights, FTargetWaveData, WaveData);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_SpawnTarget, ATargetSpawner*, Spawner);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_AddScore, int, Score);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_GameOver);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_HealthChange, float, MaxHealth, float, CurrentHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_RefireTime, float, RefireTime);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_Pause);
-
 
 UCLASS()
 class BOUNCE_API UEventDispatcher : public UBlueprintFunctionLibrary
