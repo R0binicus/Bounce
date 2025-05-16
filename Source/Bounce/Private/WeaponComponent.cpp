@@ -198,13 +198,21 @@ void UWeaponComponent::CalculateValues()
 		FireRate += WeaponParts[i]->FireRate;
 		RecoilAmount += WeaponParts[i]->RecoilAmount;
 		ProjectileValues.Damage += WeaponParts[i]->Damage;
-		ProjectileValues.Bounces += WeaponParts[i]->Bounces;
+		//ProjectileValues.Bounces += WeaponParts[i]->Bounces;
 		ProjectileValues.Speed += WeaponParts[i]->Speed;
-		ProjectileValues.Bounciness += WeaponParts[i]->Bounciness;
-		ProjectileValues.Gravity += WeaponParts[i]->GravityAmount;
-		ProjectileValues.Lifetime += WeaponParts[i]->Lifespan;
-		ProjectileValues.Scale += WeaponParts[i]->Scale;
+		//ProjectileValues.Bounciness += WeaponParts[i]->Bounciness;
+		//ProjectileValues.Gravity += WeaponParts[i]->GravityAmount;
+		//ProjectileValues.Lifetime += WeaponParts[i]->Lifespan;
+		//ProjectileValues.Scale += WeaponParts[i]->Scale;
 	}
+
+	if (Amount < 1) Amount = 1;
+	if (FireRate < 0.1f) FireRate = 0.1f;
+	if (FireRate > 5.f) FireRate = 5.f;
+	if (RecoilAmount < 0.f) RecoilAmount = 0.f;
+	if (ProjectileValues.Damage < 0.1f) ProjectileValues.Damage = 0.1f;
+	//if (ProjectileValues.Bounces < 0) ProjectileValues.Bounces = 0;
+	if (ProjectileValues.Speed < 1000.f) ProjectileValues.Speed = 1000.f;
 }
 
 void UWeaponComponent::RandomizeValues()
