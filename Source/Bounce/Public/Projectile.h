@@ -32,6 +32,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	int Bounces = 5;
 
+	// Maximum number of bounces before the projectile bounces off targets
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	int ElderlyBounce = 3;
+
 	// Size of projectile
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	FVector Scale = FVector(1.f, 1.f, 1.f);

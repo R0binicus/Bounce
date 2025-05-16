@@ -57,6 +57,8 @@ void AProjectile::SetProjectileValues(FProjectileValues projectileValues)
 	MovementComponent->ProjectileGravityScale = projectileValues.Gravity;
 	SetLifeSpan(projectileValues.Lifetime);
 	CollisionComponent->SetRelativeScale3D(projectileValues.Scale);
+
+	ElderlyBounce = Bounces - ElderlyBounce;
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -68,13 +70,15 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 		return;
 	}
 
+	if (Bounces == ElderlyBounce) CollisionComponent->SetCollisionProfileName("OldProjectile");
+
 	if (OtherActor == nullptr) return;
 	if (OtherActor == this) return;
 	if (OtherComp == nullptr) return;
 
 	FName name = OtherComp->GetCollisionProfileName();
 
-	if (name == "Target" || name == "Pawn" || name == "ChaseTarget") {
+	if (Bounces > ElderlyBounce && (name == "Target" || name == "Pawn" || name == "ChaseTarget")) {
 		Destroy();
 		return;
 	}
