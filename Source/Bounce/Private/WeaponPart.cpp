@@ -26,7 +26,9 @@ bool UWeaponPart::EquipPart(UWeaponComponent* TargetWeapon)
 	// Attach the weapon to the Player Character
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
 	AttachToComponent(Weapon, AttachmentRules, FName(PartName));
-	Rename(*PartName, Weapon);
+	FString newPartString = PartName;
+	newPartString += FString::Printf(TEXT("%i"), TargetWeapon->WeaponParts.Num());
+	Rename(*newPartString);
 	//SetRelativeLocation(PartOffset);
 
 	return true;
