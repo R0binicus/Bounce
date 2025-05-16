@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "WeaponComponent.h"
 #include "PlayerCharacter.h"
 #include "WeaponPart.h"
@@ -12,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Animation/AnimInstance.h"
 #include "EventDispatcher.h"
+#include "ProjectileValues.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 
@@ -79,13 +79,12 @@ void UWeaponComponent::Fire()
 
     // Spawn the specified amount of projectiles at the muzzle
 	int shots = 0;
-    for(uint8 i = 0; i < Amount; ++i)
-    {
+    for(uint8 i = 0; i < Amount; ++i) {
         AProjectile* shot = World->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-Scatter, Scatter), ActorSpawnParams);
 		if(shot == nullptr) continue;
 		
 		float momentum = Character->GetVelocity().GetMax()+Speed;
-        shot->SetProjectileValues(Damage, Bounces, momentum, Bounciness, GravityAmount, Lifespan, Scale);
+        shot->SetProjectileValues(FProjectileValues(Damage, Bounces, momentum, Bounciness, GravityAmount, Lifespan, Scale));
 		shots++;
     }
 	if(shots == 0) return;
@@ -122,8 +121,7 @@ bool UWeaponComponent::EquipWeapon(APlayerCharacter* TargetCharacter)
 	SetVisibility(true);
 
 	// Set up action bindings
-	if(APlayerController* PlayerController = Cast<APlayerController>(Character->GetController()))
-	{
+	if(APlayerController* PlayerController = Cast<APlayerController>(Character->GetController())) {
 		// Set the priority of the mapping to 1, so that it overrides the Jump action with the Fire action when using touch input
 		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 			Subsystem->AddMappingContext(FireMappingContext, 1);
@@ -162,8 +160,7 @@ void UWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	if(Character == nullptr) return;
 	
 	// Remove the input mapping context from the Player Controller
-	if(APlayerController* PlayerController = Cast<APlayerController>(Character->GetController()))
-	{
+	if(APlayerController* PlayerController = Cast<APlayerController>(Character->GetController())) {
 		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 			Subsystem->RemoveMappingContext(FireMappingContext);
 	}

@@ -45,18 +45,18 @@ FProjectileValues AProjectile::GetProjectileValues()
 	return FProjectileValues(Damage, Bounces, MovementComponent->MaxSpeed, MovementComponent->Bounciness, MovementComponent->ProjectileGravityScale, InitialLifeSpan, Scale);
 }
 
-void AProjectile::SetProjectileValues(float _damage, int _bounces, float _speed, float _bounciness, float _gravity, float _lifespan, FVector _scale)
+void AProjectile::SetProjectileValues(FProjectileValues projectileValues)
 {
-	Damage = _damage;
-	Bounces = _bounces;
-	Scale = _scale;
+	Damage = projectileValues.Damage;
+	Bounces = projectileValues.Bounces;
+	Scale = projectileValues.Scale;
 
-	MovementComponent->InitialSpeed = _speed;
-	MovementComponent->MaxSpeed = _speed;
-	MovementComponent->Bounciness = _bounciness;
-	MovementComponent->ProjectileGravityScale = _gravity;
-	SetLifeSpan(_lifespan);
-	CollisionComponent->SetRelativeScale3D(Scale);
+	MovementComponent->InitialSpeed = projectileValues.Speed;
+	MovementComponent->MaxSpeed = projectileValues.Speed;
+	MovementComponent->Bounciness = projectileValues.Bounciness;
+	MovementComponent->ProjectileGravityScale = projectileValues.Gravity;
+	SetLifeSpan(projectileValues.Lifetime);
+	CollisionComponent->SetRelativeScale3D(projectileValues.Scale);
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
