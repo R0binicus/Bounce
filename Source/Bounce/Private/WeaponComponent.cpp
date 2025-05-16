@@ -27,6 +27,8 @@ void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ResetValues();
+
 	for(int i = 0; i < WeaponParts.Num(); i++) {
 		if(WeaponParts[i] == nullptr) {
 			WeaponParts.RemoveAt(i);
@@ -83,8 +85,8 @@ void UWeaponComponent::Fire()
         AProjectile* shot = World->SpawnActor<AProjectile>(ProjectileClass, SpawnLocation, SpawnRotation+RandDouble(-Scatter, Scatter), ActorSpawnParams);
 		if(shot == nullptr) continue;
 		
-		float momentum = Character->GetVelocity().GetMax()+Speed;
-        shot->SetProjectileValues(FProjectileValues(Damage, Bounces, momentum, Bounciness, GravityAmount, Lifespan, Scale));
+		float momentum = Character->GetVelocity().GetMax()+ ProjectileValues.Speed;
+        shot->SetProjectileValues(FProjectileValues(ProjectileValues.Damage, ProjectileValues. Bounces, momentum, ProjectileValues.Bounciness, ProjectileValues.Gravity, ProjectileValues.Lifetime, ProjectileValues.Scale));
 		shots++;
     }
 	if(shots == 0) return;
@@ -171,18 +173,17 @@ void UWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void UWeaponComponent::ResetValues()
 {
-	Scatter = 50.f;
-	Amount = 10;
-	FireRate = 1.f;
-	RecoilAmount = 0.f;
-	Damage = 1.f;
-	Bounces = 10;
-	Speed = 15000.f;
-	Bounciness = 1.f;
-	GravityEnabled = true;
-    GravityAmount = 0.1f;
-	Lifespan = 50.f;
-	Scale = FVector(1.f, 1.f, 1.f);
+	Scatter = DefaultScatter;
+	Amount = DefaultAmount;
+	FireRate = DefaultFireRate;
+	RecoilAmount = DefaultRecoilAmount;
+	ProjectileValues.Damage = DefaultProjectileValues.Damage;
+	ProjectileValues.Bounces = DefaultProjectileValues.Bounces;
+	ProjectileValues.Speed = DefaultProjectileValues.Speed;
+	ProjectileValues.Bounciness = DefaultProjectileValues.Bounciness;
+	ProjectileValues.Gravity = DefaultProjectileValues.Gravity;
+	ProjectileValues.Lifetime = DefaultProjectileValues.Lifetime;
+	ProjectileValues.Scale = DefaultProjectileValues.Scale;
 }
 
 void UWeaponComponent::CalculateValues()
@@ -196,13 +197,13 @@ void UWeaponComponent::CalculateValues()
 		Amount += WeaponParts[i]->Amount;
 		FireRate += WeaponParts[i]->FireRate;
 		RecoilAmount += WeaponParts[i]->RecoilAmount;
-		Damage += WeaponParts[i]->Damage;
-		Bounces += WeaponParts[i]->Bounces;
-		Speed += WeaponParts[i]->Speed;
-		Bounciness += WeaponParts[i]->Bounciness;
-    	GravityAmount += WeaponParts[i]->GravityAmount;
-		Lifespan += WeaponParts[i]->Lifespan;
-		Scale += WeaponParts[i]->Scale;
+		ProjectileValues.Damage += WeaponParts[i]->Damage;
+		ProjectileValues.Bounces += WeaponParts[i]->Bounces;
+		ProjectileValues.Speed += WeaponParts[i]->Speed;
+		ProjectileValues.Bounciness += WeaponParts[i]->Bounciness;
+		ProjectileValues.Gravity += WeaponParts[i]->GravityAmount;
+		ProjectileValues.Lifetime += WeaponParts[i]->Lifespan;
+		ProjectileValues.Scale += WeaponParts[i]->Scale;
 	}
 }
 
@@ -212,15 +213,15 @@ void UWeaponComponent::RandomizeValues()
 	Amount = (int)FMath::RandRange(1, 10);
 	FireRate = FMath::FRandRange(0.0f, 3.0f);
 	RecoilAmount = FMath::FRandRange(0.0f, 7.0f);
-	Damage = FMath::FRandRange(1.0f, 50.0f);
-	Bounces = (int)FMath::RandRange(1, 10);
-	Speed = FMath::FRandRange(100.0f, 10000.0f);
-	Bounciness = FMath::FRandRange(0.1f, 3.0f);
-	GravityEnabled = FMath::RandBool();
-    GravityAmount = (GravityEnabled) ? FMath::FRandRange(0.0f, 5.0f) : 0;
-	Lifespan = FMath::FRandRange(0.5f, 25.0f);
+	ProjectileValues.Damage = FMath::FRandRange(1.0f, 50.0f);
+	ProjectileValues.Bounces = (int)FMath::RandRange(1, 10);
+	ProjectileValues.Speed = FMath::FRandRange(100.0f, 10000.0f);
+	ProjectileValues.Bounciness = FMath::FRandRange(0.1f, 3.0f);
+	bool GravityEnabled = FMath::RandBool();
+	ProjectileValues.Gravity = (GravityEnabled) ? FMath::FRandRange(0.0f, 5.0f) : 0;
+	ProjectileValues.Lifetime = FMath::FRandRange(0.5f, 25.0f);
 	float s = FMath::FRandRange(1.0f, 2.5f);
-	Scale = FVector(s, s, s);
+	ProjectileValues.Scale = FVector(s, s, s);
 }
 
 FRotator UWeaponComponent::RandDouble(float max, float min)

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ProjectileValues.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "WeaponComponent.generated.h"
 
@@ -19,50 +20,47 @@ private:
 	APlayerCharacter* Character;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float Scatter = 4.0f;
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	float DefaultScatter = 50.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	int DefaultAmount = 10;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	float DefaultFireRate = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	float DefaultRecoilAmount = 0.5f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	float DefaultKnockbackForce = 1000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	FProjectileValues DefaultProjectileValues = FProjectileValues(1.f, 10, 15000.f, 1.f, 0.f, 50.f, FVector(1.f, 1.f, 1.f));
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	int Amount = 2;
+	float Scatter = DefaultScatter;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float FireRate = 0.5f;
+	int Amount = DefaultAmount;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float FireRate = DefaultFireRate;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float RecoilAmount = DefaultRecoilAmount;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float KnockbackForce = DefaultKnockbackForce;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Projectile")
+	FProjectileValues ProjectileValues = DefaultProjectileValues;
 
 	UPROPERTY()
 	bool CanShoot = false;
 
 	UPROPERTY()
 	float FireTimer;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float RecoilAmount = 0.5f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float KnockbackForce = 1000.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float Damage = 10.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	int Bounces = 5;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float Speed = 3000.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float Bounciness = 1.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	bool GravityEnabled = false;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float GravityAmount = 0.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	float Lifespan = 10.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	FVector Scale = FVector(1.f, 1.f, 1.f);
 
 public:
 	/** Weapon location offset */
