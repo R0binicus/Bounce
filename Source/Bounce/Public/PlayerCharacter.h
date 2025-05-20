@@ -113,16 +113,23 @@ protected:
 	UPROPERTY()
 	bool Sliding;
 
-	UPROPERTY()
-	bool Bounced;
-
 public:
-	float CapsuleRadius = 15.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Collider")
+	float CapsuleRadius = 30.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Collider")
 	float CapsuleHeight = 80.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Collider")
 	float CapsuleHalfed = 40.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Collider")
+	UCapsuleComponent* CoyoteCapsuleComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	bool Bounced;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	bool Coyote = true;
 
 	/** Sound to play when we take damage */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	USoundBase* DamageSound;
 
 public:
@@ -154,8 +161,15 @@ protected:
 public:
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
+	
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCamera() const { return FirstPersonCameraComponent; }
+
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+    virtual void OnCoyoteOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+    
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	virtual void OnCoyoteOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex);
 
 	/** Getter for Weapon Component */
 	UFUNCTION(BlueprintCallable, Category = "Weapon")

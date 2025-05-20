@@ -25,6 +25,15 @@ APlayerCharacter::APlayerCharacter()
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(CapsuleRadius, CapsuleHeight);
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+
+	// Create coyote jump time collider (allows jumping when close to ground but not touching)
+	CoyoteCapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CoyoteCollider"));
+	CoyoteCapsuleComponent->InitCapsuleSize(CapsuleRadius*4.f, CapsuleRadius*4.f);
+	CoyoteCapsuleComponent->SetGenerateOverlapEvents(true);
+	CoyoteCapsuleComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	CoyoteCapsuleComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Overlap);
+	CoyoteCapsuleComponent->SetupAttachment(GetCapsuleComponent());
+	CoyoteCapsuleComponent->SetRelativeLocation(FVector(0.f, 0.f, CapsuleHeight*-2.f));
 		
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -55,6 +64,8 @@ void APlayerCharacter::BeginPlay()
 	CurrentHealth = MaxHealth;
 
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &APlayerCharacter::OnHit);
+	CoyoteCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnCoyoteOverlapBegin);
+    CoyoteCapsuleComponent->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnCoyoteOverlapEnd);
 }
 
 // Called when hitting the ground
@@ -198,11 +209,16 @@ void APlayerCharacter::StopSliding(const FInputActionValue& Value)
 void APlayerCharacter::Bounce(const FInputActionValue& Value)
 {
 	if(CanJump()) {
+		// Normal jumping when in contact with the ground
 		Jump();
-	} else {
-		if(Bounced) return;
-
-		CharacterMovement->AddImpulse(FVector(0.f, 0.f, CharacterMovement->JumpZVelocity*0.5f), true);
+	} else if(Coyote) {
+		// Coyote hang-time using the CoyoteCapsuleComponent as a collider
+		CharacterMovement->AddImpulse(FVector(0.f, 0.f, CharacterMovement->JumpZVelocity), true);
+		Coyote = false;
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, "Coyote consumed!");
+	} else if(!Bounced) {
+		// Double jump with an extra bounce!
+		CharacterMovement->AddImpulse(FVector(0.f, 0.f, CharacterMovement->JumpZVelocity), true);
 		Bounced = true;
 	}
 }
@@ -245,4 +261,14 @@ void APlayerCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 	if (AProjectile* projectile = Cast<AProjectile>(OtherActor)) {  // Not sure how to remove the nested if statement here 
 		TakeDamage(projectile->GetProjectileDamage()*ProjDamageMultiplier, OtherActor);
 	}
+}
+
+void APlayerCharacter::OnCoyoteOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	Coyote = true;
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, "Coyote reset!");
+}
+
+void APlayerCharacter::OnCoyoteOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex) {
+	Coyote = false;
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, "Coyote consumed!");
 }

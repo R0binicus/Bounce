@@ -72,7 +72,7 @@ void UWeaponComponent::Fire()
     
     // Establish spawn point for projectiles based on camera rotation
 	const FVector SpawnOffset = SpawnRotation.RotateVector(FVector(150.f, 0.f, 0.f));
-    const FVector SpawnLocation = GetOwner()->GetActorLocation()+SpawnOffset;
+    const FVector SpawnLocation = GetOwner()->GetActorLocation()+SpawnOffset+FVector(0.f, 0.f, -10.f);
 	const FVector KnockbackLocation = SpawnLocation+SpawnOffset;
 
     // Set Spawn Collision Handling Override
