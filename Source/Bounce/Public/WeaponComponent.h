@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
 	float DefaultKnockbackForce = 1000.0f;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Weapon Defaults")
+	FVector DefaultMuzzleSway = FVector(0.f, 0.f, 0.f);
+
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
 	FProjectileValues DefaultProjectileValues = FProjectileValues(1.f, 10, 15000.f, 1.f, 0.f, 50.f, FVector(1.f, 1.f, 1.f));
 
@@ -70,6 +73,9 @@ public:
 	/** Gun muzzle's offset from the characters location */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
 	FVector MuzzleOffset;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FVector MuzzleSway = DefaultMuzzleSway;
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)

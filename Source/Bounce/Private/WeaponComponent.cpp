@@ -71,8 +71,9 @@ void UWeaponComponent::Fire()
     const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
     
     // Establish spawn point for projectiles based on camera rotation
+	FVector location = PlayerController->PlayerCameraManager->GetCameraLocation();
 	const FVector SpawnOffset = SpawnRotation.RotateVector(FVector(150.f, 0.f, 0.f));
-    const FVector SpawnLocation = GetOwner()->GetActorLocation()+SpawnOffset+FVector(0.f, 0.f, -10.f);
+    const FVector SpawnLocation = location+SpawnOffset; // MuzzleSway variable would plug in here
 	const FVector KnockbackLocation = SpawnLocation+SpawnOffset;
 
     // Set Spawn Collision Handling Override

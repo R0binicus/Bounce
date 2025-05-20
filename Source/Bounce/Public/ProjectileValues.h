@@ -10,6 +10,28 @@ struct FProjectileValues
 {
 	GENERATED_BODY()
 
+	// Empty constructor
+	FProjectileValues()
+		: Damage(0.f)
+		, Bounces(0)
+		, Speed(0.f)
+		, Bounciness(0.f)
+		, Gravity(0.f)
+		, Lifetime(0.f)
+		, Scale(FVector::OneVector)
+	{}
+
+	// Prefilled constructor
+	FProjectileValues(float damage, int bounces, float speed, float bounciness, float gravity, float lifetime, FVector scale)
+		: Damage(damage)
+		, Bounces(bounces)
+		, Speed(speed)
+		, Bounciness(bounciness)
+		, Gravity(gravity)
+		, Lifetime(lifetime)
+		, Scale(scale)
+	{}
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectileValues")
 	float Damage;
 
