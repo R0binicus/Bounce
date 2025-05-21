@@ -25,23 +25,23 @@ private:
 
 protected:
 	// Damage dealt to hit actor on collision start
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
 	float Damage = 10.0f;
 
 	// Maximum number of bounces before the projectile is destroyed
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
 	int Bounces = 5;
 
 	// Maximum number of bounces before the projectile bounces off targets
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
 	int ElderlyBounce = 3;
 
 	// Size of projectile
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
 	FVector Scale = FVector(1.f, 1.f, 1.f);
 
 	/** Sound to play each time we bounce */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	USoundBase* BounceSound;
 
 public:
