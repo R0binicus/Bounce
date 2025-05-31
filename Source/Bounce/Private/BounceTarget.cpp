@@ -33,6 +33,7 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 	if (OtherComp == nullptr) return;
 	if (OtherComp->GetCollisionProfileName() != "Projectile") return;
 	if (AProjectile* projectile = Cast<AProjectile>(OtherActor)) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Damage: %f"), projectile->GetProjectileDamage()));
 		CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
 		if (CurrentHealth > 0) {
 			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());

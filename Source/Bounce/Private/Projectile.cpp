@@ -78,7 +78,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	FName name = OtherComp->GetCollisionProfileName();
 
-	if (Bounces > ElderlyBounce && (name == "Target" || name == "Pawn" || name == "ChaseTarget")) {
+	if (CollisionComponent->GetCollisionProfileName() == "Projectile" && (name == "Target" || name == "Pawn" || name == "ChaseTarget")) {
 		Destroy();
 		return;
 	}
