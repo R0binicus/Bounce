@@ -17,7 +17,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Target")
 	float MaxHealth;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	UPROPERTY(BlueprintReadWrite, Category = "Target")
 	int Score = 1;
 
 	UPROPERTY()
@@ -47,6 +47,8 @@ public:
 	ABounceTarget();
 protected:
 	virtual void BeginPlay() override;
+	UFUNCTION()
+	void Death(AActor* OtherActor);
 public:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
