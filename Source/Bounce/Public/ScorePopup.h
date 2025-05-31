@@ -14,7 +14,10 @@ class BOUNCE_API AScorePopup : public AActor
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ScoreText")
 	UTextRenderComponent* MyText;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ScoreText")
 	APlayerCharacter* Player;
 	
 public:
