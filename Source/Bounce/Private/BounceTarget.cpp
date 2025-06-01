@@ -45,7 +45,7 @@ void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 	if (OtherActor == nullptr) return;
 	if (OtherActor == this) return;
 	if (OtherComp == nullptr) return;
-	if (OtherComp->GetCollisionProfileName() != "Projectile") return;
+	if (OtherComp->GetCollisionProfileName() == "OldProjectile") return;
 	if (AProjectile* projectile = Cast<AProjectile>(OtherActor)) {
 		CurrentHealth = CurrentHealth - projectile->GetProjectileDamage();
 		if (CurrentHealth > 0) {

@@ -66,7 +66,7 @@ void AProjectile::SetProjectileValues(FProjectileValues projectileValues)
 
 void AProjectile::ChangeProjCollision()
 {
-	if (CollisionComponent->GetCollisionProfileName() == "ProjectileIgnorePlayer")CollisionComponent->SetCollisionProfileName("Projectile");
+	if (CollisionComponent->GetCollisionProfileName() == "ProjectileIgnorePlayer") CollisionComponent->SetCollisionProfileName("Projectile");
 	if (Bounces == ElderlyBounce) CollisionComponent->SetCollisionProfileName("OldProjectile");
 }
 
@@ -87,7 +87,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	FName name = OtherComp->GetCollisionProfileName();
 
-	if (CollisionComponent->GetCollisionProfileName() == "Projectile" && (name == "Target" || name == "Pawn" || name == "ChaseTarget")) {
+	if (CollisionComponent->GetCollisionProfileName() != "OldProjectile" && (name == "Target" || name == "Pawn" || name == "ChaseTarget")) {
 		Destroy();
 		return;
 	}
