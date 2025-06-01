@@ -36,6 +36,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
 	int ElderlyBounce = 3;
 
+	// Delay before projectile can hit the player
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
+	float HitPlayerDelay = 1.0f;
+
 	// Size of projectile
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Projectile")
 	FVector Scale = FVector(1.f, 1.f, 1.f);
@@ -61,6 +65,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Projectile")
 	void SetProjectileValues(FProjectileValues projectileValues);
+
+	UFUNCTION(BlueprintCallable, Category = "Projectile")
+	void ChangeProjCollision();
 
 	/** called when projectile hits something */
 	UFUNCTION()

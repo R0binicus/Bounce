@@ -59,6 +59,15 @@ void AProjectile::SetProjectileValues(FProjectileValues projectileValues)
 	CollisionComponent->SetRelativeScale3D(projectileValues.Scale);
 
 	ElderlyBounce = Bounces - ElderlyBounce;
+
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AProjectile::ChangeProjCollision, HitPlayerDelay, false);
+}
+
+void AProjectile::ChangeProjCollision()
+{
+	if (CollisionComponent->GetCollisionProfileName() == "ProjectileIgnorePlayer")CollisionComponent->SetCollisionProfileName("Projectile");
+	if (Bounces == ElderlyBounce) CollisionComponent->SetCollisionProfileName("OldProjectile");
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -70,7 +79,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 		return;
 	}
 
-	if (Bounces == ElderlyBounce) CollisionComponent->SetCollisionProfileName("OldProjectile");
+	ChangeProjCollision();
 
 	if (OtherActor == nullptr) return;
 	if (OtherActor == this) return;
