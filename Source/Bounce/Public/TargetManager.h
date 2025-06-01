@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "TargetSpawner.h"
-#include "EventDispatcher.h"
 #include "TargetWaveData.h"
 #include "TargetManager.generated.h"
 
@@ -49,6 +48,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	UFUNCTION()
 	void TargetKillHandler();
 
@@ -59,7 +61,4 @@ protected:
 	void SpawnInitialTargets();
 
 	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 };
