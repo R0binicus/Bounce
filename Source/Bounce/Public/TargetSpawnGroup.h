@@ -19,6 +19,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int MaxTargets = 20;
 
+	UPROPERTY(EditAnywhere, Category = "Spawners")
+	int TargetsToSpawn = 20;
+
 	int CurrentTargets = 0;
 
 	int KilledTargets = 0;
@@ -31,6 +34,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	float SpawnTimer = InitialSpawnDelay;
+
+	UPROPERTY(EditAnywhere, Category = "Spawners")
+	float ResetDelay = 600.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	TArray<ATargetSpawner*> TargetSpawners;
@@ -56,6 +62,9 @@ protected:
 
 	UFUNCTION()
 	void SpawnInitialTargets();
+
+	UFUNCTION()
+	void ResetSpawners();
 
 	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
 };

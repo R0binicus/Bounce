@@ -8,7 +8,6 @@ ATargetSpawnGroup::ATargetSpawnGroup()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -29,6 +28,15 @@ void ATargetSpawnGroup::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	SpawnTimer -= DeltaTime;
+
+
+	if (KilledTargets > TargetsToSpawn) return;
+	else if (KilledTargets == TargetsToSpawn) {
+		KilledTargets++;
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &ATargetSpawnGroup::ResetSpawners, ResetDelay, false);
+		return;
+	}
 
 	if (CurrentTargets >= MaxTargets || SpawnTimer >= 0.0f) return;
 	SpawnTarget();
@@ -59,6 +67,11 @@ void ATargetSpawnGroup::SpawnInitialTargets()
 	for (int i = 0; i < InitialSpawnAmnt; ++i) {
 		SpawnTarget();
 	}
+}
+
+void ATargetSpawnGroup::ResetSpawners()
+{
+	KilledTargets = 0;
 }
 
 int ATargetSpawnGroup::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array)
