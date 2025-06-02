@@ -20,7 +20,7 @@ protected:
 	int MaxTargets = 15;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
-	int StopKillNum = 20;
+	int StopKillCount = 20;
 
 	int CurrentTargets = 0;
 

@@ -31,9 +31,8 @@ void ATargetSpawnGroup::Tick(float DeltaTime)
 
 	SpawnTimer -= DeltaTime;
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("KilledTargets: %i / %i"), KilledTargets, StopKillNum));
-	if (KilledTargets > StopKillNum) return;
-	else if (KilledTargets == StopKillNum) {
+	if (KilledTargets > StopKillCount) return;
+	else if (KilledTargets == StopKillCount) {
 		KilledTargets++;
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &ATargetSpawnGroup::ResetSpawners, ResetDelay, false);
@@ -81,4 +80,5 @@ void ATargetSpawnGroup::TargetKillHandler()
 {
 	KilledTargets++;
 	CurrentTargets--;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("KilledTargets: %i / %i"), KilledTargets, StopKillCount));
 }

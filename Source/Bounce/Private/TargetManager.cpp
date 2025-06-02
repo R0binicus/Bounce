@@ -5,11 +5,7 @@
 #include "TargetSpawner.h"
 
 // Sets default values
-ATargetManager::ATargetManager()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
+ATargetManager::ATargetManager() {}
 
 // Called when the game starts or when spawned
 void ATargetManager::BeginPlay()
@@ -17,27 +13,11 @@ void ATargetManager::BeginPlay()
 	Super::BeginPlay();
 
 	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.AddUniqueDynamic(this, &ATargetManager::TargetKillHandler);
-
-	// Spawn InitialSpawnAmnt amount of targets
-	// delay used, because event can't be triggered same frame as BeginPlay, as that is when the events are bound
-	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ATargetManager::SpawnInitialTargets);
-}
-
-// Called every frame
-void ATargetManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	SpawnTimer -= DeltaTime;
-
-	if (CurrentTargets >= MaxTargets || SpawnTimer >= 0.0f) return;
-		SpawnTarget();
-		SpawnTimer = SpawnRate;
 }
 
 void ATargetManager::TargetKillHandler()
 {
-	SpawnTarget();
+	//SpawnTarget();
 
 	KilledTargets++;
 
@@ -54,25 +34,6 @@ void ATargetManager::TargetKillHandler()
 	}
 
 	CurrentWave++;
-}
-
-void ATargetManager::SpawnTarget()
-{
-	// Get random spawner, then broadcast spawn target event with that
-	// spawner pointer as a param
-	int randomIndex = GetRandomIndexFromArray(TargetSpawners);
-
-	if (randomIndex == -1) return;
-	if (TargetSpawners[randomIndex] == nullptr) return;
-	TargetSpawners[randomIndex]->SpawnRandomTarget();
-	CurrentTargets++;
-}
-
-void ATargetManager::SpawnInitialTargets()
-{
-	for (int i = 0; i < InitialSpawnAmnt; ++i) {
-		SpawnTarget();
-	}
 }
 
 int ATargetManager::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array)

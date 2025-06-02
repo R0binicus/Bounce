@@ -14,29 +14,12 @@ class BOUNCE_API ATargetManager : public AActor
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Spawners")
-	int InitialSpawnAmnt = 10;
-
 	UPROPERTY(EditAnywhere, Category = Spawners)
 	TArray<FTargetWaveData> WaveData;
-
-	UPROPERTY(EditAnywhere, Category = "Spawners")
-	int MaxTargets = 20;
-
-	int CurrentTargets = 0;
 
 	int KilledTargets = 0;
 
 	int CurrentWave = 0;
-
-	UPROPERTY(EditAnywhere, Category = "Spawners")
-	float InitialSpawnDelay = 1.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Spawners")
-	float SpawnRate = 1.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Spawners")
-	float SpawnTimer = InitialSpawnDelay;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	TArray<ATargetSpawner*> TargetSpawners;
@@ -48,17 +31,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	UFUNCTION()
 	void TargetKillHandler();
-
-	UFUNCTION()
-	void SpawnTarget();
-
-	UFUNCTION()
-	void SpawnInitialTargets();
 
 	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
 };
