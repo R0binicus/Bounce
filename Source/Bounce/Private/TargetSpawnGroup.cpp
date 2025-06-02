@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "EventDispatcher.h"
 #include "TargetSpawnGroup.h"
+#include "BounceTarget.h"
 
 // Sets default values
 ATargetSpawnGroup::ATargetSpawnGroup()
@@ -15,7 +15,9 @@ void ATargetSpawnGroup::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.AddUniqueDynamic(this, &ATargetSpawnGroup::TargetKillHandler);
+	/*for (int i = 0; i < TargetSpawners.Num(); ++i) {
+		TargetSpawners[i]->SetSpawnerGroupRef(this);
+	}*/
 	
 	// Spawn InitialSpawnAmnt amount of targets
 	// delay used, because event can't be triggered same frame as BeginPlay, as that is when the events are bound
@@ -29,9 +31,9 @@ void ATargetSpawnGroup::Tick(float DeltaTime)
 
 	SpawnTimer -= DeltaTime;
 
-
-	if (KilledTargets > TargetsToSpawn) return;
-	else if (KilledTargets == TargetsToSpawn) {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("KilledTargets: %i / %i"), KilledTargets, StopKillNum));
+	if (KilledTargets > StopKillNum) return;
+	else if (KilledTargets == StopKillNum) {
 		KilledTargets++;
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &ATargetSpawnGroup::ResetSpawners, ResetDelay, false);
@@ -41,13 +43,6 @@ void ATargetSpawnGroup::Tick(float DeltaTime)
 	if (CurrentTargets >= MaxTargets || SpawnTimer >= 0.0f) return;
 	SpawnTarget();
 	SpawnTimer = SpawnRate;
-}
-
-void ATargetSpawnGroup::TargetKillHandler()
-{
-	SpawnTarget();
-
-	KilledTargets++;
 }
 
 void ATargetSpawnGroup::SpawnTarget()
@@ -80,4 +75,10 @@ int ATargetSpawnGroup::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Ar
 
 	int RandomIndex = FMath::RandRange(0, Array.Num() - 1);
 	return RandomIndex;
+}
+
+void ATargetSpawnGroup::TargetKillHandler()
+{
+	KilledTargets++;
+	CurrentTargets--;
 }

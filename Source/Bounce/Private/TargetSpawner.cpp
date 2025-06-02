@@ -30,6 +30,11 @@ void ATargetSpawner::BeginPlay()
 	NewSpawnWeights(waveData);
 }
 
+void ATargetSpawner::SetSpawnerGroupRef(ATargetSpawnGroup* NewSpawnerGroup)
+{
+	SpawnGroup = NewSpawnerGroup;
+}
+
 void ATargetSpawner::SpawnRandomTarget()
 {
 	UWorld* world = GetWorld();
@@ -71,8 +76,15 @@ ABounceTarget* ATargetSpawner::SpawnTarget(FVector targetLocation, UWorld* world
 	if (randomIndex == -1) return nullptr;
 	if (WaveSpawnWeights[randomIndex] == nullptr) return nullptr;
 	ABounceTarget* target = world->SpawnActor<ABounceTarget>(WaveSpawnWeights[randomIndex], targetLocation, targetRotation, ActorSpawnParameters);
+	TempTarget = target;
+	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ATargetSpawner::SetTargetValues);
 
 	return target;
+}
+
+void ATargetSpawner::SetTargetValues()
+{
+	TempTarget->SetSpawnerRef(this);
 }
 
 // Set WaveSpawnWeights to be empty, then add the target types

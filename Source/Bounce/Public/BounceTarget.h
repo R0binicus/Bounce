@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "BounceTarget.generated.h"
 
+class ATargetSpawner;
 class UBoxComponent;
 
 UCLASS()
@@ -25,6 +26,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Target")
 	float CorpseTime = 5.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	ATargetSpawner* Spawner = nullptr;
 
 public:	
 	/** Box collision component */
@@ -50,6 +54,9 @@ protected:
 	UFUNCTION()
 	void Death(AActor* OtherActor);
 public:
+	UFUNCTION()
+	void SetSpawnerRef(ATargetSpawner* NewSpawner);
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

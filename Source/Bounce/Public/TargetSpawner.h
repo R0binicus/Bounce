@@ -8,6 +8,8 @@
 #include "TargetWaveData.h"
 #include "TargetSpawner.generated.h"
 
+class ABounceTarget;
+
 UCLASS()
 class BOUNCE_API ATargetSpawner : public AActor
 {
@@ -28,6 +30,12 @@ protected:
 	float SpawningAreaSizeZ = 0.0f;
 
 	float TargetTimer;
+	ABounceTarget* TempTarget;
+
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Spawn")
+	ATargetSpawnGroup* SpawnGroup = nullptr;
 
 public:
 	// Sets default values for this actor's properties
@@ -37,11 +45,18 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
 	ABounceTarget* SpawnTarget(FVector targetLocation, UWorld* world);
+
+	UFUNCTION()
+	void SetTargetValues();
 
 	int GetRandomIndexFromArray(const TArray<TSubclassOf<class ABounceTarget>>& Array);
 
 public:
+	UFUNCTION()
+	void SetSpawnerGroupRef(ATargetSpawnGroup* NewSpawner);
+
 	UFUNCTION()
 	void SpawnRandomTarget();
 

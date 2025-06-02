@@ -6,6 +6,8 @@
 #include "EventDispatcher.h"
 #include "Kismet/GameplayStatics.h"
 #include "ScorePopup.h"
+#include "TargetSpawnGroup.h"
+#include "TargetSpawner.h"
 #include "Projectile.h"
 
 // Sets default values
@@ -38,6 +40,14 @@ void ABounceTarget::Death(AActor* OtherActor)
 	CollisionComp->AddRadialImpulse(OtherActor->GetActorLocation(), 1000.f, 1000.f, ERadialImpulseFalloff::RIF_Linear, true);
 	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
 	UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);
+
+	if (Spawner == nullptr) return;
+	Spawner->SpawnGroup->TargetKillHandler();
+}
+
+void ABounceTarget::SetSpawnerRef(ATargetSpawner* NewSpawner)
+{
+	Spawner = NewSpawner;
 }
 
 void ABounceTarget::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
