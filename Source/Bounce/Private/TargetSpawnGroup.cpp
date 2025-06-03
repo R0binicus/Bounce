@@ -80,5 +80,4 @@ void ATargetSpawnGroup::TargetKillHandler()
 {
 	KilledTargets++;
 	CurrentTargets--;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("KilledTargets: %i / %i"), KilledTargets, StopKillCount));
 }
