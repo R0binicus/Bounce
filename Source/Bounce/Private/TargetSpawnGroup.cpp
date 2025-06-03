@@ -21,7 +21,7 @@ void ATargetSpawnGroup::BeginPlay()
 	
 	// Spawn InitialSpawnAmnt amount of targets
 	// delay used, because event can't be triggered same frame as BeginPlay, as that is when the events are bound
-	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ATargetSpawnGroup::SpawnInitialTargets);
+	//GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ATargetSpawnGroup::SpawnInitialTargets);
 }
 
 // Called every frame
@@ -56,12 +56,12 @@ void ATargetSpawnGroup::SpawnTarget()
 	CurrentTargets++;
 }
 
-void ATargetSpawnGroup::SpawnInitialTargets()
-{
-	for (int i = 0; i < InitialSpawnAmnt; ++i) {
-		SpawnTarget();
-	}
-}
+//void ATargetSpawnGroup::SpawnInitialTargets()
+//{
+//	for (int i = 0; i < InitialSpawnAmnt; ++i) {
+//		SpawnTarget();
+//	}
+//}
 
 void ATargetSpawnGroup::ResetSpawners()
 {

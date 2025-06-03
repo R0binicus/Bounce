@@ -13,8 +13,8 @@ class BOUNCE_API ATargetSpawnGroup : public AActor
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Spawners")
-	int InitialSpawnAmnt = 10;
+	/*UPROPERTY(EditAnywhere, Category = "Spawners")
+	int InitialSpawnAmnt = 10;*/
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int MaxTargets = 15;
@@ -57,8 +57,8 @@ protected:
 	UFUNCTION()
 	void SpawnTarget();
 
-	UFUNCTION()
-	void SpawnInitialTargets();
+	/*UFUNCTION()
+	void SpawnInitialTargets();*/
 
 	UFUNCTION()
 	void ResetSpawners();

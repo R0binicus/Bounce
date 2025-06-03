@@ -32,7 +32,6 @@ protected:
 	float TargetTimer;
 	ABounceTarget* TempTarget;
 
-
 public:
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	ATargetSpawnGroup* SpawnGroup = nullptr;

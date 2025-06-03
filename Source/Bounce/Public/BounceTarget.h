@@ -28,7 +28,7 @@ protected:
 	float CorpseTime = 5.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Target")
-	ATargetSpawner* Spawner = nullptr;
+	ATargetSpawner* Spawner;
 
 public:	
 	/** Box collision component */

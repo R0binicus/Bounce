@@ -47,6 +47,7 @@ void ABounceTarget::Death(AActor* OtherActor)
 
 void ABounceTarget::SetSpawnerRef(ATargetSpawner* NewSpawner)
 {
+	if (NewSpawner == nullptr) return;
 	Spawner = NewSpawner;
 }
 
