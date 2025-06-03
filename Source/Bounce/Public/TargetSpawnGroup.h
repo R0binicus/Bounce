@@ -19,11 +19,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int MaxTargets = 15;
 
-	UPROPERTY(EditAnywhere, Category = "Spawners")
+	UPROPERTY(BlueprintReadWrite, Category = "Spawners")
 	int StopKillCount = 20;
 
 	int CurrentTargets = 0;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Spawners")
 	int KilledTargets = 0;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")

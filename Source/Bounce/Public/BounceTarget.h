@@ -27,7 +27,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Target")
 	float CorpseTime = 5.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	UPROPERTY(BlueprintReadOnly, Category = "Target")
 	ATargetSpawner* Spawner;
 
 public:	

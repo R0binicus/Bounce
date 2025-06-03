@@ -33,6 +33,7 @@ protected:
 	ABounceTarget* TempTarget;
 
 public:
+	UPROPERTY(BlueprintReadOnly, Category = "Spawn")
 	ATargetSpawnGroup* SpawnGroup;
 
 public:
