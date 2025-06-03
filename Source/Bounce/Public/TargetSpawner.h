@@ -33,8 +33,7 @@ protected:
 	ABounceTarget* TempTarget;
 
 public:
-	UPROPERTY(EditAnywhere, Category = "Spawn")
-	ATargetSpawnGroup* SpawnGroup = nullptr;
+	ATargetSpawnGroup* SpawnGroup;
 
 public:
 	// Sets default values for this actor's properties

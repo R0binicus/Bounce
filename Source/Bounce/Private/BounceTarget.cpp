@@ -42,6 +42,7 @@ void ABounceTarget::Death(AActor* OtherActor)
 	UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);
 
 	if (Spawner == nullptr) return;
+	if (Spawner->SpawnGroup == nullptr) return;
 	Spawner->SpawnGroup->TargetKillHandler();
 }
 

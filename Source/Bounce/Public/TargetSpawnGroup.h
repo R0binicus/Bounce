@@ -36,7 +36,7 @@ protected:
 	float SpawnTimer = InitialSpawnDelay;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
-	float ResetDelay = 60.0f;
+	float ResetDelay = 180.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	TArray<ATargetSpawner*> TargetSpawners;

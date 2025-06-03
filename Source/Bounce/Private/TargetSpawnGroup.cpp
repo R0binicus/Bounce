@@ -15,9 +15,9 @@ void ATargetSpawnGroup::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/*for (int i = 0; i < TargetSpawners.Num(); ++i) {
+	for (int i = 0; i < TargetSpawners.Num(); ++i) {
 		TargetSpawners[i]->SetSpawnerGroupRef(this);
-	}*/
+	}
 	
 	// Spawn InitialSpawnAmnt amount of targets
 	// delay used, because event can't be triggered same frame as BeginPlay, as that is when the events are bound
