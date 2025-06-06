@@ -20,43 +20,43 @@ private:
 	APlayerCharacter* Character;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Defaults")
 	float DefaultScatter = 50.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Defaults")
 	int DefaultAmount = 10;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Defaults")
 	float DefaultFireRate = 1.0f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Defaults")
 	float DefaultRecoilAmount = 0.5f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Defaults")
 	float DefaultKnockbackForce = 1000.0f;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Weapon Defaults")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Defaults")
 	FVector DefaultMuzzleSway = FVector(0.f, 0.f, 0.f);
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon Defaults")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Defaults")
 	FProjectileValues DefaultProjectileValues = FProjectileValues(1.f, 10, 15000.f, 1.f, 0.f, 50.f, FVector(1.f, 1.f, 1.f));
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float Scatter = DefaultScatter;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	int Amount = DefaultAmount;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float FireRate = DefaultFireRate;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float RecoilAmount = DefaultRecoilAmount;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float KnockbackForce = DefaultKnockbackForce;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Projectile")
+	UPROPERTY(BlueprintReadOnly, BlueprintReadOnly, Category = "Projectile")
 	FProjectileValues ProjectileValues = DefaultProjectileValues;
 
 	UPROPERTY()
