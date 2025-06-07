@@ -24,32 +24,32 @@ public:
 	FVector PartOffset;
 
 	/** Identifiable name of the part */
-	UPROPERTY(EditDefaultsOnly, Category="Part", meta=(AllowPrivateAccess="true"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Part", meta=(AllowPrivateAccess="true"))
 	FString PartName = "UnknownWeaponPart";
 	
 	/** These values are all ADDED to the base WeaponComponent stats */
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float Scatter = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	int Amount = 0;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float FireRate = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float RecoilAmount = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	float KnockbackForce = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
 	float Damage = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	int Bounces = 0;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
 	float Speed = 0.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
@@ -61,7 +61,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	float Lifespan = 0.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile")
 	FVector Scale = FVector(0.f, 0.f, 0.f);
 
 public:
