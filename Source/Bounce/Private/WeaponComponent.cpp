@@ -158,6 +158,25 @@ bool UWeaponComponent::AttachPart(UWeaponPart* TargetPart)
 	return show;
 }
 
+bool UWeaponComponent::RemovePart(UWeaponPart* TargetPart)
+{
+	bool show = true;
+
+	for (int i = 0; i < WeaponParts.Num(); i++) {
+		if (WeaponParts[i] == nullptr) continue;
+		if (WeaponParts[i]->PartName == TargetPart->PartName) {
+			//Item already equipped so don't render it again
+			show = false;
+			break;
+		}
+	}
+
+	WeaponParts.Remove(TargetPart);
+	CalculateValues();
+
+	return show;
+}
+
 void UWeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if(Character == nullptr) return;

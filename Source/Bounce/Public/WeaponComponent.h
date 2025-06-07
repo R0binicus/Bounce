@@ -86,7 +86,7 @@ public:
 	UAnimMontage* FireAnimation;
 
 	/** Weapon parts attached */
-	UPROPERTY(EditDefaultsOnly, Category = Weapon)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Weapon)
 	TArray<class UWeaponPart*> WeaponParts;
 
 	/** MappingContext */
@@ -136,4 +136,8 @@ public:
 	/** Add a new weapon part to the array */
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	bool AttachPart(UWeaponPart* TargetPart);
+
+	/** Remove a new weapon part from the array */
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	bool RemovePart(UWeaponPart* TargetPart);
 };
