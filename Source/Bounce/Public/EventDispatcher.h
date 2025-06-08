@@ -7,6 +7,7 @@
 #include "Delegates/DelegateCombinations.h"
 #include "TargetSpawner.h"
 #include "TargetWaveData.h"
+#include "WeaponPart.h"
 #include "EventDispatcher.generated.h"
 
 // Delegates that can bind to multiple UFUNCTIONs simultaniously
@@ -21,6 +22,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_GameOver);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEvent_HealthChange, float, MaxHealth, float, CurrentHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_RefireTime, float, RefireTime);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEvent_Pause);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEvent_PartUnlock, UWeaponPart*, Part);
 
 UCLASS()
 class BOUNCE_API UEventDispatcher : public UBlueprintFunctionLibrary
@@ -39,38 +41,41 @@ private:
 	~UEventDispatcher();
 
 public: // These are the event multi dispatchers
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_ExampleNoParams Event_ExampleNoParams;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_ExampleOneParams Event_ExampleOneParams;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_ExampleTwoParams Event_ExampleTwoParams;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_TargetKill Event_TargetKill;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_WaveWeights Event_WaveWeights;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_SpawnTarget Event_SpawnTarget;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_AddScore Event_AddScore;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_GameOver Event_GameOver;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_HealthChange Event_HealthChange;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_RefireTime Event_RefireTime;
 
-	UPROPERTY(BlueprintAssignable, Category = "Create Event Dispatcher")
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
 	FEvent_Pause Event_Pause;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Create Event Dispatcher")
+	FEvent_PartUnlock Event_PartUnlock;
 
 public:
 	UFUNCTION(BlueprintPure, Category = "Create Event Dispatcher")
