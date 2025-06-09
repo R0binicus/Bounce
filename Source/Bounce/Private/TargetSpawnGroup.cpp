@@ -76,7 +76,7 @@ int ATargetSpawnGroup::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Ar
 	return RandomIndex;
 }
 
-void ATargetSpawnGroup::TargetKillHandler()
+void ATargetSpawnGroup::TargetKillHandler_Implementation()
 {
 	KilledTargets++;
 	CurrentTargets--;

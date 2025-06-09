@@ -67,6 +67,8 @@ protected:
 	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
 
 public:
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void TargetKillHandler();
+
+	void TargetKillHandler_Implementation();
 };
