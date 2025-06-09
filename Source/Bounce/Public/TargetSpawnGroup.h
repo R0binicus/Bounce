@@ -39,6 +39,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	float ResetDelay = 180.0f;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Spawners")
+	float ResetTimer;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Spawners")
+	bool ResetTimerActive;
+
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	TArray<ATargetSpawner*> TargetSpawners;
 
@@ -61,8 +67,10 @@ protected:
 	/*UFUNCTION()
 	void SpawnInitialTargets();*/
 
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ResetSpawners();
+
+	void ResetSpawners_Implementation();
 
 	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
 

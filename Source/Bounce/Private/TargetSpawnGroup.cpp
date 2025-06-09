@@ -29,13 +29,21 @@ void ATargetSpawnGroup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (ResetTimerActive) {
+		ResetTimer -= DeltaTime;
+		if (ResetTimer <= 0) {
+			ResetSpawners();
+		}
+	}
+
 	SpawnTimer -= DeltaTime;
 
 	if (KilledTargets > StopKillCount) return;
 	else if (KilledTargets == StopKillCount) {
 		KilledTargets++;
 		FTimerHandle TimerHandle;
-		GetWorldTimerManager().SetTimer(TimerHandle, this, &ATargetSpawnGroup::ResetSpawners, ResetDelay, false);
+		ResetTimerActive = true;
+		ResetTimer = ResetDelay;
 		return;
 	}
 
@@ -63,9 +71,10 @@ void ATargetSpawnGroup::SpawnTarget()
 //	}
 //}
 
-void ATargetSpawnGroup::ResetSpawners()
+void ATargetSpawnGroup::ResetSpawners_Implementation()
 {
 	KilledTargets = 0;
+	ResetTimerActive = false;
 }
 
 int ATargetSpawnGroup::GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array)
