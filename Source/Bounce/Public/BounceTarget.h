@@ -51,8 +51,9 @@ public:
 	ABounceTarget();
 protected:
 	virtual void BeginPlay() override;
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Death(AActor* OtherActor);
+	void Death_Implementation(AActor* OtherActor);
 public:
 	UFUNCTION()
 	void SetSpawnerRef(ATargetSpawner* NewSpawner);

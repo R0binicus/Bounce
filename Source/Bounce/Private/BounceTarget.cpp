@@ -29,7 +29,7 @@ void ABounceTarget::BeginPlay()
 	CurrentHealth = MaxHealth;
 }
 
-void ABounceTarget::Death(AActor* OtherActor)
+void ABounceTarget::Death_Implementation(AActor* OtherActor)
 {
 	IsDead = true;
 	SetLifeSpan(CorpseTime);
