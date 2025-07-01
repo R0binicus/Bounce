@@ -231,6 +231,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float TakeDamage(float DamageTaken, AActor* DamageCauser);
 
+	UFUNCTION(BlueprintCallable, Category = "Controls")
+	bool IsPlayerUsingGamePad();
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

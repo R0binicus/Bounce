@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/InputDeviceSubsystem.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -249,6 +250,20 @@ float APlayerCharacter::TakeDamage(float DamageTaken, AActor* DamageCauser)
 	SetCurrentHealth(damageApplied);
 	UGameplayStatics::PlaySoundAtLocation(this, DamageSound, GetActorLocation());
 	return damageApplied;
+}
+
+bool APlayerCharacter::IsPlayerUsingGamePad()
+{
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	if (!PlayerController) return false;
+
+	if (UInputDeviceSubsystem* InputDeviceSubsystem = GEngine->GetEngineSubsystem<UInputDeviceSubsystem>())
+	{
+		const FPlatformUserId UserId = PlayerController->GetPlatformUserId();
+		FHardwareDeviceIdentifier DeviceIdentifier = InputDeviceSubsystem->GetMostRecentlyUsedHardwareDevice(UserId);
+		return (DeviceIdentifier.PrimaryDeviceType == EHardwareDevicePrimaryType::Gamepad);
+	}
+	return false;
 }
 
 void APlayerCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
