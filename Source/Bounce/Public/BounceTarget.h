@@ -7,6 +7,7 @@
 #include "BounceTarget.generated.h"
 
 class ATargetSpawner;
+class USceneComponent;
 class UBoxComponent;
 
 UCLASS()
@@ -31,6 +32,10 @@ protected:
 	ATargetSpawner* Spawner;
 
 public:	
+	/** Mesh scene component */
+	UPROPERTY(BlueprintReadWrite, Category = Target)
+	USceneComponent* SceneComponent;
+
 	/** Box collision component */
 	UPROPERTY(BlueprintReadWrite, Category = Target)
 	UBoxComponent* CollisionComp;

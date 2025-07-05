@@ -2,6 +2,7 @@
 
 #include "BounceTarget.h"
 #include "DrawDebugHelpers.h"
+#include "Components/SceneComponent.h"
 #include "Components/BoxComponent.h"
 #include "EventDispatcher.h"
 #include "Kismet/GameplayStatics.h"
@@ -13,11 +14,13 @@
 // Sets default values
 ABounceTarget::ABounceTarget()
 {
+	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
 	CollisionComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComp"));
 	CollisionComp->BodyInstance.SetCollisionProfileName("Target");
 	CollisionComp->OnComponentHit.AddDynamic(this, &ABounceTarget::OnHit);		// set up a notification for when this component hits something blocking
+	CollisionComp->SetupAttachment(SceneComponent);
 
-	RootComponent = CollisionComp;
+	RootComponent = SceneComponent;
 }
 
 // Called when the game starts or when spawned
