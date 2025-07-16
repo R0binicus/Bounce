@@ -238,6 +238,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float TakeDamage(float DamageTaken, AActor* DamageCauser);
 
+	/** Used when the player falls out of play area.*/
+	UFUNCTION(BlueprintCallable, Category = "Respawn")
+	void Respawn();
+
 	UFUNCTION(BlueprintCallable, Category = "Controls")
 	bool IsPlayerUsingGamePad();
 

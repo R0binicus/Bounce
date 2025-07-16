@@ -1,40 +1,30 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "CheckpointArea.h"
+#include "RespawnTriggerArea.h"
 #include "PlayerCharacter.h"
 #include "Components/BoxComponent.h"
-#include "Components/SceneComponent.h"
 
 // Sets default values
-ACheckpointArea::ACheckpointArea() {
+ARespawnTriggerArea::ARespawnTriggerArea() {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	SceneCompRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneCompRoot"));
-	RootComponent = SceneCompRoot;
 
 	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Area Box"));
 	BoxComp->SetBoxExtent(FVector(1000, 1000, 1000), false);
-	BoxComp->SetupAttachment(RootComponent); //Make it follow root component
-
-	SceneCompRespawn = CreateDefaultSubobject<USceneComponent>(TEXT("RespawnPosition"));
-	SceneCompRespawn->SetupAttachment(RootComponent); //Make it follow root component
 }
 
 // Called when the game starts or when spawned
-void ACheckpointArea::BeginPlay() {
+void ARespawnTriggerArea::BeginPlay() {
 	Super::BeginPlay();
-
-	RespawnPosition = SceneCompRespawn->GetComponentLocation();
-	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ACheckpointArea::OverlapBegin);
+	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ARespawnTriggerArea::OverlapBegin);
 }
 
 // Called every frame
-void ACheckpointArea::Tick(float DeltaTime) {
+void ARespawnTriggerArea::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-
 }
 
-void ACheckpointArea::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ARespawnTriggerArea::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	if (OtherActor == nullptr) return;
 	if (OtherActor == this) return;
@@ -45,7 +35,6 @@ void ACheckpointArea::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AAc
 	APlayerCharacter* player = Cast<APlayerCharacter>(OtherActor);
 
 	if (player) {
-		player->SetRespawnPosition(RespawnPosition);
+		player->Respawn();
 	}
 }
-

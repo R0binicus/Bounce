@@ -253,6 +253,12 @@ float APlayerCharacter::TakeDamage(float DamageTaken, AActor* DamageCauser)
 	return damageApplied;
 }
 
+void APlayerCharacter::Respawn()
+{
+	CharacterMovement->Velocity = FVector::ZeroVector;
+	this->SetActorLocation(RespawnPosition);
+}
+
 bool APlayerCharacter::IsPlayerUsingGamePad()
 {
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
