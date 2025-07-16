@@ -103,6 +103,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float ProjDamageMultiplier = 5.f;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Respawn")
+	FVector RespawnPosition;
+
 	/** The player's current health. When reduced to 0, they are considered dead.*/
 	UPROPERTY()
 	float CurrentHealth;
@@ -226,6 +229,10 @@ public:
 	/** Setter for Current Health*/
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void SetCurrentHealth(float healthValue);
+
+	/** Setter for RespawnPosition*/
+	UFUNCTION(BlueprintCallable, Category = "Respawn")
+	void SetRespawnPosition(FVector respawnPos) { RespawnPosition = respawnPos; }
 
 	/** Event for taking damage. Overridden from APawn.*/
 	UFUNCTION(BlueprintCallable, Category = "Health")

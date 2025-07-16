@@ -63,6 +63,7 @@ void APlayerCharacter::BeginPlay()
 	CharacterMovement->AirControl = MoveFrictionAir;
 
 	CurrentHealth = MaxHealth;
+	RespawnPosition = this->GetActorLocation();
 
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &APlayerCharacter::OnHit);
 	CoyoteCapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnCoyoteOverlapBegin);
