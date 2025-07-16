@@ -40,8 +40,15 @@ void ABounceTarget::Death_Implementation(AActor* OtherActor)
 	UGameplayStatics::PlaySoundAtLocation(this, KillSound, GetActorLocation());
 	CollisionComp->SetCollisionProfileName("DeadTarget");
 	CollisionComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore); // Or Overlap, Ignore etc.
-	CollisionComp->SetSimulatePhysics(true);
-	CollisionComp->AddRadialImpulse(OtherActor->GetActorLocation(), 1000.f, 1000.f, ERadialImpulseFalloff::RIF_Linear, true);
+
+	InnerRingMesh->SetSimulatePhysics(true);
+	InnerRingMesh->AddRadialImpulse(OtherActor->GetActorLocation(), RagdollForce,
+		FMath::RandRange(RagdollForce/ RagdollRandomOffset, RagdollForce * RagdollRandomOffset), 
+		ERadialImpulseFalloff::RIF_Linear, true);
+	OuterRingMesh->SetSimulatePhysics(true);
+	OuterRingMesh->AddRadialImpulse(OtherActor->GetActorLocation(), RagdollForce,
+		FMath::RandRange(RagdollForce / RagdollRandomOffset, RagdollForce * RagdollRandomOffset), 
+		ERadialImpulseFalloff::RIF_Linear, true);
 
 	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
 	UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);

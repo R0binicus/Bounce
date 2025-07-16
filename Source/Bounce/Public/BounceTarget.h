@@ -30,6 +30,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Target")
 	ATargetSpawner* Spawner;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	float RagdollForce = 1000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Target")
+	float RagdollRandomOffset = 1.1f;
+
 public:	
 	/** Box collision component */
 	UPROPERTY(BlueprintReadWrite, Category = Target)
