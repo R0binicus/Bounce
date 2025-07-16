@@ -35,6 +35,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = Target)
 	UBoxComponent* CollisionComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* InnerRingMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* OuterRingMesh;
+
 	UPROPERTY(BlueprintReadWrite, Category = Target)
 	bool IsDead = false;
 

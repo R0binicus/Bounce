@@ -16,8 +16,12 @@ ABounceTarget::ABounceTarget()
 	CollisionComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComp"));
 	CollisionComp->BodyInstance.SetCollisionProfileName("Target");
 	CollisionComp->OnComponentHit.AddDynamic(this, &ABounceTarget::OnHit);		// set up a notification for when this component hits something blocking
-
 	RootComponent = CollisionComp;
+
+	InnerRingMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("InnerRingMesh"));
+	InnerRingMesh->SetupAttachment(RootComponent);
+	OuterRingMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("OuterRingMesh"));
+	OuterRingMesh->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -38,6 +42,7 @@ void ABounceTarget::Death_Implementation(AActor* OtherActor)
 	CollisionComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore); // Or Overlap, Ignore etc.
 	CollisionComp->SetSimulatePhysics(true);
 	CollisionComp->AddRadialImpulse(OtherActor->GetActorLocation(), 1000.f, 1000.f, ERadialImpulseFalloff::RIF_Linear, true);
+
 	UEventDispatcher::GetEventManagerSingleton()->Event_TargetKill.Broadcast();
 	UEventDispatcher::GetEventManagerSingleton()->Event_AddScore.Broadcast(Score);
 
