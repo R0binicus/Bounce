@@ -16,7 +16,7 @@ ARespawnTriggerArea::ARespawnTriggerArea() {
 // Called when the game starts or when spawned
 void ARespawnTriggerArea::BeginPlay() {
 	Super::BeginPlay();
-	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ARespawnTriggerArea::OverlapBegin);
+	BoxComp->OnComponentEndOverlap.AddDynamic(this, &ARespawnTriggerArea::OverlapEnd);
 }
 
 // Called every frame
@@ -24,8 +24,7 @@ void ARespawnTriggerArea::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 }
 
-void ARespawnTriggerArea::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+void ARespawnTriggerArea::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
 	if (OtherActor == nullptr) return;
 	if (OtherActor == this) return;
 	if (OtherComp == nullptr) return;
