@@ -217,7 +217,6 @@ void APlayerCharacter::Bounce(const FInputActionValue& Value)
 		// Coyote hang-time using the CoyoteCapsuleComponent as a collider
 		CharacterMovement->AddImpulse(FVector(0.f, 0.f, CharacterMovement->JumpZVelocity), true);
 		Coyote = false;
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, "Coyote consumed!");
 	} else if(!Bounced) {
 		// Double jump with an extra bounce!
 		CharacterMovement->AddImpulse(FVector(0.f, 0.f, CharacterMovement->JumpZVelocity), true);
@@ -287,10 +286,8 @@ void APlayerCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 
 void APlayerCharacter::OnCoyoteOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	Coyote = true;
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, "Coyote reset!");
 }
 
 void APlayerCharacter::OnCoyoteOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex) {
 	Coyote = false;
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, "Coyote consumed!");
 }
