@@ -7,6 +7,8 @@
 #include "TargetSpawner.h"
 #include "TargetSpawnGroup.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class BOUNCE_API ATargetSpawnGroup : public AActor
 {
@@ -15,6 +17,12 @@ class BOUNCE_API ATargetSpawnGroup : public AActor
 protected:
 	/*UPROPERTY(EditAnywhere, Category = "Spawners")
 	int InitialSpawnAmnt = 10;*/
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Spawners)
+	UBoxComponent* PlayerCheckAreaBox;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Spawners)
+	bool PlayerInArea = false;
 
 	UPROPERTY(EditAnywhere, Category = "Spawners")
 	int MaxTargets = 15;
@@ -73,6 +81,12 @@ protected:
 	void ResetSpawners_Implementation();
 
 	int GetRandomIndexFromArray(const TArray<ATargetSpawner*>& Array);
+
+	UFUNCTION()
+	void OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
