@@ -7,6 +7,7 @@
 
 # Do not ignore git files in the root of the repo.
 !/.git*
+!/README.md
 
 # Do not ignore current project's `.uproject`.
 !/*.uproject
